@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { IKContext, IKUpload } from 'imagekitio-react';
 import { X, Upload, MapPin, Edit3, Image, Camera } from 'lucide-react';
+import { API_URL } from '../../config';
 
 const EditProfileModal = ({ isOpen, onClose, user, onUpdate }) => {
     const [formData, setFormData] = useState({
@@ -63,7 +64,7 @@ const EditProfileModal = ({ isOpen, onClose, user, onUpdate }) => {
                     publicKey={import.meta.env.VITE_IMAGEKIT_PUBLIC_KEY}
                     urlEndpoint={import.meta.env.VITE_IMAGEKIT_URL_ENDPOINT}
                     authenticator={async () => {
-                        const response = await fetch('http://localhost:5000/api/imagekit/auth');
+                        const response = await fetch(`${API_URL}/api/imagekit/auth`);
                         return await response.json();
                     }}
                 >

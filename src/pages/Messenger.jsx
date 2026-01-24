@@ -48,7 +48,7 @@ const Messenger = () => {
             if (user) {
                 const token = await getToken();
                 try {
-                    const res = await fetch(`http://localhost:5000/api/chat/conversations/${user.id}`, {
+                    const res = await fetch(`${API_URL}/api/chat/conversations/${user.id}`, {
                         headers: { Authorization: `Bearer ${token}` }
                     });
                     if (res.ok) {
@@ -68,7 +68,7 @@ const Messenger = () => {
             if (currentChat) {
                 const token = await getToken();
                 try {
-                    const res = await fetch(`http://localhost:5000/api/chat/messages/${currentChat._id}`, {
+                    const res = await fetch(`${API_URL}/api/chat/messages/${currentChat._id}`, {
                         headers: { Authorization: `Bearer ${token}` }
                     });
                     if (res.ok) {
@@ -103,7 +103,7 @@ const Messenger = () => {
 
         try {
             const token = await getToken();
-            const res = await fetch("http://localhost:5000/api/chat/messages", {
+            const res = await fetch(`${API_URL}/api/chat/messages`, {
                 method: "POST",
                 headers: {
                     'Content-Type': 'application/json',
@@ -226,7 +226,7 @@ const Conversation = ({ conversation, currentUser, active, t }) => {
         const friendId = conversation.members.find((m) => m !== currentUser.id);
         const getUser = async () => {
             try {
-                const res = await fetch("http://localhost:5000/api/users/" + friendId);
+                const res = await fetch(`${API_URL}/api/users/${friendId}`);
                 const data = await res.json();
                 setUser(data);
             } catch (err) {
@@ -263,7 +263,7 @@ const ConversationHeader = ({ conversation, currentUser, t }) => {
         const friendId = conversation.members.find((m) => m !== currentUser.id);
         const getUser = async () => {
             try {
-                const res = await fetch("http://localhost:5000/api/users/" + friendId);
+                const res = await fetch(`${API_URL}/api/users/${friendId}`);
                 const data = await res.json();
                 setUser(data);
             } catch (err) {

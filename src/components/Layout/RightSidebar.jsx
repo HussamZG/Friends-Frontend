@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { UserPlus, UserCheck } from 'lucide-react';
 import { useLanguage } from '../../context/LanguageContext';
 import { useNotification } from '../../context/NotificationContext';
+import { API_URL } from '../../config';
 
 const RightSidebar = () => {
     const { user } = useUser();
@@ -18,7 +19,7 @@ const RightSidebar = () => {
         const fetchSuggestions = async () => {
             try {
                 const token = await getToken();
-                const res = await fetch('http://localhost:5000/api/users/suggestions', {
+                const res = await fetch(`${API_URL}/api/users/suggestions`, {
                     headers: {
                         Authorization: `Bearer ${token}`
                     }
@@ -37,7 +38,7 @@ const RightSidebar = () => {
     const handleFollow = async (userId) => {
         try {
             const token = await getToken();
-            await fetch(`http://localhost:5000/api/users/${userId}/follow`, {
+            await fetch(`${API_URL}/api/users/${userId}/follow`, {
                 method: "PUT",
                 headers: {
                     Authorization: `Bearer ${token}`
