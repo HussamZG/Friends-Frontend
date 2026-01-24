@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useUser, useAuth } from '@clerk/clerk-react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import EditProfileModal from '../components/Profile/EditProfileModal';
+import UserListModal from '../components/Profile/UserListModal';
 import Post from '../components/Feed/Post';
 import FriendsLoading from '../components/UI/FriendsLoading';
 import { MapPin, Calendar, Link as LinkIcon, Edit3, MessageCircle, UserPlus, Grid, Image, UserCheck, Mail } from 'lucide-react';
@@ -20,6 +21,7 @@ const Profile = () => {
     const [isEditOpen, setIsEditOpen] = useState(false);
     const [activeTab, setActiveTab] = useState('posts'); // posts, media, about
     const [currentUserData, setCurrentUserData] = useState(null);
+    const [listModal, setListModal] = useState({ isOpen: false, title: '', users: [] });
 
     // If id is present in URL, use it (viewing other). Else use current logged in user (viewing self).
     const userIdToFetch = id || clerkUser?.id;
@@ -109,6 +111,23 @@ const Profile = () => {
                     ...prev,
                     followers: prev.followers.filter(id => id !== clerkUser.id)
                 }));
+            }
+        } catch (err) {
+            console.error(err);
+        }
+    };
+
+    const fetchUserList = async (type) => {
+        try {
+            const endpoint = type === 'followers' ? 'followers' : 'following';
+            const res = await fetch(`${API_URL}/api/users/${userIdToFetch}/${endpoint}`);
+            if (res.ok) {
+                const data = await res.json();
+                setListModal({
+                    isOpen: true,
+                    title: type === 'followers' ? t('profile_followers') : t('profile_following'),
+                    users: data
+                });
             }
         } catch (err) {
             console.error(err);
@@ -222,15 +241,21 @@ const Profile = () => {
                         </div>
 
                         <div className="flex bg-gray-50 rounded-xl p-4 gap-8 mt-6 md:mt-0">
-                            <div className="text-center">
+                            <button
+                                onClick={() => fetchUserList('followers')}
+                                className="text-center hover:bg-gray-100 p-2 rounded-lg transition-colors"
+                            >
                                 <span className="block text-xl font-bold text-gray-900">{userProfile.followers?.length || 0}</span>
                                 <span className="text-xs text-gray-500 uppercase tracking-wide font-semibold">{t('profile_followers')}</span>
-                            </div>
-                            <div className="text-center">
+                            </button>
+                            <button
+                                onClick={() => fetchUserList('following')}
+                                className="text-center hover:bg-gray-100 p-2 rounded-lg transition-colors"
+                            >
                                 <span className="block text-xl font-bold text-gray-900">{userProfile.following?.length || 0}</span>
                                 <span className="text-xs text-gray-500 uppercase tracking-wide font-semibold">{t('profile_following')}</span>
-                            </div>
-                            <div className="text-center">
+                            </button>
+                            <div className="text-center p-2">
                                 <span className="block text-xl font-bold text-gray-900">{posts.length}</span>
                                 <span className="text-xs text-gray-500 uppercase tracking-wide font-semibold">{t('profile_posts')}</span>
                             </div>
@@ -306,6 +331,17 @@ const Profile = () => {
                     } catch (err) {
                         console.error("Error updating profile", err);
                     }
+                }}
+            />
+
+            <UserListModal
+                isOpen={listModal.isOpen}
+                onClose={() => setListModal({ ...listModal, isOpen: false })}
+                title={listModal.title}
+                users={listModal.users}
+                currentUserId={clerkUser?.id}
+                onFollowUpdate={(targetId, isFollowing) => {
+                    // Refresh current user data or update local state if needed
                 }}
             />
         </div>

@@ -48,7 +48,7 @@ const MainLayout = () => {
     const navigate = useNavigate();
     const location = useLocation();
     const { t, language } = useLanguage();
-    const { notifications, unreadCount, markAsRead } = useNotification();
+    const { notifications, unreadCount, markAsRead, deleteNotification } = useNotification();
     const [query, setQuery] = useState('');
     const [showNotifications, setShowNotifications] = useState(false);
 
@@ -143,17 +143,20 @@ const MainLayout = () => {
                                             notifications.map(n => (
                                                 <div
                                                     key={n._id}
-                                                    className={`p-3 flex gap-3 hover:bg-gray-50 transition border-b border-gray-50 last:border-0 cursor-pointer ${!n.isRead ? 'bg-indigo-50/50' : ''}`}
-                                                    onClick={() => !n.isRead && markAsRead(n._id)}
+                                                    className={`p-3 flex gap-3 hover:bg-gray-50 transition border-b border-gray-50 last:border-0 group relative ${!n.isRead ? 'bg-indigo-50/50' : ''}`}
                                                 >
-                                                    <div className="w-10 h-10 rounded-full bg-gray-200 flex-shrink-0 overflow-hidden">
+                                                    <Link
+                                                        to={n.senderData ? `/profile/${n.senderData.clerkId}` : '#'}
+                                                        className="w-10 h-10 rounded-full bg-gray-200 flex-shrink-0 overflow-hidden"
+                                                        onClick={() => !n.isRead && markAsRead(n._id)}
+                                                    >
                                                         <img
                                                             src={n.senderData?.profilePicture || "https://placehold.co/40"}
                                                             alt=""
                                                             className="w-full h-full object-cover"
                                                         />
-                                                    </div>
-                                                    <div className="flex-1">
+                                                    </Link>
+                                                    <div className="flex-1 cursor-pointer" onClick={() => !n.isRead && markAsRead(n._id)}>
                                                         <p className="text-sm text-gray-800 line-clamp-2">
                                                             <span className="font-semibold">
                                                                 {n.senderData?.firstName} {n.senderData?.lastName}
@@ -165,7 +168,18 @@ const MainLayout = () => {
                                                         </p>
                                                         <span className="text-xs text-gray-400 block mt-1">{format(n.createdAt)}</span>
                                                     </div>
-                                                    {!n.isRead && <div className="w-2 h-2 rounded-full bg-primary mt-2 flex-shrink-0"></div>}
+                                                    <div className="flex flex-col items-center gap-2">
+                                                        {!n.isRead && <div className="w-2 h-2 rounded-full bg-primary flex-shrink-0"></div>}
+                                                        <button
+                                                            onClick={(e) => {
+                                                                e.stopPropagation();
+                                                                deleteNotification(n._id);
+                                                            }}
+                                                            className="opacity-0 group-hover:opacity-100 p-1 hover:bg-gray-200 rounded-full transition-all text-gray-400 hover:text-red-500"
+                                                        >
+                                                            <X size={14} />
+                                                        </button>
+                                                    </div>
                                                 </div>
                                             ))
                                         )}

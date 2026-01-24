@@ -41,12 +41,34 @@ const FollowRequests = () => {
     }, [user]);
 
     const handleAccept = async (senderId) => {
-        const token = await getToken();
-        await fetch(`${API_URL}/api/users/${senderId}/accept`, {
-            method: "PUT",
-            headers: { Authorization: `Bearer ${token}` }
-        });
-        setRequests(requests.filter(r => r.clerkId !== senderId));
+        try {
+            const token = await getToken();
+            const res = await fetch(`${API_URL}/api/users/${senderId}/accept`, {
+                method: "PUT",
+                headers: { Authorization: `Bearer ${token}` }
+            });
+            if (res.ok) {
+                // Mark as accepted locally
+                setRequests(prev => prev.map(r =>
+                    r.clerkId === senderId ? { ...r, accepted: true } : r
+                ));
+            }
+        } catch (err) {
+            console.error(err);
+        }
+    };
+
+    const handleFollowBack = async (senderId) => {
+        try {
+            const token = await getToken();
+            await fetch(`${API_URL}/api/users/${senderId}/follow`, {
+                method: "PUT",
+                headers: { Authorization: `Bearer ${token}` }
+            });
+            setRequests(prev => prev.filter(r => r.clerkId !== senderId));
+        } catch (err) {
+            console.error(err);
+        }
     };
 
     const handleDecline = async (senderId) => {
@@ -66,14 +88,25 @@ const FollowRequests = () => {
             ) : (
                 <div className="space-y-4">
                     {requests.map(req => (
-                        <div key={req._id} className="bg-white p-4 rounded-lg shadow flex items-center justify-between">
+                        <div key={req._id} className="bg-white p-4 rounded-lg shadow-sm border border-gray-100 flex items-center justify-between animate-in fade-in slide-in-from-bottom-2 duration-300">
                             <div className="flex items-center gap-4">
-                                <img src={req.profilePicture || "https://placehold.co/50"} alt="" className="w-12 h-12 rounded-full object-cover" />
-                                <span className="font-semibold text-lg">{req.firstName} {req.lastName}</span>
+                                <img src={req.profilePicture || "https://placehold.co/50"} alt="" className="w-12 h-12 rounded-full object-cover border border-gray-100 shadow-sm" />
+                                <span className="font-semibold text-gray-900">{req.firstName} {req.lastName}</span>
                             </div>
                             <div className="flex gap-2">
-                                <button onClick={() => handleAccept(req.clerkId)} className="bg-primary text-white px-4 py-1.5 rounded-lg hover:bg-indigo-600 transition">{t('accept')}</button>
-                                <button onClick={() => handleDecline(req.clerkId)} className="bg-gray-100 text-gray-700 px-4 py-1.5 rounded-lg hover:bg-gray-200 transition">{t('decline')}</button>
+                                {req.accepted ? (
+                                    <button
+                                        onClick={() => handleFollowBack(req.clerkId)}
+                                        className="bg-primary text-white px-6 py-2 rounded-lg font-semibold hover:bg-indigo-600 transition shadow-md shadow-indigo-500/20"
+                                    >
+                                        {t('profile_follow')} Back
+                                    </button>
+                                ) : (
+                                    <>
+                                        <button onClick={() => handleAccept(req.clerkId)} className="bg-primary text-white px-4 py-1.5 rounded-lg hover:bg-indigo-600 transition shadow-sm font-semibold">{t('accept')}</button>
+                                        <button onClick={() => handleDecline(req.clerkId)} className="bg-gray-100 text-gray-700 px-4 py-1.5 rounded-lg hover:bg-gray-200 transition font-semibold">{t('decline')}</button>
+                                    </>
+                                )}
                             </div>
                         </div>
                     ))}

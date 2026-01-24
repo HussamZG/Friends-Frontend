@@ -71,6 +71,28 @@ export const NotificationProvider = ({ children }) => {
         }
     };
 
+    const deleteNotification = async (id) => {
+        try {
+            const token = await getToken();
+            await fetch(`${API_URL}/api/notifications/${id}`, {
+                method: "DELETE",
+                headers: { Authorization: `Bearer ${token}` }
+            });
+
+            setNotifications(prev => prev.filter(n => n._id !== id));
+            // Only decrement unread count if the deleted notification was unread
+            setNotifications(prev => {
+                const deleted = notifications.find(n => n._id === id);
+                if (deleted && !deleted.isRead) {
+                    setUnreadCount(count => Math.max(0, count - 1));
+                }
+                return prev.filter(n => n._id !== id);
+            });
+        } catch (err) {
+            console.error(err);
+        }
+    };
+
     // Helper to send notification (for components to use)
     const sendNotification = ({ receiverId, type, referenceId }) => {
         if (socket && user && receiverId !== user.id) {
@@ -84,7 +106,7 @@ export const NotificationProvider = ({ children }) => {
     };
 
     return (
-        <NotificationContext.Provider value={{ notifications, unreadCount, markAsRead, sendNotification, socket }}>
+        <NotificationContext.Provider value={{ notifications, unreadCount, markAsRead, deleteNotification, sendNotification, socket }}>
             {children}
         </NotificationContext.Provider>
     );
