@@ -46,14 +46,15 @@ export default function FriendsLoading({
           <div className={`absolute inset-0 blur-2xl opacity-50 bg-gradient-to-r ${gradient}`}></div>
 
           {/* النص الرئيسي */}
-          <div className="flex flex-col items-center gap-6">
+          {/* اللوغو الرئيسي */}
+          <div className="relative animate-pulse">
             <img
               src="/logo.png"
-              alt="Friends Logo"
-              className={`
-                                ${size === 'small' ? 'h-16' : size === 'medium' ? 'h-24' : size === 'large' ? 'h-32' : 'h-40'} 
-                                w-auto object-contain animate-pulse-logo
-                            `}
+              alt="FRIENDS"
+              className={`mx-auto object-contain transition-all duration-1000 ${size === 'small' ? 'h-16' :
+                  size === 'medium' ? 'h-24' :
+                    size === 'large' ? 'h-32' : 'h-40'
+                }`}
             />
           </div>
         </div>
@@ -145,17 +146,6 @@ export default function FriendsLoading({
           }
         }
 
-        @keyframes pulse-logo {
-          0%, 100% {
-            transform: scale(1);
-            filter: drop-shadow(0 0 0px rgba(99, 102, 241, 0));
-          }
-          50% {
-            transform: scale(1.05);
-            filter: drop-shadow(0 0 15px rgba(99, 102, 241, 0.4));
-          }
-        }
-
         @keyframes fade-in {
           from {
             opacity: 0;
@@ -177,10 +167,6 @@ export default function FriendsLoading({
 
         .animate-pulse-dot {
           animation: pulse-dot 1.4s ease-in-out infinite;
-        }
-
-        .animate-pulse-logo {
-          animation: pulse-logo 2s ease-in-out infinite;
         }
 
         .animate-fade-in {

@@ -94,8 +94,8 @@ const MainLayout = () => {
             {/* Navbar */}
             <nav className="bg-white/80 backdrop-blur-md border-b border-gray-200 sticky top-0 z-50 h-[70px]">
                 <div className="container mx-auto px-4 h-full flex items-center justify-between max-w-7xl">
-                    <Link to="/" className="flex items-center gap-2">
-                        <img src="/logo.png" alt="Friends" className="h-10 w-auto object-contain" />
+                    <Link to="/" className="flex items-center">
+                        <img src="/logo.png" alt="FRIENDS" className="h-10 w-auto object-contain" />
                     </Link>
 
                     <div className="hidden md:flex items-center bg-gray-100 rounded-full px-4 py-2 w-96">
