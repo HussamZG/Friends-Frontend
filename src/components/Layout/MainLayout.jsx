@@ -140,36 +140,34 @@ const MainLayout = () => {
                                         {notifications.length === 0 ? (
                                             <div className="p-4 text-center text-gray-500 text-sm">No notifications</div>
                                         ) : (
-                                            {
-                                                notifications.map(n => (
-                                                    <div
-                                                        key={n._id}
-                                                        className={`p-3 flex gap-3 hover:bg-gray-50 transition border-b border-gray-50 last:border-0 cursor-pointer ${!n.isRead ? 'bg-indigo-50/50' : ''}`}
-                                                        onClick={() => !n.isRead && markAsRead(n._id)}
-                                                    >
-                                                        <div className="w-10 h-10 rounded-full bg-gray-200 flex-shrink-0 overflow-hidden">
-                                                            <img
-                                                                src={n.senderData?.profilePicture || "https://placehold.co/40"}
-                                                                alt=""
-                                                                className="w-full h-full object-cover"
-                                                            />
-                                                        </div>
-                                                        <div className="flex-1">
-                                                            <p className="text-sm text-gray-800 line-clamp-2">
-                                                                <span className="font-semibold">
-                                                                    {n.senderData?.firstName} {n.senderData?.lastName}
-                                                                </span>
-                                                                {n.type === 'like_post' && " liked your post."}
-                                                                {n.type === 'comment_post' && " commented on your post."}
-                                                                {n.type === 'like_story' && " liked your story."}
-                                                                {n.type === 'follow' && " follows you."}
-                                                            </p>
-                                                            <span className="text-xs text-gray-400 block mt-1">{format(n.createdAt)}</span>
-                                                        </div>
-                                                        {!n.isRead && <div className="w-2 h-2 rounded-full bg-primary mt-2 flex-shrink-0"></div>}
+                                            notifications.map(n => (
+                                                <div
+                                                    key={n._id}
+                                                    className={`p-3 flex gap-3 hover:bg-gray-50 transition border-b border-gray-50 last:border-0 cursor-pointer ${!n.isRead ? 'bg-indigo-50/50' : ''}`}
+                                                    onClick={() => !n.isRead && markAsRead(n._id)}
+                                                >
+                                                    <div className="w-10 h-10 rounded-full bg-gray-200 flex-shrink-0 overflow-hidden">
+                                                        <img
+                                                            src={n.senderData?.profilePicture || "https://placehold.co/40"}
+                                                            alt=""
+                                                            className="w-full h-full object-cover"
+                                                        />
                                                     </div>
-                                                ))
-                                            }
+                                                    <div className="flex-1">
+                                                        <p className="text-sm text-gray-800 line-clamp-2">
+                                                            <span className="font-semibold">
+                                                                {n.senderData?.firstName} {n.senderData?.lastName}
+                                                            </span>
+                                                            {n.type === 'like_post' && " liked your post."}
+                                                            {n.type === 'comment_post' && " commented on your post."}
+                                                            {n.type === 'like_story' && " liked your story."}
+                                                            {n.type === 'follow' && " follows you."}
+                                                        </p>
+                                                        <span className="text-xs text-gray-400 block mt-1">{format(n.createdAt)}</span>
+                                                    </div>
+                                                    {!n.isRead && <div className="w-2 h-2 rounded-full bg-primary mt-2 flex-shrink-0"></div>}
+                                                </div>
+                                            ))
                                         )}
                                     </div>
                                 </div>
