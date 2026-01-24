@@ -4,6 +4,7 @@ import { useUser, useAuth } from '@clerk/clerk-react';
 import { useLanguage } from '../../context/LanguageContext';
 import { useNotification } from '../../context/NotificationContext';
 import { format } from 'timeago.js';
+import { API_URL } from '../../config';
 
 const StoryViewer = ({ stories, initialIndex, onClose }) => {
     const { user } = useUser();
@@ -46,7 +47,7 @@ const StoryViewer = ({ stories, initialIndex, onClose }) => {
 
         try {
             const token = await getToken();
-            await fetch(`http://localhost:5000/api/stories/${currentStory._id}/like`, {
+            await fetch(`${API_URL}/api/stories/${currentStory._id}/like`, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
@@ -76,7 +77,7 @@ const StoryViewer = ({ stories, initialIndex, onClose }) => {
             const token = await getToken();
 
             // 1. Create/Get Conversation
-            const convRes = await fetch(`http://localhost:5000/api/chat/conversations`, {
+            const convRes = await fetch(`${API_URL}/api/chat/conversations`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -90,7 +91,7 @@ const StoryViewer = ({ stories, initialIndex, onClose }) => {
             const conversation = await convRes.json();
 
             // 2. Send Message with Story Context (maybe just text for MVP)
-            await fetch(`http://localhost:5000/api/chat/messages`, {
+            await fetch(`${API_URL}/api/chat/messages`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

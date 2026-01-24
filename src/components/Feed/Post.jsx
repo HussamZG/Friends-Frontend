@@ -4,6 +4,7 @@ import { useAuth, useUser } from '@clerk/clerk-react';
 import { Heart, MessageCircle, Share2, MoreHorizontal, Send, Trash2, Link as LinkIcon, AlertCircle, X } from 'lucide-react';
 import { format } from 'timeago.js';
 import { useLanguage } from '../../context/LanguageContext';
+import { API_URL } from '../../config';
 
 const Post = ({ post, onDelete }) => {
     const { user } = useUser();
@@ -33,7 +34,7 @@ const Post = ({ post, onDelete }) => {
 
     useState(() => {
         const fetchUser = async () => {
-            const res = await fetch(`http://localhost:5000/api/users/${post.userId}`);
+            const res = await fetch(`${API_URL}/api/users/${post.userId}`);
             const data = await res.json();
             setUserFetch(data);
         };
@@ -44,7 +45,7 @@ const Post = ({ post, onDelete }) => {
     const likeHandler = async () => {
         try {
             const token = await getToken();
-            await fetch(`http://localhost:5000/api/posts/${post._id}/like`, {
+            await fetch(`${API_URL}/api/posts/${post._id}/like`, {
                 method: "PUT",
                 headers: {
                     'Content-Type': 'application/json',
@@ -62,7 +63,7 @@ const Post = ({ post, onDelete }) => {
         if (!commentText) return;
         try {
             const token = await getToken();
-            const res = await fetch(`http://localhost:5000/api/posts/${post._id}/comment`, {
+            const res = await fetch(`${API_URL}/api/posts/${post._id}/comment`, {
                 method: "PUT",
                 headers: {
                     'Content-Type': 'application/json',
@@ -106,7 +107,7 @@ const Post = ({ post, onDelete }) => {
     const handleConfirmShare = async () => {
         try {
             const token = await getToken();
-            await fetch('http://localhost:5000/api/posts', {
+            await fetch(`${API_URL}/api/posts`, {
                 method: "POST",
                 headers: {
                     'Content-Type': 'application/json',
@@ -140,7 +141,7 @@ const Post = ({ post, onDelete }) => {
 
         try {
             const token = await getToken();
-            const res = await fetch(`http://localhost:5000/api/posts/${post._id}`, {
+            const res = await fetch(`${API_URL}/api/posts/${post._id}`, {
                 method: "DELETE",
                 headers: {
                     'Content-Type': 'application/json',

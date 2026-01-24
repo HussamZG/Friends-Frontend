@@ -40,6 +40,8 @@ const MobileNav = ({ activePath }) => {
     );
 };
 
+import { API_URL } from '../../config';
+
 const MainLayout = () => {
     const { user, isLoaded } = useUser();
     const { getToken } = useAuth();
@@ -55,7 +57,7 @@ const MainLayout = () => {
             if (isLoaded && user) {
                 try {
                     const token = await getToken();
-                    await fetch('http://localhost:5000/api/users/sync', {
+                    await fetch(`${API_URL}/api/users/sync`, {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',

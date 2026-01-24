@@ -3,6 +3,7 @@ import { useUser, useAuth } from '@clerk/clerk-react';
 import { IKContext, IKUpload } from 'imagekitio-react';
 import { Image, X, Smile, Send } from 'lucide-react';
 import { useLanguage } from '../../context/LanguageContext';
+import { API_URL } from '../../config';
 
 const CreatePost = ({ onPostCreated }) => {
     const { user } = useUser();
@@ -27,7 +28,7 @@ const CreatePost = ({ onPostCreated }) => {
 
         try {
             const token = await getToken();
-            const res = await fetch('http://localhost:5000/api/posts', {
+            const res = await fetch(`${API_URL}/api/posts`, {
                 method: "POST",
                 headers: {
                     'Content-Type': 'application/json',
@@ -70,7 +71,7 @@ const CreatePost = ({ onPostCreated }) => {
             publicKey={import.meta.env.VITE_IMAGEKIT_PUBLIC_KEY}
             urlEndpoint={import.meta.env.VITE_IMAGEKIT_URL_ENDPOINT}
             authenticator={async () => {
-                const response = await fetch('http://localhost:5000/api/imagekit/auth');
+                const response = await fetch(`${API_URL}/api/imagekit/auth`);
                 return await response.json();
             }}
         >
