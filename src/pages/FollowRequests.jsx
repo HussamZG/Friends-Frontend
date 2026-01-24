@@ -13,7 +13,7 @@ const FollowRequests = () => {
 
     useEffect(() => {
         const fetchRequests = async () => {
-            if (user) {
+            if (user && user.id && user.id !== 'undefined') {
                 const token = await getToken();
                 // We need an endpoint to get users who requested. 
                 // Currently user object has 'followRequests' array of IDs.
@@ -22,17 +22,19 @@ const FollowRequests = () => {
                     const resUser = await fetch(`${API_URL}/api/users/${user.id}`, {
                         headers: { Authorization: `Bearer ${token}` }
                     });
-                    const userData = await resUser.json();
+                    if (resUser.ok) {
+                        const userData = await resUser.json();
 
-                    if (userData.followRequests && userData.followRequests.length > 0) {
-                        // Fetch details for each requester
-                        const requesterPromises = userData.followRequests.map(id =>
-                            fetch(`${API_URL}/api/users/${id}`).then(r => r.json())
-                        );
-                        const requesters = await Promise.all(requesterPromises);
-                        setRequests(requesters);
-                    } else {
-                        setRequests([]);
+                        if (userData.followRequests && userData.followRequests.length > 0) {
+                            // Fetch details for each requester
+                            const requesterPromises = userData.followRequests
+                                .filter(id => id && id !== 'undefined')
+                                .map(id => fetch(`${API_URL}/api/users/${id}`).then(r => r.ok ? r.json() : null));
+                            const requesters = (await Promise.all(requesterPromises)).filter(r => r !== null);
+                            setRequests(requesters);
+                        } else {
+                            setRequests([]);
+                        }
                     }
                 } catch (err) {
                     console.error(err);
@@ -40,7 +42,7 @@ const FollowRequests = () => {
             }
         };
         fetchRequests();
-    }, [user]);
+    }, [user, getToken]);
 
     const handleAccept = async (senderId) => {
         try {

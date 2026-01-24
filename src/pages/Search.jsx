@@ -32,7 +32,7 @@ const Search = () => {
     // Fetch current user data to check following status
     useEffect(() => {
         const fetchMe = async () => {
-            if (currentUser) {
+            if (currentUser && currentUser.id && currentUser.id !== 'undefined') {
                 try {
                     const token = await getToken();
                     const res = await fetch(`${API_URL}/api/users/${currentUser.id}`, {
@@ -48,7 +48,7 @@ const Search = () => {
             }
         };
         fetchMe();
-    }, [currentUser]);
+    }, [currentUser, getToken]);
 
     const performSearch = useCallback(async (searchQuery) => {
         if (!searchQuery.trim()) return;

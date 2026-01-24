@@ -5,6 +5,7 @@ import { format } from 'timeago.js';
 import { Send, Image, Search, Phone, Video, MoreVertical, Smile, MessageCircle } from 'lucide-react';
 import FriendsLoading from '../components/UI/FriendsLoading';
 import { useLanguage } from '../context/LanguageContext';
+import { useNotification } from '../context/NotificationContext';
 
 import { API_URL, SOCKET_URL } from '../config';
 
@@ -16,20 +17,10 @@ const Messenger = () => {
     const [currentChat, setCurrentChat] = useState(null);
     const [messages, setMessages] = useState([]);
     const [newMessage, setNewMessage] = useState("");
-    const [arrivalMessage, setArrivalMessage] = useState(null);
-    const socket = useRef();
+    const { arrivalMessage, setArrivalMessage, socket } = useNotification();
     const scrollRef = useRef();
 
-    useEffect(() => {
-        socket.current = io(SOCKET_URL);
-        socket.current.on("getMessage", (data) => {
-            setArrivalMessage({
-                sender: data.senderId,
-                text: data.text,
-                createdAt: Date.now(),
-            });
-        });
-    }, []);
+    // Simplified socket logic
 
     useEffect(() => {
         arrivalMessage &&
@@ -37,11 +28,7 @@ const Messenger = () => {
             setMessages((prev) => [...prev, arrivalMessage]);
     }, [arrivalMessage, currentChat]);
 
-    useEffect(() => {
-        if (user) {
-            socket.current.emit("addUser", user.id);
-        }
-    }, [user]);
+    // Removed additive user emit as it's handled in context
 
     useEffect(() => {
         const getConversations = async () => {
@@ -95,11 +82,13 @@ const Messenger = () => {
 
         const receiverId = currentChat.members.find(member => member !== user.id);
 
-        socket.current.emit("sendMessage", {
-            senderId: user.id,
-            receiverId,
-            text: newMessage,
-        });
+        if (socket) {
+            socket.emit("sendMessage", {
+                senderId: user.id,
+                receiverId,
+                text: newMessage,
+            });
+        }
 
         try {
             const token = await getToken();
@@ -261,11 +250,15 @@ const ConversationHeader = ({ conversation, currentUser, t }) => {
 
     useEffect(() => {
         const friendId = conversation.members.find((m) => m !== currentUser.id);
+        if (!friendId || friendId === 'undefined') return;
+
         const getUser = async () => {
             try {
                 const res = await fetch(`${API_URL}/api/users/${friendId}`);
-                const data = await res.json();
-                setUser(data);
+                if (res.ok) {
+                    const data = await res.json();
+                    setUser(data);
+                }
             } catch (err) {
                 console.error(err);
             }
