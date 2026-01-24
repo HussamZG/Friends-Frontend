@@ -58,12 +58,12 @@ const Search = () => {
             // Fetch users
             const usersRes = await fetch(`${API_URL}/api/users/search?q=${searchQuery}`);
             const usersData = await usersRes.json();
-            setUsers(usersData);
+            setUsers(Array.isArray(usersData) ? usersData : []);
 
             // Fetch posts
             const postsRes = await fetch(`${API_URL}/api/posts/search?q=${searchQuery}`);
             const postsData = await postsRes.json();
-            setPosts(postsData);
+            setPosts(Array.isArray(postsData) ? postsData : []);
 
             // Auto switch tab based on results if one is empty
             if (usersData.length === 0 && postsData.length > 0) {
@@ -74,6 +74,8 @@ const Search = () => {
 
         } catch (err) {
             console.error(err);
+            setUsers([]);
+            setPosts([]);
         } finally {
             setLoading(false);
         }
