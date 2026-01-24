@@ -1,12 +1,14 @@
 import { useState, useEffect } from 'react';
 import { useUser, useAuth } from '@clerk/clerk-react';
 import { useLanguage } from '../context/LanguageContext';
+import { useNotification } from '../context/NotificationContext';
 import { API_URL } from '../config';
 
 const FollowRequests = () => {
     const { user } = useUser();
     const { getToken } = useAuth();
     const { t } = useLanguage();
+    const { sendNotification } = useNotification();
     const [requests, setRequests] = useState([]);
 
     useEffect(() => {
@@ -48,10 +50,16 @@ const FollowRequests = () => {
                 headers: { Authorization: `Bearer ${token}` }
             });
             if (res.ok) {
-                // Mark as accepted locally
                 setRequests(prev => prev.map(r =>
                     r.clerkId === senderId ? { ...r, accepted: true } : r
                 ));
+
+                // Send Real-Time Notification
+                sendNotification({
+                    receiverId: senderId,
+                    type: 'follow', // Or 'accept_follow' if we had that type, but 'follow' works for now
+                    referenceId: user.id
+                });
             }
         } catch (err) {
             console.error(err);
@@ -66,6 +74,13 @@ const FollowRequests = () => {
                 headers: { Authorization: `Bearer ${token}` }
             });
             setRequests(prev => prev.filter(r => r.clerkId !== senderId));
+
+            // Send Real-Time Notification
+            sendNotification({
+                receiverId: senderId,
+                type: 'follow',
+                referenceId: user.id
+            });
         } catch (err) {
             console.error(err);
         }
