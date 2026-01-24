@@ -8,6 +8,7 @@ import FriendsLoading from '../components/UI/FriendsLoading';
 import { MapPin, Calendar, Link as LinkIcon, Edit3, MessageCircle, UserPlus, Grid, Image, UserCheck, Mail } from 'lucide-react';
 import { format } from 'timeago.js';
 import { useLanguage } from '../context/LanguageContext';
+import { useNotification } from '../context/NotificationContext';
 import { API_URL } from '../config';
 
 const Profile = () => {
@@ -15,6 +16,7 @@ const Profile = () => {
     const { user: clerkUser } = useUser();
     const { getToken } = useAuth();
     const { t } = useLanguage();
+    const { sendNotification } = useNotification();
     const navigate = useNavigate();
     const [userProfile, setUserProfile] = useState(null);
     const [posts, setPosts] = useState([]);
@@ -89,6 +91,13 @@ const Profile = () => {
                     ...prev,
                     followers: [...prev.followers, clerkUser.id]
                 }));
+
+                // Send Real-Time Notification
+                sendNotification({
+                    receiverId: userIdToFetch,
+                    type: 'follow',
+                    referenceId: clerkUser.id
+                });
             }
         } catch (err) {
             console.error(err);
