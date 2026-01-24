@@ -13,12 +13,27 @@ export const NotificationProvider = ({ children }) => {
     const [socket, setSocket] = useState(null);
     const [unreadCount, setUnreadCount] = useState(0);
 
+    const [arrivalMessage, setArrivalMessage] = useState(null);
+
     // Initialize Socket
     useEffect(() => {
         if (user) {
             const newSocket = io(SOCKET_URL);
             setSocket(newSocket);
             newSocket.emit("addUser", user.id);
+
+            newSocket.on("getNotification", (data) => {
+                setNotifications((prev) => [data, ...prev]);
+                setUnreadCount((prev) => prev + 1);
+            });
+
+            newSocket.on("getMessage", (data) => {
+                setArrivalMessage({
+                    sender: data.senderId,
+                    text: data.text,
+                    createdAt: Date.now(),
+                });
+            });
 
             return () => newSocket.close();
         }
@@ -45,16 +60,6 @@ export const NotificationProvider = ({ children }) => {
         };
         fetchNotifications();
     }, [user, getToken]);
-
-    // Listen for incoming notifications
-    useEffect(() => {
-        if (socket) {
-            socket.on("getNotification", (data) => {
-                setNotifications((prev) => [data, ...prev]);
-                setUnreadCount((prev) => prev + 1);
-            });
-        }
-    }, [socket]);
 
     const markAsRead = async (id) => {
         try {
@@ -93,6 +98,22 @@ export const NotificationProvider = ({ children }) => {
         }
     };
 
+    const markAllAsRead = async () => {
+        if (!user) return;
+        try {
+            const token = await getToken();
+            await fetch(`${API_URL}/api/notifications/${user.id}/mark-all-read`, {
+                method: "PUT",
+                headers: { Authorization: `Bearer ${token}` }
+            });
+
+            setNotifications(prev => prev.map(n => ({ ...n, isRead: true })));
+            setUnreadCount(0);
+        } catch (err) {
+            console.error(err);
+        }
+    };
+
     // Helper to send notification (for components to use)
     const sendNotification = ({ receiverId, type, referenceId }) => {
         if (socket && user && receiverId !== user.id) {
@@ -106,7 +127,17 @@ export const NotificationProvider = ({ children }) => {
     };
 
     return (
-        <NotificationContext.Provider value={{ notifications, unreadCount, markAsRead, deleteNotification, sendNotification, socket }}>
+        <NotificationContext.Provider value={{
+            notifications,
+            unreadCount,
+            markAsRead,
+            markAllAsRead,
+            deleteNotification,
+            sendNotification,
+            socket,
+            arrivalMessage,
+            setArrivalMessage
+        }}>
             {children}
         </NotificationContext.Provider>
     );

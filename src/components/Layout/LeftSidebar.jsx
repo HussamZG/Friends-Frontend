@@ -2,6 +2,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { Home, User, Search, MessageSquare, Heart, Settings, LogOut } from 'lucide-react';
 import { useClerk } from '@clerk/clerk-react';
 import { useLanguage } from '../../context/LanguageContext';
+import { useNotification } from '../../context/NotificationContext';
 
 const SidebarItem = ({ icon: Icon, label, path, active }) => (
     <Link
@@ -20,6 +21,7 @@ const LeftSidebar = () => {
     const location = useLocation();
     const { signOut } = useClerk();
     const { t } = useLanguage();
+    const { unreadCount } = useNotification();
 
     return (
         <div className="sticky top-24 w-full">
@@ -28,7 +30,14 @@ const LeftSidebar = () => {
                     <SidebarItem icon={Home} label={t('nav_feed')} path="/" active={location.pathname === '/'} />
                     <SidebarItem icon={Search} label={t('nav_explore')} path="/search" active={location.pathname === '/search'} />
                     <SidebarItem icon={MessageSquare} label={t('nav_messages')} path="/chat" active={location.pathname === '/chat'} />
-                    <SidebarItem icon={Heart} label={t('nav_notifications')} path="/requests" active={location.pathname === '/requests'} />
+                    <div className="relative">
+                        <SidebarItem icon={Heart} label={t('nav_notifications')} path="/requests" active={location.pathname === '/requests'} />
+                        {unreadCount > 0 && (
+                            <span className="absolute right-3 top-3 bg-red-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full min-w-[20px] text-center shadow-md">
+                                {unreadCount > 99 ? '99+' : unreadCount}
+                            </span>
+                        )}
+                    </div>
                     <SidebarItem icon={User} label={t('nav_profile')} path="/profile" active={location.pathname === '/profile'} />
                     <SidebarItem icon={Settings} label={t('nav_settings')} path="/settings" active={location.pathname === '/settings'} />
                 </div>

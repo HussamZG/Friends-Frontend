@@ -11,31 +11,32 @@ import { format } from 'timeago.js';
 
 const MobileNav = ({ activePath }) => {
     const { t } = useLanguage();
+    const { unreadCount } = useNotification();
     const navItems = [
         { icon: Home, path: '/', label: t('nav_feed') },
         { icon: Search, path: '/search', label: t('nav_explore') },
         { icon: MessageSquare, path: '/chat', label: t('nav_messages') },
-        { icon: Heart, path: '/requests', label: t('nav_notifications') },
+        { icon: Heart, path: '/requests', label: t('nav_notifications'), badge: unreadCount },
         { icon: User, path: '/profile', label: t('nav_profile') },
         { icon: SettingsIcon, path: '/settings', label: t('nav_settings') },
     ];
 
     return (
-        <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 z-50 md:hidden pb-safe">
-            <div className="flex justify-around items-center h-16">
-                {navItems.map((item) => {
-                    const isActive = activePath === item.path;
-                    return (
-                        <Link
-                            key={item.label}
-                            to={item.path}
-                            className={`flex flex-col items-center justify-center w-full h-full space-y-1 ${isActive ? 'text-primary' : 'text-gray-400'}`}
-                        >
-                            <item.icon size={24} className={isActive ? 'fill-current' : ''} strokeWidth={isActive ? 0 : 2} />
-                        </Link>
-                    )
-                })}
-            </div>
+        <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-100 flex justify-around p-2 md:hidden z-50 pb-safe">
+            {navItems.map((item) => (
+                <Link
+                    key={item.path}
+                    to={item.path}
+                    className={`p-2 rounded-xl transition relative ${activePath === item.path ? 'text-primary' : 'text-gray-400'}`}
+                >
+                    <item.icon size={24} />
+                    {item.badge > 0 && (
+                        <span className="absolute -top-0.5 -right-0.5 bg-red-500 text-white text-[9px] font-bold px-1.5 py-0.5 rounded-full min-w-[17px] text-center shadow-sm">
+                            {item.badge > 99 ? '99+' : item.badge}
+                        </span>
+                    )}
+                </Link>
+            ))}
         </div>
     );
 };
@@ -48,7 +49,7 @@ const MainLayout = () => {
     const navigate = useNavigate();
     const location = useLocation();
     const { t, language } = useLanguage();
-    const { notifications, unreadCount, markAsRead, deleteNotification } = useNotification();
+    const { notifications, unreadCount, markAsRead, markAllAsRead, deleteNotification } = useNotification();
     const [query, setQuery] = useState('');
     const [showNotifications, setShowNotifications] = useState(false);
 
@@ -127,14 +128,18 @@ const MainLayout = () => {
                             {/* Dropdown */}
                             {showNotifications && (
                                 <div className="absolute top-12 right-0 w-80 bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden z-50">
-                                    <div className="p-3 border-b border-gray-100 flex justify-between items-center bg-white sticky top-0">
-                                        <h3 className="font-bold text-sm">Notifications</h3>
-                                        <button
-                                            className="text-xs text-primary hover:underline"
-                                            onClick={() => notifications.forEach(n => !n.isRead && markAsRead(n._id))}
-                                        >
-                                            Mark all read
-                                        </button>
+                                    <div className="p-3 border-b border-gray-100 bg-white sticky top-0">
+                                        <div className="flex items-center justify-between mb-2">
+                                            <h3 className="font-bold text-gray-900">{t('nav_notifications')}</h3>
+                                            {unreadCount > 0 && (
+                                                <button
+                                                    onClick={markAllAsRead}
+                                                    className="text-xs text-primary hover:underline font-medium"
+                                                >
+                                                    {t('mark_all_read') || 'Mark all as read'}
+                                                </button>
+                                            )}
+                                        </div>
                                     </div>
                                     <div className="max-h-[400px] overflow-y-auto bg-white">
                                         {notifications.length === 0 ? (
