@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useUser, useAuth, UserButton } from '@clerk/clerk-react';
 import { Outlet, Link, useNavigate, useLocation } from 'react-router-dom';
-import { Home, Search, MessageSquare, Heart, User, Settings as SettingsIcon } from 'lucide-react';
+import { Home, Search, MessageSquare, Heart, User, Settings as SettingsIcon, X } from 'lucide-react';
 import LeftSidebar from './LeftSidebar';
 import RightSidebar from './RightSidebar';
 import FriendsLoading from '../UI/FriendsLoading';
