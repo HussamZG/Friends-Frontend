@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth, useUser } from '@clerk/clerk-react';
 import { Heart, MessageCircle, Share2, MoreHorizontal, Send, Trash2, Link as LinkIcon, AlertCircle, X } from 'lucide-react';
@@ -32,11 +32,18 @@ const Post = ({ post, onDelete }) => {
         createdAt: post.createdAt
     };
 
-    useState(() => {
+    useEffect(() => {
         const fetchUser = async () => {
-            const res = await fetch(`${API_URL}/api/users/${post.userId}`);
-            const data = await res.json();
-            setUserFetch(data);
+            if (!post.userId || post.userId === 'undefined') return;
+            try {
+                const res = await fetch(`${API_URL}/api/users/${post.userId}`);
+                if (res.ok) {
+                    const data = await res.json();
+                    setUserFetch(data);
+                }
+            } catch (err) {
+                console.error("Error fetching post user:", err);
+            }
         };
         fetchUser();
     }, [post.userId]);

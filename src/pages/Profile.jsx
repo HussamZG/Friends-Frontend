@@ -48,7 +48,7 @@ const Profile = () => {
 
     useEffect(() => {
         const fetchData = async () => {
-            if (userIdToFetch) {
+            if (userIdToFetch && userIdToFetch !== 'undefined') {
                 try {
                     const res = await fetch(`${API_URL}/api/users/${userIdToFetch}`);
                     if (res.ok) {
