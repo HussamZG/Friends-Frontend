@@ -1,0 +1,206 @@
+import { useState, useEffect } from 'react';
+import { X, Heart, Send, ChevronLeft, ChevronRight, MessageCircle } from 'lucide-react';
+import { useUser, useAuth } from '@clerk/clerk-react';
+import { useLanguage } from '../../context/LanguageContext';
+import { useNotification } from '../../context/NotificationContext';
+import { format } from 'timeago.js';
+
+const StoryViewer = ({ stories, initialIndex, onClose }) => {
+    const { user } = useUser();
+    const { getToken } = useAuth();
+    const { t } = useLanguage();
+    const { sendNotification } = useNotification();
+    const [currentIndex, setCurrentIndex] = useState(initialIndex);
+    const [replyText, setReplyText] = useState("");
+    const [liked, setLiked] = useState(false);
+
+    const currentStory = stories[currentIndex];
+
+    // Check if liked whenever current story changes
+    useEffect(() => {
+        if (currentStory && user) {
+            setLiked(currentStory.likes?.includes(user.id));
+        }
+    }, [currentStory, user]);
+
+    // Auto-advance logic (optional, for now simple manual nav)
+
+    const handleNext = () => {
+        if (currentIndex < stories.length - 1) {
+            setCurrentIndex(prev => prev + 1);
+        } else {
+            onClose(); // Close if at end
+        }
+    };
+
+    const handlePrev = () => {
+        if (currentIndex > 0) {
+            setCurrentIndex(prev => prev - 1);
+        }
+    };
+
+    const handleLike = async () => {
+        // Optimistic UI update
+        const isLiked = !liked;
+        setLiked(isLiked);
+
+        try {
+            const token = await getToken();
+            await fetch(`http://localhost:5000/api/stories/${currentStory._id}/like`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`
+                },
+                body: JSON.stringify({ userId: user.id })
+            });
+
+            if (isLiked && currentStory.userId !== user.id) {
+                sendNotification({
+                    receiverId: currentStory.userId,
+                    type: 'like_story',
+                    referenceId: currentStory._id
+                });
+            }
+        } catch (err) {
+            console.error(err);
+            setLiked(!isLiked); // Revert on error
+        }
+    };
+
+    const handleReply = async (e) => {
+        e.preventDefault();
+        if (!replyText.trim()) return;
+
+        try {
+            const token = await getToken();
+
+            // 1. Create/Get Conversation
+            const convRes = await fetch(`http://localhost:5000/api/chat/conversations`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`
+                },
+                body: JSON.stringify({
+                    senderId: user.id,
+                    receiverId: currentStory.userId
+                })
+            });
+            const conversation = await convRes.json();
+
+            // 2. Send Message with Story Context (maybe just text for MVP)
+            await fetch(`http://localhost:5000/api/chat/messages`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`
+                },
+                body: JSON.stringify({
+                    conversationId: conversation._id,
+                    sender: user.id,
+                    text: `Replying to story: ${replyText}`
+                })
+            });
+
+            // 3. Send Notification for reply
+            if (currentStory.userId !== user.id) {
+                sendNotification({
+                    receiverId: currentStory.userId,
+                    type: 'reply_story',
+                    referenceId: currentStory._id
+                });
+            }
+
+            setReplyText("");
+            alert(t('reply_sent') || "Reply sent!");
+        } catch (err) {
+            console.error(err);
+        }
+    };
+
+    if (!currentStory) return null;
+
+    return (
+        <div className="fixed inset-0 z-[60] bg-black/90 flex items-center justify-center backdrop-blur-sm">
+            {/* Close Button */}
+            <button onClick={onClose} className="absolute top-4 right-4 text-white hover:text-gray-300 z-50">
+                <X size={32} />
+            </button>
+
+            {/* Main Content */}
+            <div className="relative w-full max-w-md h-full md:h-[90vh] bg-black md:rounded-2xl overflow-hidden flex flex-col">
+
+                {/* Header (User Info) */}
+                <div className="absolute top-0 left-0 w-full p-4 bg-gradient-to-b from-black/80 to-transparent z-10 flex items-center gap-3">
+                    <img
+                        src={currentStory.profilePicture || "https://placehold.co/40"}
+                        alt=""
+                        className="w-10 h-10 rounded-full border-2 border-primary object-cover"
+                    />
+                    <div>
+                        <p className="text-white font-semibold text-sm">{currentStory.firstName} {currentStory.lastName}</p>
+                        <p className="text-gray-300 text-xs">{format(currentStory.createdAt)}</p>
+                    </div>
+                </div>
+
+                {/* Story Image */}
+                <div className="flex-1 flex items-center justify-center bg-gray-900 relative">
+                    <img
+                        src={currentStory.img}
+                        alt="Story"
+                        className="max-h-full max-w-full object-contain"
+                    />
+
+                    {/* Navigation Overlays */}
+                    <div className="absolute inset-0 flex">
+                        <div className="w-1/3 h-full cursor-pointer" onClick={handlePrev}></div>
+                        <div className="w-1/3 h-full cursor-pointer" onClick={handleNext}></div>
+                        <div className="w-1/3 h-full cursor-pointer" onClick={handleNext}></div>
+                    </div>
+                </div>
+
+                {/* Footer (Interactions) */}
+                <div className="absolute bottom-0 left-0 w-full p-4 bg-gradient-to-t from-black/90 via-black/50 to-transparent z-10">
+                    <div className="flex items-center gap-4">
+                        <form onSubmit={handleReply} className="flex-1 relative">
+                            <input
+                                type="text"
+                                placeholder={t('reply_placeholder') || "Reply to story..."}
+                                className="w-full bg-transparent border border-gray-500 rounded-full px-4 py-2 text-white placeholder-gray-400 focus:outline-none focus:border-primary text-sm backdrop-blur-sm"
+                                value={replyText}
+                                onChange={(e) => setReplyText(e.target.value)}
+                            />
+                            <button type="submit" className="absolute right-2 top-1.5 text-white hover:text-primary">
+                                <Send size={18} />
+                            </button>
+                        </form>
+
+                        <button onClick={handleLike} className="flex flex-col items-center gap-1 min-w-[40px]">
+                            <Heart
+                                size={28}
+                                className={`transition-all ${liked ? 'fill-red-500 text-red-500 scale-110' : 'text-white hover:scale-110'}`}
+                            />
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            {/* Desktop Navigation Arrows */}
+            <button
+                onClick={handlePrev}
+                className={`hidden md:block absolute left-4 text-white/50 hover:text-white transition ${currentIndex === 0 ? 'opacity-0 pointer-events-none' : ''}`}
+            >
+                <ChevronLeft size={48} />
+            </button>
+            <button
+                onClick={handleNext}
+                className="hidden md:block absolute right-4 text-white/50 hover:text-white transition"
+            >
+                <ChevronRight size={48} />
+            </button>
+        </div>
+    );
+};
+
+export default StoryViewer;
