@@ -46,17 +46,21 @@ export default function FriendsLoading({
           <div className={`absolute inset-0 blur-2xl opacity-50 bg-gradient-to-r ${gradient}`}></div>
 
           {/* النص الرئيسي */}
-          {/* اللوغو الرئيسي */}
-          <div className="relative animate-pulse">
-            <img
-              src="/logo.png"
-              alt="FRIENDS"
-              className={`mx-auto object-contain transition-all duration-1000 ${size === 'small' ? 'h-16' :
-                  size === 'medium' ? 'h-24' :
-                    size === 'large' ? 'h-32' : 'h-40'
-                }`}
-            />
-          </div>
+          <h1 className={`${sizeClasses[size]} font-black tracking-wider relative`}>
+            {text.split('').map((letter, index) => (
+              <span
+                key={index}
+                className={`inline-block text-transparent bg-clip-text bg-gradient-to-r ${gradient} animate-bounce-letter hover:scale-110 transition-transform cursor-default`}
+                style={{
+                  animationDelay: `${index * 0.1}s`,
+                  animationDuration: speed.bounce,
+                  animationIterationCount: 'infinite'
+                }}
+              >
+                {letter === ' ' ? '\u00A0' : letter}
+              </span>
+            ))}
+          </h1>
         </div>
 
         {/* خط التقدم المتحرك */}
