@@ -7,7 +7,7 @@ import { useNotification } from '../../context/NotificationContext';
 import { API_URL } from '../../config';
 
 const RightSidebar = () => {
-    const { user } = useUser();
+    const { user: clerkUser } = useUser();
     const { getToken } = useAuth();
     const { t } = useLanguage();
     const { sendNotification } = useNotification();
@@ -47,11 +47,11 @@ const RightSidebar = () => {
             setFollowed([...followed, userId]);
 
             // Send Notification
-            if (userId !== user.id) {
+            if (userId !== clerkUser.id) {
                 sendNotification({
                     receiverId: userId,
                     type: 'follow', // matched with backend/notificationController type
-                    referenceId: user.id
+                    referenceId: clerkUser.id
                 });
             }
         } catch (err) {
@@ -84,7 +84,7 @@ const RightSidebar = () => {
                                         <p className="text-xs text-gray-500">{t('suggested_for_you').split(' ')[0]}</p>
                                     </div>
                                 </Link>
-                                {followed.includes(user.clerkId) ? (
+                                {followed.includes(user.clerkId) || (user.followRequests && user.followRequests.includes(clerkUser.id)) ? (
                                     <button className="text-xs text-green-600 font-bold flex items-center gap-1 cursor-default">
                                         <UserCheck size={14} />
                                         <span>{t('sent')}</span>

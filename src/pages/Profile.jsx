@@ -157,6 +157,7 @@ const Profile = () => {
     };
 
     const isFollowing = currentUserData?.following?.includes(userIdToFetch) || userProfile?.followers?.includes(clerkUser?.id);
+    const isRequested = userProfile?.followRequests?.includes(clerkUser?.id);
 
 
     if (!userProfile) return <FriendsLoading size="small" subtitle={t('loading_profile')} />;
@@ -200,11 +201,12 @@ const Profile = () => {
                             ) : (
                                 <>
                                     <button
-                                        onClick={isFollowing ? handleUnfollow : handleFollow}
-                                        className={`flex items-center gap-2 px-6 py-2 rounded-lg font-semibold transition shadow-md ${isFollowing ? 'bg-gray-100 text-gray-700 hover:bg-gray-200' : 'bg-primary text-white hover:bg-indigo-600 shadow-indigo-500/20'}`}
+                                        onClick={isFollowing ? handleUnfollow : (!isRequested ? handleFollow : undefined)}
+                                        disabled={isRequested}
+                                        className={`flex items-center gap-2 px-6 py-2 rounded-lg font-semibold transition shadow-md ${isFollowing ? 'bg-gray-100 text-gray-700 hover:bg-gray-200' : (isRequested ? 'bg-gray-100 text-gray-400 cursor-default shadow-none border border-gray-200' : 'bg-primary text-white hover:bg-indigo-600 shadow-indigo-500/20')}`}
                                     >
                                         {isFollowing ? <UserCheck size={18} /> : <UserPlus size={18} />}
-                                        <span>{isFollowing ? t('profile_following') : t('profile_follow')}</span>
+                                        <span>{isFollowing ? t('profile_following') : (isRequested ? t('sent') : t('profile_follow'))}</span>
                                     </button>
                                     <button
                                         onClick={handleMessage}
