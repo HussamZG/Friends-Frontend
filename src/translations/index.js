@@ -115,6 +115,9 @@ export const translations = {
         "404_desc": "The page you're looking for doesn't exist or has been moved. Don't worry, even the best explorers get lost sometimes.",
         back_home: "Back to Home",
         go_back: "Go Back",
+        delete_chat: "Delete Chat",
+        delete_message: "Delete Message",
+        confirm_delete: "Are you sure? This cannot be undone.",
     },
     ar: {
         // Navigation
@@ -232,5 +235,8 @@ export const translations = {
         "404_desc": "الصفحة التي تبحث عنها غير موجودة أو تم نقلها. لا تقلق، حتى أفضل المستكشفين يضلون طريقهم أحياناً.",
         back_home: "العودة للرئيسية",
         go_back: "العودة للخلف",
+        delete_chat: "حذف الدردشة",
+        delete_message: "حذف الرسالة",
+        confirm_delete: "هل أنت متأكد؟ لا يمكن التراجع عن هذا الإجراء.",
     }
 };
