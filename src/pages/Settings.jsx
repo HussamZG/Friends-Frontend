@@ -58,7 +58,7 @@ const Settings = () => {
                             <button
                                 onClick={() => setLanguage('en')}
                                 className={`p-4 rounded-xl border flex items-center justify-between transition-all ${language === 'en'
-                                    ? 'border-primary bg-indigo-50 ring-1 ring-primary'
+                                    ? 'border-primary bg-indigo-50 dark:bg-indigo-500/10 ring-1 ring-primary'
                                     : 'border-gray-200 dark:border-gray-700 hover:border-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800'
                                     }`}
                             >
@@ -72,7 +72,7 @@ const Settings = () => {
                             <button
                                 onClick={() => setLanguage('ar')}
                                 className={`p-4 rounded-xl border flex items-center justify-between transition-all ${language === 'ar'
-                                    ? 'border-primary bg-indigo-50 ring-1 ring-primary'
+                                    ? 'border-primary bg-indigo-50 dark:bg-indigo-500/10 ring-1 ring-primary'
                                     : 'border-gray-200 dark:border-gray-700 hover:border-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800'
                                     }`}
                             >
