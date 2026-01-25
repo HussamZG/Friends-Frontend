@@ -1,7 +1,10 @@
 import { SignInButton } from '@clerk/clerk-react';
-import { ArrowRight, Globe, Shield, Users, Sparkles, MessageCircle, Heart } from 'lucide-react';
+import { ArrowRight, Globe, Shield, Users, Sparkles, MessageCircle, Heart, Sun, Moon } from 'lucide-react';
+import { useTheme } from '../context/ThemeContext';
 
 const Landing = () => {
+    const { theme, toggleTheme } = useTheme();
+
     return (
         <div className="min-h-screen bg-[#0f111a] text-white relative overflow-hidden font-sans selection:bg-indigo-500/30">
             {/* Background Gradients & Effects */}
@@ -24,6 +27,13 @@ const Landing = () => {
                         Sign In
                     </button>
                 </SignInButton>
+
+                <button
+                    onClick={toggleTheme}
+                    className="ml-4 w-10 h-10 rounded-full bg-white/5 border border-white/10 backdrop-blur-sm flex items-center justify-center text-gray-300 hover:text-white hover:bg-white/10 transition-all"
+                >
+                    {theme === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
+                </button>
             </nav>
 
             {/* Hero Section */}
