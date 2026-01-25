@@ -12,6 +12,7 @@
   "dependencies": {
     "@clerk/clerk-react": "^5.59.4",
     "@tailwindcss/vite": "^4.1.18",
+    "emoji-picker-react": "^4.17.1",
     "imagekitio-react": "^4.3.0",
     "lucide-react": "^0.562.0",
     "react": "^19.2.0",
