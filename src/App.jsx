@@ -10,8 +10,10 @@ const Profile = lazy(() => import('./pages/Profile'));
 const Search = lazy(() => import('./pages/Search'));
 const Messenger = lazy(() => import('./pages/Messenger'));
 const FollowRequests = lazy(() => import('./pages/FollowRequests'));
+const Notifications = lazy(() => import('./pages/Notifications'));
 const Settings = lazy(() => import('./pages/Settings'));
 const NotFound = lazy(() => import('./pages/NotFound'));
+const Landing = lazy(() => import('./pages/Landing'));
 
 function App() {
   return (
@@ -24,7 +26,7 @@ function App() {
                 <MainLayout />
               </SignedIn>
               <SignedOut>
-                <RedirectToSignIn />
+                <Landing />
               </SignedOut>
             </>
           }
@@ -33,7 +35,7 @@ function App() {
           <Route path="/profile" element={<Profile />} />
           <Route path="/profile/:id" element={<Profile />} />
           <Route path="/search" element={<Search />} />
-          <Route path="/requests" element={<FollowRequests />} />
+          <Route path="/notifications" element={<Notifications />} />
           <Route path="/chat" element={<Messenger />} />
           <Route path="/settings" element={<Settings />} />
         </Route>

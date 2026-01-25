@@ -11,7 +11,7 @@ const Post = ({ post, onDelete }) => {
     const { user } = useUser();
     const { getToken } = useAuth();
     const { t } = useLanguage();
-    const { sendNotification } = useNotification();
+    const { sendNotification, socket } = useNotification();
     const [like, setLike] = useState(post.likes.length);
     const [isLiked, setIsLiked] = useState(post.likes.includes(user?.id));
     const [userFetch, setUserFetch] = useState({});
@@ -50,6 +50,30 @@ const Post = ({ post, onDelete }) => {
         fetchUser();
     }, [post.userId]);
 
+    useEffect(() => {
+        if (!socket) return;
+
+        const handlePostUpdate = (data) => {
+            if (data.postId === post._id) {
+                if (data.type === 'like') {
+                    setLike(data.likes.length);
+                    // Update isLiked only if the list changes logic implies it for current user, 
+                    // but usually we trust local action for "isLiked". 
+                    // However, to sync across devices for same user:
+                    setIsLiked(data.likes.includes(user?.id));
+                } else if (data.type === 'comment') {
+                    setComments(data.comments);
+                }
+            }
+        };
+
+        socket.on("post_updated", handlePostUpdate);
+
+        return () => {
+            socket.off("post_updated", handlePostUpdate);
+        };
+    }, [socket, post._id, user?.id]);
+
 
     const likeHandler = async () => {
         try {
@@ -62,6 +86,7 @@ const Post = ({ post, onDelete }) => {
                 },
                 body: JSON.stringify({ userId: user.id })
             });
+            // Optimistic update
             setLike(isLiked ? like - 1 : like + 1);
             setIsLiked(!isLiked);
         } catch (err) { }
@@ -87,6 +112,10 @@ const Post = ({ post, onDelete }) => {
                 })
             });
             if (res.ok) {
+                // The socket update will handle the comments update for real-time consistency,
+                // but we can also update optimistically if we want instant feedback before socket.
+                // However, let's rely on socket or response for consistency.
+                // For immediate UX, let's keep local update:
                 setComments([...comments, {
                     userId: user.id,
                     text: commentText,

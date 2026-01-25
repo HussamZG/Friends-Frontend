@@ -31,7 +31,7 @@ const LeftSidebar = () => {
                     <SidebarItem icon={Search} label={t('nav_explore')} path="/search" active={location.pathname === '/search'} />
                     <SidebarItem icon={MessageSquare} label={t('nav_messages')} path="/chat" active={location.pathname === '/chat'} />
                     <div className="relative">
-                        <SidebarItem icon={Heart} label={t('nav_notifications')} path="/requests" active={location.pathname === '/requests'} />
+                        <SidebarItem icon={Heart} label={t('nav_notifications')} path="/notifications" active={location.pathname === '/notifications'} />
                         {unreadCount > 0 && (
                             <span className="absolute right-3 top-3 bg-red-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full min-w-[20px] text-center shadow-md">
                                 {unreadCount > 99 ? '99+' : unreadCount}
