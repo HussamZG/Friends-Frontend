@@ -111,6 +111,10 @@ export const translations = {
         loading_suggestions: "Loading suggestions...",
         no_suggestions: "No suggestions available",
         sent: "Sent",
+        page_not_found: "Oops! Page not found",
+        "404_desc": "The page you're looking for doesn't exist or has been moved. Don't worry, even the best explorers get lost sometimes.",
+        back_home: "Back to Home",
+        go_back: "Go Back",
     },
     ar: {
         // Navigation
@@ -224,5 +228,9 @@ export const translations = {
         loading_suggestions: "جاري تحميل الاقتراحات...",
         no_suggestions: "لا توجد اقتراحات متاحة",
         sent: "تم الإرسال",
+        page_not_found: "عذراً! الصفحة غير موجودة",
+        "404_desc": "الصفحة التي تبحث عنها غير موجودة أو تم نقلها. لا تقلق، حتى أفضل المستكشفين يضلون طريقهم أحياناً.",
+        back_home: "العودة للرئيسية",
+        go_back: "العودة للخلف",
     }
 };

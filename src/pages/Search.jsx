@@ -101,6 +101,12 @@ const Search = () => {
                     ...prev,
                     following: [...prev.following, userId]
                 }));
+                // Update local users list too
+                setUsers(prev => prev.map(u =>
+                    u.clerkId === userId
+                        ? { ...u, followRequests: [...(u.followRequests || []), currentUser.id] }
+                        : u
+                ));
             }
         } catch (err) {
             console.error(err);
@@ -119,6 +125,12 @@ const Search = () => {
                     ...prev,
                     following: prev.following.filter(id => id !== userId)
                 }));
+                // Update local users list too
+                setUsers(prev => prev.map(u =>
+                    u.clerkId === userId
+                        ? { ...u, followers: (u.followers || []).filter(id => id !== currentUser.id) }
+                        : u
+                ));
             }
         } catch (err) {
             console.error(err);
@@ -219,8 +231,11 @@ const Search = () => {
                                         onClick={() => isFollowing(u.clerkId) ? handleUnfollow(u.clerkId) : handleFollow(u.clerkId)}
                                         className={`px-5 py-2 rounded-lg text-sm font-semibold flex items-center gap-2 transition shadow-sm ${isFollowing(u.clerkId)
                                             ? 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                                            : 'bg-primary text-white hover:bg-indigo-600 shadow-indigo-500/20'
+                                            : (u.followRequests?.includes(currentUser.id)
+                                                ? 'bg-gray-100 text-gray-400 cursor-default shadow-none border border-gray-200'
+                                                : 'bg-primary text-white hover:bg-indigo-600 shadow-indigo-500/20')
                                             }`}
+                                        disabled={u.followRequests?.includes(currentUser.id)}
                                     >
                                         {isFollowing(u.clerkId) ? (
                                             <>
@@ -228,10 +243,17 @@ const Search = () => {
                                                 <span>{t('profile_following')}</span>
                                             </>
                                         ) : (
-                                            <>
-                                                <UserPlus size={16} />
-                                                <span>{t('profile_follow')}</span>
-                                            </>
+                                            u.followRequests?.includes(currentUser.id) ? (
+                                                <>
+                                                    <UserCheck size={16} />
+                                                    <span>{t('sent')}</span>
+                                                </>
+                                            ) : (
+                                                <>
+                                                    <UserPlus size={16} />
+                                                    <span>{t('profile_follow')}</span>
+                                                </>
+                                            )
                                         )}
                                     </button>
                                 )}

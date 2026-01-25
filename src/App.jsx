@@ -11,6 +11,7 @@ const Search = lazy(() => import('./pages/Search'));
 const Messenger = lazy(() => import('./pages/Messenger'));
 const FollowRequests = lazy(() => import('./pages/FollowRequests'));
 const Settings = lazy(() => import('./pages/Settings'));
+const NotFound = lazy(() => import('./pages/NotFound'));
 
 function App() {
   return (
@@ -44,6 +45,7 @@ function App() {
           path="/sign-up/*"
           element={<SignUp routing="path" path="/sign-up" />}
         />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </Suspense>
   );

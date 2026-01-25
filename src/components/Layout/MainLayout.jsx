@@ -195,7 +195,7 @@ const MainLayout = () => {
                         </div>
 
                         <UserButton
-                            afterSignOutUrl="/sign-in"
+                            afterSignOutUrl="/"
                             appearance={{
                                 elements: {
                                     userButtonAvatarBox: "w-10 h-10 border border-gray-200 shadow-sm hover:scale-105 transition-all",
