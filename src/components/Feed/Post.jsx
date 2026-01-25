@@ -64,15 +64,6 @@ const Post = ({ post, onDelete }) => {
             });
             setLike(isLiked ? like - 1 : like + 1);
             setIsLiked(!isLiked);
-
-            // Send Notification
-            if (!isLiked && post.userId !== user.id) {
-                sendNotification({
-                    receiverId: post.userId,
-                    type: 'like_post',
-                    referenceId: post._id
-                });
-            }
         } catch (err) { }
     };
 
@@ -105,15 +96,6 @@ const Post = ({ post, onDelete }) => {
                     createdAt: new Date()
                 }]);
                 setCommentText('');
-
-                // Send Notification
-                if (post.userId !== user.id) {
-                    sendNotification({
-                        receiverId: post.userId,
-                        type: 'comment_post',
-                        referenceId: post._id
-                    });
-                }
             }
         } catch (err) { }
     };

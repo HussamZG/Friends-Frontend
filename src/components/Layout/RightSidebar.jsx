@@ -44,16 +44,10 @@ const RightSidebar = () => {
                     Authorization: `Bearer ${token}`
                 }
             });
-            setFollowed([...followed, userId]);
 
-            // Send Notification
-            if (userId !== clerkUser.id) {
-                sendNotification({
-                    receiverId: userId,
-                    type: 'follow', // matched with backend/notificationController type
-                    referenceId: clerkUser.id
-                });
-            }
+            // Optimistic / Local Update: Remove from suggestions
+            setFollowed([...followed, userId]);
+            setSuggestions(prev => prev.filter(s => s.clerkId !== userId));
         } catch (err) {
             console.error(err);
         }

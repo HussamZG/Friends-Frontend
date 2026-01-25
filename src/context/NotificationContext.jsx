@@ -23,6 +23,7 @@ export const NotificationProvider = ({ children }) => {
             newSocket.emit("addUser", user.id);
 
             newSocket.on("getNotification", (data) => {
+                // Incoming data is now a full notification object from backend
                 setNotifications((prev) => [data, ...prev]);
                 setUnreadCount((prev) => prev + 1);
             });
@@ -84,10 +85,9 @@ export const NotificationProvider = ({ children }) => {
                 headers: { Authorization: `Bearer ${token}` }
             });
 
-            setNotifications(prev => prev.filter(n => n._id !== id));
             // Only decrement unread count if the deleted notification was unread
             setNotifications(prev => {
-                const deleted = notifications.find(n => n._id === id);
+                const deleted = prev.find(n => n._id === id);
                 if (deleted && !deleted.isRead) {
                     setUnreadCount(count => Math.max(0, count - 1));
                 }
@@ -114,18 +114,6 @@ export const NotificationProvider = ({ children }) => {
         }
     };
 
-    // Helper to send notification (for components to use)
-    const sendNotification = ({ receiverId, type, referenceId }) => {
-        if (socket && user && receiverId !== user.id) {
-            socket.emit("sendNotification", {
-                senderId: user.id,
-                receiverId,
-                type,
-                referenceId,
-            });
-        }
-    };
-
     return (
         <NotificationContext.Provider value={{
             notifications,
@@ -133,7 +121,7 @@ export const NotificationProvider = ({ children }) => {
             markAsRead,
             markAllAsRead,
             deleteNotification,
-            sendNotification,
+            sendNotification: () => { }, // No-op as it's backend driven now
             socket,
             arrivalMessage,
             setArrivalMessage

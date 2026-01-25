@@ -91,13 +91,6 @@ const Profile = () => {
                     ...prev,
                     followers: [...prev.followers, clerkUser.id]
                 }));
-
-                // Send Real-Time Notification
-                sendNotification({
-                    receiverId: userIdToFetch,
-                    type: 'follow',
-                    referenceId: clerkUser.id
-                });
             }
         } catch (err) {
             console.error(err);
