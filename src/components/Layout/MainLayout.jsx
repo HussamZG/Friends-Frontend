@@ -128,10 +128,10 @@ const MainLayout = () => {
 
                             {/* Dropdown */}
                             {showNotifications && (
-                                <div className="absolute top-12 right-0 w-80 bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden z-50">
-                                    <div className="p-3 border-b border-gray-100 bg-white sticky top-0">
+                                <div className="absolute top-12 right-0 w-80 bg-white dark:bg-gray-800 rounded-2xl shadow-xl border border-gray-100 dark:border-gray-700 overflow-hidden z-50 animate-in fade-in zoom-in-95 duration-200">
+                                    <div className="p-3 border-b border-gray-100 dark:border-gray-700 bg-white dark:bg-gray-800 sticky top-0">
                                         <div className="flex items-center justify-between mb-2">
-                                            <h3 className="font-bold text-gray-900">{t('nav_notifications')}</h3>
+                                            <h3 className="font-bold text-gray-900 dark:text-white">{t('nav_notifications')}</h3>
                                             {unreadCount > 0 && (
                                                 <button
                                                     onClick={markAllAsRead}
@@ -142,19 +142,22 @@ const MainLayout = () => {
                                             )}
                                         </div>
                                     </div>
-                                    <div className="max-h-[400px] overflow-y-auto bg-white">
+                                    <div className="max-h-[400px] overflow-y-auto bg-white dark:bg-gray-800 custom-scrollbar">
                                         {notifications.length === 0 ? (
-                                            <div className="p-4 text-center text-gray-500 text-sm">No notifications</div>
+                                            <div className="p-4 text-center text-gray-500 dark:text-gray-400 text-sm">No notifications</div>
                                         ) : (
                                             notifications.map(n => (
                                                 <div
                                                     key={n._id}
-                                                    className={`p-3 flex gap-3 hover:bg-gray-50 transition border-b border-gray-50 last:border-0 group relative ${!n.isRead ? 'bg-indigo-50/50' : ''}`}
+                                                    className={`p-3 flex gap-3 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition border-b border-gray-50 dark:border-gray-700 last:border-0 group relative ${!n.isRead ? 'bg-indigo-50/50 dark:bg-indigo-900/10' : ''}`}
                                                 >
                                                     <Link
-                                                        to={n.senderData ? `/profile/${n.senderData.clerkId}` : '#'}
-                                                        className="w-10 h-10 rounded-full bg-gray-200 flex-shrink-0 overflow-hidden"
-                                                        onClick={() => !n.isRead && markAsRead(n._id)}
+                                                        to={['like_post', 'comment_post'].includes(n.type) ? `/post/${n.referenceId}` : `/profile/${n.senderId}`}
+                                                        className="w-10 h-10 rounded-full bg-gray-200 dark:bg-gray-700 flex-shrink-0 overflow-hidden"
+                                                        onClick={() => {
+                                                            setShowNotifications(false);
+                                                            if (!n.isRead) markAsRead(n._id);
+                                                        }}
                                                     >
                                                         <img
                                                             src={n.senderData?.profilePicture || "https://placehold.co/40"}
@@ -162,8 +165,15 @@ const MainLayout = () => {
                                                             className="w-full h-full object-cover"
                                                         />
                                                     </Link>
-                                                    <div className="flex-1 cursor-pointer" onClick={() => !n.isRead && markAsRead(n._id)}>
-                                                        <p className="text-sm text-gray-800 line-clamp-2">
+                                                    <div
+                                                        className="flex-1 cursor-pointer"
+                                                        onClick={() => {
+                                                            navigate(['like_post', 'comment_post'].includes(n.type) ? `/post/${n.referenceId}` : `/profile/${n.senderId}`);
+                                                            setShowNotifications(false);
+                                                            if (!n.isRead) markAsRead(n._id);
+                                                        }}
+                                                    >
+                                                        <p className="text-sm text-gray-800 dark:text-gray-200 line-clamp-2">
                                                             <span className="font-semibold">
                                                                 {n.senderData?.firstName} {n.senderData?.lastName}
                                                             </span>
@@ -172,7 +182,7 @@ const MainLayout = () => {
                                                             {n.type === 'like_story' && " liked your story."}
                                                             {n.type === 'follow' && " follows you."}
                                                         </p>
-                                                        <span className="text-xs text-gray-400 block mt-1">{format(n.createdAt)}</span>
+                                                        <span className="text-xs text-gray-400 dark:text-gray-500 block mt-1">{format(n.createdAt)}</span>
                                                     </div>
                                                     <div className="flex flex-col items-center gap-2">
                                                         {!n.isRead && <div className="w-2 h-2 rounded-full bg-primary flex-shrink-0"></div>}
