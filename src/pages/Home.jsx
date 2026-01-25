@@ -8,6 +8,7 @@ import FriendsLoading from '../components/UI/FriendsLoading';
 import { useLanguage } from '../context/LanguageContext';
 
 import { API_URL } from '../config';
+import { fetchWithRetry } from '../utils/apiUtils';
 
 const Home = () => {
     const [posts, setPosts] = useState([]);
@@ -19,7 +20,7 @@ const Home = () => {
         const fetchPosts = async () => {
             if (user) {
                 try {
-                    const res = await fetch(`${API_URL}/api/posts/timeline/${user.id}`);
+                    const res = await fetchWithRetry(`${API_URL}/api/posts/timeline/${user.id}`);
                     if (!res.ok) throw new Error("Failed to fetch posts");
                     const data = await res.json();
                     if (Array.isArray(data)) {

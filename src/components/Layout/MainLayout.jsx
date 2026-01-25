@@ -42,6 +42,7 @@ const MobileNav = ({ activePath }) => {
 };
 
 import { API_URL } from '../../config';
+import { fetchWithRetry } from '../../utils/apiUtils';
 
 const MainLayout = () => {
     const { user, isLoaded } = useUser();
@@ -58,7 +59,7 @@ const MainLayout = () => {
             if (isLoaded && user) {
                 try {
                     const token = await getToken();
-                    await fetch(`${API_URL}/api/users/sync`, {
+                    await fetchWithRetry(`${API_URL}/api/users/sync`, {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
