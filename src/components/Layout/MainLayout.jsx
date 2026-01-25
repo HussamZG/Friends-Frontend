@@ -16,7 +16,7 @@ const MobileNav = ({ activePath }) => {
         { icon: Home, path: '/', label: t('nav_feed') },
         { icon: Search, path: '/search', label: t('nav_explore') },
         { icon: MessageSquare, path: '/chat', label: t('nav_messages') },
-        { icon: Heart, path: '/requests', label: t('nav_notifications'), badge: unreadCount },
+        { icon: Heart, path: '/notifications', label: t('nav_notifications'), badge: unreadCount },
         { icon: User, path: '/profile', label: t('nav_profile') },
         { icon: SettingsIcon, path: '/settings', label: t('nav_settings') },
     ];
