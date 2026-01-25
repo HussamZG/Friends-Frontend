@@ -187,15 +187,15 @@ const Profile = () => {
                         </div>
 
                         <div className="flex-1 text-center md:text-left pt-2 md:pt-16">
-                            <h1 className="text-2xl md:text-3xl font-bold text-gray-900">{userProfile.firstName} {userProfile.lastName}</h1>
-                            <p className="text-gray-500 font-medium">@{userProfile.firstName.toLowerCase()}</p>
+                            <h1 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white">{userProfile.firstName} {userProfile.lastName}</h1>
+                            <p className="text-gray-500 dark:text-gray-400 font-medium">@{userProfile.firstName.toLowerCase()}</p>
                         </div>
 
                         <div className="flex gap-3 mb-2 w-full md:w-auto justify-center md:justify-end">
                             {isOwnProfile ? (
                                 <button
                                     onClick={() => setIsEditOpen(true)}
-                                    className="flex items-center gap-2 bg-white border border-gray-300 px-4 py-2 rounded-lg font-semibold text-gray-700 hover:bg-gray-50 transition shadow-sm"
+                                    className="flex items-center gap-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 px-4 py-2 rounded-lg font-semibold text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700 transition shadow-sm"
                                 >
                                     <Edit3 size={18} />
                                     <span>{t('profile_edit')}</span>
@@ -205,14 +205,14 @@ const Profile = () => {
                                     <button
                                         onClick={isFollowing ? handleUnfollow : (!isRequested ? handleFollow : undefined)}
                                         disabled={isRequested}
-                                        className={`flex items-center gap-2 px-6 py-2 rounded-lg font-semibold transition shadow-md ${isFollowing ? 'bg-gray-100 text-gray-700 hover:bg-gray-200' : (isRequested ? 'bg-gray-100 text-gray-400 cursor-default shadow-none border border-gray-200' : 'bg-primary text-white hover:bg-indigo-600 shadow-indigo-500/20')}`}
+                                        className={`flex items-center gap-2 px-6 py-2 rounded-lg font-semibold transition shadow-md ${isFollowing ? 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-700' : (isRequested ? 'bg-gray-100 dark:bg-gray-800 text-gray-400 dark:text-gray-500 cursor-default shadow-none border border-gray-200 dark:border-gray-700' : 'bg-primary text-white hover:bg-indigo-600 shadow-indigo-500/20')}`}
                                     >
                                         {isFollowing ? <UserCheck size={18} /> : <UserPlus size={18} />}
                                         <span>{isFollowing ? t('profile_following') : (isRequested ? t('sent') : t('profile_follow'))}</span>
                                     </button>
                                     <button
                                         onClick={handleMessage}
-                                        className="flex items-center gap-2 bg-white border border-gray-300 px-4 py-2 rounded-lg font-semibold text-gray-700 hover:bg-gray-50 transition shadow-sm"
+                                        className="flex items-center gap-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 px-4 py-2 rounded-lg font-semibold text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700 transition shadow-sm"
                                     >
                                         <MessageCircle size={18} />
                                         <span>{t('profile_message')}</span>
@@ -222,11 +222,11 @@ const Profile = () => {
                         </div>
                     </div>
 
-                    <div className="mt-6 md:flex justify-between items-start border-t border-gray-100 pt-6">
+                    <div className="mt-6 md:flex justify-between items-start border-t border-gray-100 dark:border-gray-700 pt-6">
                         <div className="space-y-3 max-w-lg">
-                            {userProfile.bio && <p className="text-gray-700 text-[15px] leading-relaxed">{userProfile.bio}</p>}
+                            {userProfile.bio && <p className="text-gray-700 dark:text-gray-300 text-[15px] leading-relaxed">{userProfile.bio}</p>}
 
-                            <div className="flex flex-wrap gap-x-6 gap-y-2 text-sm text-gray-500">
+                            <div className="flex flex-wrap gap-x-6 gap-y-2 text-sm text-gray-500 dark:text-gray-400">
                                 {userProfile.location && (
                                     <div className="flex items-center gap-1.5">
                                         <MapPin size={16} />
@@ -244,41 +244,41 @@ const Profile = () => {
                             </div>
                         </div>
 
-                        <div className="flex bg-gray-50 rounded-xl p-4 gap-8 mt-6 md:mt-0">
+                        <div className="flex bg-gray-50 dark:bg-gray-800 rounded-xl p-4 gap-8 mt-6 md:mt-0">
                             <button
                                 onClick={() => fetchUserList('followers')}
-                                className="text-center hover:bg-gray-100 p-2 rounded-lg transition-colors"
+                                className="text-center hover:bg-gray-100 dark:hover:bg-gray-700 p-2 rounded-lg transition-colors"
                             >
-                                <span className="block text-xl font-bold text-gray-900">{userProfile.followers?.length || 0}</span>
-                                <span className="text-xs text-gray-500 uppercase tracking-wide font-semibold">{t('profile_followers')}</span>
+                                <span className="block text-xl font-bold text-gray-900 dark:text-white">{userProfile.followers?.length || 0}</span>
+                                <span className="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wide font-semibold">{t('profile_followers')}</span>
                             </button>
                             <button
                                 onClick={() => fetchUserList('following')}
-                                className="text-center hover:bg-gray-100 p-2 rounded-lg transition-colors"
+                                className="text-center hover:bg-gray-100 dark:hover:bg-gray-700 p-2 rounded-lg transition-colors"
                             >
-                                <span className="block text-xl font-bold text-gray-900">{userProfile.following?.length || 0}</span>
-                                <span className="text-xs text-gray-500 uppercase tracking-wide font-semibold">{t('profile_following')}</span>
+                                <span className="block text-xl font-bold text-gray-900 dark:text-white">{userProfile.following?.length || 0}</span>
+                                <span className="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wide font-semibold">{t('profile_following')}</span>
                             </button>
                             <div className="text-center p-2">
-                                <span className="block text-xl font-bold text-gray-900">{posts.length}</span>
-                                <span className="text-xs text-gray-500 uppercase tracking-wide font-semibold">{t('profile_posts')}</span>
+                                <span className="block text-xl font-bold text-gray-900 dark:text-white">{posts.length}</span>
+                                <span className="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wide font-semibold">{t('profile_posts')}</span>
                             </div>
                         </div>
                     </div>
                 </div>
 
                 {/* Visual Tabs */}
-                <div className="flex border-t border-gray-100 mt-2">
+                <div className="flex border-t border-gray-100 dark:border-gray-700 mt-2">
                     <button
                         onClick={() => setActiveTab('posts')}
-                        className={`flex-1 flex items-center justify-center gap-2 py-4 text-sm font-semibold transition cursor-pointer ${activeTab === 'posts' ? 'text-primary border-b-2 border-primary bg-indigo-50/10' : 'text-gray-500 hover:bg-gray-50'}`}
+                        className={`flex-1 flex items-center justify-center gap-2 py-4 text-sm font-semibold transition cursor-pointer ${activeTab === 'posts' ? 'text-primary border-b-2 border-primary bg-indigo-50/10' : 'text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800'}`}
                     >
                         <Grid size={18} />
                         {t('profile_posts')}
                     </button>
                     <button
                         onClick={() => setActiveTab('media')}
-                        className={`flex-1 flex items-center justify-center gap-2 py-4 text-sm font-semibold transition cursor-pointer ${activeTab === 'media' ? 'text-primary border-b-2 border-primary bg-indigo-50/10' : 'text-gray-500 hover:bg-gray-50'}`}
+                        className={`flex-1 flex items-center justify-center gap-2 py-4 text-sm font-semibold transition cursor-pointer ${activeTab === 'media' ? 'text-primary border-b-2 border-primary bg-indigo-50/10' : 'text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800'}`}
                     >
                         <Image size={18} />
                         {t('media')}
@@ -290,8 +290,8 @@ const Profile = () => {
                 {/* Left Column - Intro / Photos (Placeholder) */}
                 <div className="hidden lg:block space-y-6">
                     <div className="card p-5">
-                        <h3 className="font-bold text-gray-900 mb-4 text-lg">{t('about')}</h3>
-                        <p className="text-gray-500 text-sm">{t('profile_details')}</p>
+                        <h3 className="font-bold text-gray-900 dark:text-white mb-4 text-lg">{t('about')}</h3>
+                        <p className="text-gray-500 dark:text-gray-400 text-sm">{t('profile_details')}</p>
                     </div>
                 </div>
 

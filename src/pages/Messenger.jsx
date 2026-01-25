@@ -171,14 +171,14 @@ const Messenger = () => {
     return (
         <div className="card h-[calc(100vh-120px)] md:h-[calc(100vh-140px)] flex overflow-hidden max-w-5xl mx-auto border-0 md:border shadow-2xl relative">
             {/* View 1: Chat Menu (Full width when active) */}
-            <div className={`${showChatList ? 'flex' : 'hidden'} w-full flex-col bg-white transition-all`}>
-                <div className="p-6 border-b border-gray-50 bg-white/50 backdrop-blur-md sticky top-0 z-20">
+            <div className={`${showChatList ? 'flex' : 'hidden'} w-full flex-col bg-white dark:bg-gray-900 transition-all`}>
+                <div className="p-6 border-b border-gray-50 dark:border-gray-800 bg-white/50 dark:bg-gray-900/50 backdrop-blur-md sticky top-0 z-20">
                     <h2 className="text-2xl font-black bg-gradient-to-r from-primary to-indigo-600 bg-clip-text text-transparent mb-5">{t('messenger_title')}</h2>
                     <div className="relative">
                         <Search className="absolute left-4 top-3 text-gray-400" size={18} />
                         <input
                             placeholder={t('search_placeholder')}
-                            className="w-full bg-gray-50 pl-11 p-3 rounded-2xl outline-none focus:ring-2 focus:ring-primary/10 border border-transparent focus:border-primary/20 transition-all text-sm font-medium"
+                            className="w-full bg-gray-50 dark:bg-gray-800 pl-11 p-3 rounded-2xl outline-none focus:ring-2 focus:ring-primary/10 border border-transparent focus:border-primary/20 transition-all text-sm font-medium text-gray-900 dark:text-white"
                         />
                     </div>
                 </div>
@@ -203,11 +203,11 @@ const Messenger = () => {
             </div>
 
             {/* View 2: Chat Box (Full width when active) */}
-            <div className={`${!showChatList ? 'flex' : 'hidden'} flex-1 flex flex-col bg-[#fdfdff] min-w-0 transition-all`}>
+            <div className={`${!showChatList ? 'flex' : 'hidden'} flex-1 flex flex-col bg-[#fdfdff] dark:bg-gray-950 min-w-0 transition-all`}>
                 {currentChat ? (
                     <>
                         {/* Header */}
-                        <div className="px-4 py-3 md:px-6 md:py-4 border-b border-gray-100 flex justify-between items-center bg-white/80 backdrop-blur-lg shadow-sm z-30">
+                        <div className="px-4 py-3 md:px-6 md:py-4 border-b border-gray-100 dark:border-gray-800 flex justify-between items-center bg-white/80 dark:bg-gray-900/80 backdrop-blur-lg shadow-sm z-30">
                             <div className="flex items-center gap-3">
                                 {/* Back button ALWAYS visible now */}
                                 <button
@@ -227,10 +227,10 @@ const Messenger = () => {
                                 </button>
 
                                 {showConversationMenu && (
-                                    <div className="absolute right-0 mt-2 w-48 bg-white rounded-2xl shadow-xl border border-gray-100 p-1 z-50 animate-in fade-in zoom-in-95 duration-200">
+                                    <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-2xl shadow-xl border border-gray-100 dark:border-gray-700 p-1 z-50 animate-in fade-in zoom-in-95 duration-200">
                                         <button
                                             onClick={handleDeleteConversation}
-                                            className="w-full flex items-center gap-2 px-4 py-2.5 text-sm font-semibold text-red-600 hover:bg-red-50 rounded-xl transition-colors"
+                                            className="w-full flex items-center gap-2 px-4 py-2.5 text-sm font-semibold text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-xl transition-colors"
                                         >
                                             <Trash2 size={16} />
                                             {t('delete_chat')}
@@ -241,7 +241,8 @@ const Messenger = () => {
                         </div>
 
                         {/* Messages */}
-                        <div className="flex-1 overflow-y-auto p-4 md:p-8 space-y-6 custom-scrollbar bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:20px_20px] bg-white">
+                        {/* Messages */}
+                        <div className="flex-1 overflow-y-auto p-4 md:p-8 space-y-6 custom-scrollbar bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] dark:bg-[radial-gradient(#1f2937_1px,transparent_1px)] [background-size:20px_20px] bg-white dark:bg-gray-950">
                             {messages.map((m, i) => (
                                 <div
                                     key={m._id || i}
@@ -254,7 +255,7 @@ const Messenger = () => {
                                         <div
                                             className={`max-w-[85%] md:max-w-[60%] px-4 py-3 rounded-2xl shadow-sm text-[15px] leading-relaxed relative ${m.sender === user.id
                                                 ? 'bg-primary text-white rounded-se-none shadow-indigo-500/10'
-                                                : 'bg-white/80 border border-gray-100 text-gray-800 rounded-ss-none shadow-sm backdrop-blur-sm'
+                                                : 'bg-white/80 dark:bg-gray-800/80 border border-gray-100 dark:border-gray-700 text-gray-800 dark:text-gray-200 rounded-ss-none shadow-sm backdrop-blur-sm'
                                                 }`}
                                         >
                                             <p>{m.text}</p>
@@ -278,19 +279,20 @@ const Messenger = () => {
                         </div>
 
                         {/* Input Area */}
-                        <div className="p-4 md:p-6 bg-white border-t border-gray-100 relative">
+                        {/* Input Area */}
+                        <div className="p-4 md:p-6 bg-white dark:bg-gray-900 border-t border-gray-100 dark:border-gray-800 relative">
                             {showEmojiPicker && (
                                 <div className="absolute bottom-24 left-4 md:left-20 z-50 emoji-picker-container shadow-2xl rounded-2xl">
                                     <EmojiPicker onEmojiClick={onEmojiClick} theme="light" width={300} height={400} />
                                 </div>
                             )}
                             <form onSubmit={handleSubmit} className="flex items-center gap-3 max-w-4xl mx-auto">
-                                <button type="button" className="hidden sm:flex text-gray-400 hover:text-primary transition bg-gray-50 hover:bg-indigo-50 p-3 rounded-2xl">
+                                <button type="button" className="hidden sm:flex text-gray-400 hover:text-primary transition bg-gray-50 dark:bg-gray-800 hover:bg-indigo-50 dark:hover:bg-indigo-900/20 p-3 rounded-2xl">
                                     <Image size={22} />
                                 </button>
                                 <div className="flex-1 relative">
                                     <input
-                                        className="w-full bg-gray-50 border-gray-100/50 rounded-2xl px-5 py-4 focus:outline-none focus:ring-4 focus:ring-primary/5 border focus:bg-white focus:border-primary/30 transition-all text-[15px] font-medium placeholder:text-gray-400 shadow-inner"
+                                        className="w-full bg-gray-50 dark:bg-gray-800 border-gray-100/50 dark:border-gray-700 rounded-2xl px-5 py-4 focus:outline-none focus:ring-4 focus:ring-primary/5 border focus:bg-white dark:focus:bg-gray-900 focus:border-primary/30 transition-all text-[15px] font-medium placeholder:text-gray-400 dark:text-white shadow-inner"
                                         placeholder={t('type_message')}
                                         value={newMessage}
                                         onChange={(e) => setNewMessage(e.target.value)}
@@ -344,7 +346,7 @@ const ConversationItem = ({ conversation, currentUser, active, t }) => {
     if (!user) return <div className="h-20 bg-gray-50/50 animate-pulse rounded-2xl m-2"></div>;
 
     return (
-        <div className={`flex items-center gap-4 p-4 m-1 rounded-2xl cursor-pointer transition-all border ${active ? 'bg-white border-primary/20 shadow-lg shadow-primary/10 ring-1 ring-primary/5' : 'hover:bg-gray-50/80 border-transparent shadow-none'}`}>
+        <div className={`flex items-center gap-4 p-4 m-1 rounded-2xl cursor-pointer transition-all border ${active ? 'bg-white dark:bg-gray-800 border-primary/20 shadow-lg shadow-primary/10 ring-1 ring-primary/5' : 'hover:bg-gray-50/80 dark:hover:bg-gray-800/50 border-transparent shadow-none'}`}>
             <div className="relative flex-shrink-0">
                 <img
                     src={user.profilePicture || "https://placehold.co/100"}
@@ -355,7 +357,7 @@ const ConversationItem = ({ conversation, currentUser, active, t }) => {
             </div>
             <div className="flex-1 min-w-0">
                 <div className="flex justify-between items-baseline mb-1">
-                    <h3 className={`block font-black text-[15px] truncate ${active ? 'text-primary' : 'text-gray-900'}`}>{user.firstName} {user.lastName}</h3>
+                    <h3 className={`block font-black text-[15px] truncate ${active ? 'text-primary' : 'text-gray-900 dark:text-gray-100'}`}>{user.firstName} {user.lastName}</h3>
                     <span className="text-[10px] text-gray-400 font-black uppercase tracking-tighter whitespace-nowrap ml-2">{format(conversation.updatedAt).split(' ')[0]}</span>
                 </div>
                 <div className="flex items-center justify-between">
@@ -395,7 +397,7 @@ const ConversationHeader = ({ conversation, currentUser, t }) => {
                 className="w-10 h-10 md:w-11 md:h-11 rounded-full object-cover border-2 border-white shadow-sm"
             />
             <div>
-                <h3 className="font-black text-gray-900 text-[15px] md:text-base leading-tight">{user.firstName} {user.lastName}</h3>
+                <h3 className="font-black text-gray-900 dark:text-white text-[15px] md:text-base leading-tight">{user.firstName} {user.lastName}</h3>
                 <div className="flex items-center gap-1.5 mt-0.5">
                     <div className="w-2 h-2 bg-green-500 rounded-full"></div>
                     <span className="text-[11px] text-gray-500 font-bold tracking-tight uppercase">{t('active_now')}</span>
