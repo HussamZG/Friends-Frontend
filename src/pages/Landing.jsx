@@ -1,77 +1,104 @@
-import { useState, useEffect } from 'react';
-import { useUser, useAuth, SignInButton } from '@clerk/clerk-react';
-import { Link } from 'react-router-dom';
-import { Google as GoogleIcon } from 'lucide-react'; // Google icon might not exist in Lucide, checking... Lucide doesn't have Google. using text or just "G".
-// Actually, I'll use a generic specialized SVG or just text for simplicity/reliability.
-import { ArrowRight, Globe, Users, Shield } from 'lucide-react';
+import { SignInButton } from '@clerk/clerk-react';
+import { ArrowRight, Globe, Shield, Users, Sparkles, MessageCircle, Heart } from 'lucide-react';
 
 const Landing = () => {
     return (
-        <div className="min-h-screen bg-white flex flex-col">
+        <div className="min-h-screen bg-[#0f111a] text-white relative overflow-hidden font-sans selection:bg-indigo-500/30">
+            {/* Background Gradients & Effects */}
+            <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
+                <div className="absolute -top-[20%] -left-[10%] w-[70vw] h-[70vw] bg-indigo-600/20 rounded-full blur-[120px] animate-pulse duration-[8000ms]"></div>
+                <div className="absolute top-[40%] -right-[10%] w-[60vw] h-[60vw] bg-purple-600/10 rounded-full blur-[100px] animate-pulse duration-[10000ms]"></div>
+                <div className="absolute bottom-0 left-1/3 w-[50vw] h-[50vw] bg-pink-600/10 rounded-full blur-[100px]"></div>
+            </div>
+
             {/* Navbar */}
-            <nav className="p-6 flex justify-between items-center max-w-7xl mx-auto w-full">
-                <div className="text-2xl font-black bg-gradient-to-r from-primary to-indigo-600 bg-clip-text text-transparent cursor-pointer">
-                    Friends.
+            <nav className="relative z-50 flex justify-between items-center px-6 py-6 md:px-12 max-w-7xl mx-auto">
+                <div className="text-2xl font-black tracking-tighter flex items-center gap-2">
+                    <div className="w-8 h-8 bg-gradient-to-tr from-indigo-500 to-purple-600 rounded-lg flex items-center justify-center shadow-lg shadow-indigo-500/25">
+                        <span className="text-white font-bold text-lg">F</span>
+                    </div>
+                    <span>Friends.</span>
                 </div>
                 <SignInButton mode="modal">
-                    <button className="bg-gray-900 text-white px-6 py-2.5 rounded-full font-bold text-sm hover:bg-gray-800 transition shadow-lg shadow-gray-200">
+                    <button className="px-5 py-2 text-sm font-semibold text-gray-300 hover:text-white transition-colors border border-white/10 hover:border-white/30 rounded-full bg-white/5 backdrop-blur-sm">
                         Sign In
                     </button>
                 </SignInButton>
             </nav>
 
             {/* Hero Section */}
-            <main className="flex-1 flex flex-col items-center justify-center text-center px-4 md:px-6 relative overflow-hidden">
-                {/* Background Decor */}
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-indigo-50 rounded-full blur-3xl opacity-50 -z-10 animate-pulse"></div>
+            <main className="relative z-10 flex flex-col items-center justify-center min-h-[calc(100vh-80px)] px-4 text-center pb-20">
 
-                <div className="max-w-4xl mx-auto space-y-8 animate-in fade-in slide-in-from-bottom-8 duration-700">
-                    <div className="inline-flex items-center gap-2 px-4 py-2 bg-indigo-50 text-indigo-700 rounded-full text-sm font-bold tracking-wide uppercase">
-                        <Globe size={16} />
-                        <span>Connect Globally</span>
-                    </div>
+                {/* Badge */}
+                <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 border border-white/10 backdrop-blur-md mb-8 animate-in fade-in slide-in-from-bottom-4 duration-700 hover:bg-white/10 transition-colors cursor-default hover:scale-105 transform">
+                    <Sparkles size={14} className="text-yellow-400" />
+                    <span className="text-xs font-bold tracking-wide text-gray-200 uppercase">The Future of Social</span>
+                </div>
 
-                    <h1 className="text-5xl md:text-7xl font-black text-gray-900 tracking-tight leading-tight">
-                        Your World, <br />
-                        <span className="bg-gradient-to-r from-indigo-500 to-purple-600 bg-clip-text text-transparent">Closer Together.</span>
-                    </h1>
+                {/* Headline */}
+                <h1 className="text-5xl md:text-7xl lg:text-8xl font-black tracking-tight leading-none mb-6 max-w-5xl mx-auto animate-in fade-in slide-in-from-bottom-8 duration-1000 fill-mode-both delay-100">
+                    <span className="block text-transparent bg-clip-text bg-gradient-to-b from-white to-white/60">Connect Beyond</span>
+                    <span className="block text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 pb-2">Boundaries.</span>
+                </h1>
 
-                    <p className="text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed">
-                        Share moments, connect with friends, and discover new communities in a premium space designed for meaningful interactions.
-                    </p>
+                {/* Subheadline */}
+                <p className="text-lg md:text-xl text-gray-400 max-w-2xl mx-auto mb-10 leading-relaxed animate-in fade-in slide-in-from-bottom-8 duration-1000 delay-200">
+                    Experience a premium social space designed for meaningful connections. Share your world, discover new stories, and engage in real-time.
+                </p>
 
-                    <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
-                        <SignInButton mode="modal">
-                            <button className="w-full sm:w-auto flex items-center justify-center gap-3 bg-indigo-600 text-white px-8 py-4 rounded-full font-bold text-lg hover:bg-indigo-700 hover:scale-105 transition-all shadow-xl shadow-indigo-200">
-                                <span>Continue with Google</span>
-                                <ArrowRight size={20} />
-                            </button>
-                        </SignInButton>
-                    </div>
+                {/* CTA Buttons */}
+                <div className="flex flex-col sm:flex-row items-center gap-4 animate-in fade-in slide-in-from-bottom-8 duration-1000 delay-300">
+                    <SignInButton mode="modal">
+                        <button className="group relative px-8 py-4 bg-white text-gray-900 rounded-full font-bold text-lg overflow-hidden transition-all hover:scale-105 active:scale-95 shadow-[0_0_40px_-10px_rgba(255,255,255,0.3)]">
+                            <div className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/50 to-transparent -translate-x-full group-hover:animate-shimmer"></div>
+                            <span className="relative flex items-center gap-3">
+                                Get Started with Google
+                                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                            </span>
+                        </button>
+                    </SignInButton>
+                    <button className="px-8 py-4 text-gray-300 font-semibold text-lg hover:text-white transition-colors">
+                        Learn more
+                    </button>
+                </div>
 
-                    <div className="pt-12 grid grid-cols-2 md:grid-cols-3 gap-8 text-gray-400 opacity-60">
-                        <div className="flex flex-col items-center gap-2">
-                            <Users size={24} />
-                            <span className="font-bold text-sm uppercase tracking-widest">Community</span>
-                        </div>
-                        <div className="flex flex-col items-center gap-2">
-                            <Shield size={24} />
-                            <span className="font-bold text-sm uppercase tracking-widest">Secure</span>
-                        </div>
-                        <div className="flex flex-col items-center gap-2 col-span-2 md:col-span-1">
-                            <Globe size={24} />
-                            <span className="font-bold text-sm uppercase tracking-widest">Global</span>
-                        </div>
-                    </div>
+                {/* Feature Cards / Floating Elements */}
+                <div className="mt-24 grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl w-full px-4 animate-in fade-in zoom-in-95 duration-1000 delay-500">
+                    <FeatureCard
+                        icon={Globe}
+                        title="Global Reach"
+                        desc="Connect with friends across the world without limits."
+                        color="bg-blue-500"
+                    />
+                    <FeatureCard
+                        icon={Shield}
+                        title="Secure & Private"
+                        desc="Your data is yours. Experience privacy-first social networking."
+                        color="bg-green-500"
+                    />
+                    <FeatureCard
+                        icon={Users}
+                        title="Vibrant Community"
+                        desc="Join thousands of creators and thinkers sharing daily."
+                        color="bg-pink-500"
+                    />
                 </div>
             </main>
-
-            {/* Footer */}
-            <footer className="p-8 text-center text-gray-400 text-xs font-medium uppercase tracking-widest">
-                &copy; 2026 Friends Social. All rights reserved.
-            </footer>
         </div>
     );
 };
+
+const FeatureCard = ({ icon: Icon, title, desc, color }) => (
+    <div className="group relative p-6 rounded-3xl bg-white/5 border border-white/5 backdrop-blur-lg hover:bg-white/10 transition-all duration-300 hover:-translate-y-1">
+        <div className={`absolute top-0 right-0 p-32 ${color} rounded-full blur-[80px] opacity-0 group-hover:opacity-10 transition-opacity duration-500`}></div>
+        <div className="relative z-10">
+            <div className={`w-12 h-12 rounded-2xl ${color}/20 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300`}>
+                <Icon size={24} className="text-white" />
+            </div>
+            <h3 className="text-xl font-bold text-white mb-2">{title}</h3>
+            <p className="text-sm text-gray-400 leading-relaxed font-medium">{desc}</p>
+        </div>
+    </div>
+);
 
 export default Landing;
