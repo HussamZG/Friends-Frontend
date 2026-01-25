@@ -99,16 +99,16 @@ const FollowRequests = () => {
 
     return (
         <div className="max-w-2xl mx-auto">
-            <h1 className="text-2xl font-bold mb-6">{t('follow_requests')}</h1>
+            <h1 className="text-2xl font-bold mb-6 text-gray-900 dark:text-white">{t('follow_requests')}</h1>
             {requests.length === 0 ? (
-                <p className="text-gray-500">{t('no_follow_requests')}</p>
+                <p className="text-gray-500 dark:text-gray-400">{t('no_follow_requests')}</p>
             ) : (
                 <div className="space-y-4">
                     {requests.map(req => (
-                        <div key={req._id} className="bg-white p-4 rounded-lg shadow-sm border border-gray-100 flex items-center justify-between animate-in fade-in slide-in-from-bottom-2 duration-300">
+                        <div key={req._id} className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-sm border border-gray-100 dark:border-gray-700 flex items-center justify-between animate-in fade-in slide-in-from-bottom-2 duration-300">
                             <div className="flex items-center gap-4">
-                                <img src={req.profilePicture || "https://placehold.co/50"} alt="" className="w-12 h-12 rounded-full object-cover border border-gray-100 shadow-sm" />
-                                <span className="font-semibold text-gray-900">{req.firstName} {req.lastName}</span>
+                                <img src={req.profilePicture || "https://placehold.co/50"} alt="" className="w-12 h-12 rounded-full object-cover border border-gray-100 dark:border-gray-700 shadow-sm" />
+                                <span className="font-semibold text-gray-900 dark:text-white">{req.firstName} {req.lastName}</span>
                             </div>
                             <div className="flex gap-2">
                                 {req.accepted ? (
@@ -121,7 +121,7 @@ const FollowRequests = () => {
                                 ) : (
                                     <>
                                         <button onClick={() => handleAccept(req.clerkId)} className="bg-primary text-white px-4 py-1.5 rounded-lg hover:bg-indigo-600 transition shadow-sm font-semibold">{t('accept')}</button>
-                                        <button onClick={() => handleDecline(req.clerkId)} className="bg-gray-100 text-gray-700 px-4 py-1.5 rounded-lg hover:bg-gray-200 transition font-semibold">{t('decline')}</button>
+                                        <button onClick={() => handleDecline(req.clerkId)} className="bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-200 px-4 py-1.5 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition font-semibold">{t('decline')}</button>
                                     </>
                                 )}
                             </div>

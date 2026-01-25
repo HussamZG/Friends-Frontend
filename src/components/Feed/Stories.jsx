@@ -66,7 +66,7 @@ const Stories = () => {
                     return await response.json();
                 }}
             >
-                <div className="flex-shrink-0 relative w-32 h-52 rounded-2xl overflow-hidden cursor-pointer shadow-md bg-white group transition-all duration-300 hover:scale-[1.02] hover:shadow-xl">
+                <div className="flex-shrink-0 relative w-32 h-52 rounded-2xl overflow-hidden cursor-pointer shadow-md bg-white dark:bg-gray-800 group transition-all duration-300 hover:scale-[1.02] hover:shadow-xl">
                     <img src={user?.imageUrl} alt="" className="w-full h-full object-cover opacity-90 group-hover:opacity-100 transition-opacity" />
                     <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/60"></div>
                     <div className="absolute bottom-0 w-full p-3 flex flex-col items-center">

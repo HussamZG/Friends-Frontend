@@ -56,7 +56,7 @@ const RightSidebar = () => {
     return (
         <div className="sticky top-24 w-full space-y-6">
             <div className="card p-5">
-                <h3 className="font-bold text-gray-700 mb-4">{t('suggested_for_you')}</h3>
+                <h3 className="font-bold text-gray-700 dark:text-gray-200 mb-4">{t('suggested_for_you')}</h3>
                 <div className="space-y-4">
                     {loading ? (
                         <p className="text-sm text-gray-400">{t('loading_suggestions')}</p>
@@ -72,10 +72,10 @@ const RightSidebar = () => {
                                         className="w-10 h-10 rounded-full object-cover bg-gray-200"
                                     />
                                     <div>
-                                        <p className="text-sm font-semibold text-gray-900 leading-tight">
+                                        <p className="text-sm font-semibold text-gray-900 dark:text-gray-100 leading-tight">
                                             {user.firstName} {user.lastName}
                                         </p>
-                                        <p className="text-xs text-gray-500">{t('suggested_for_you').split(' ')[0]}</p>
+                                        <p className="text-xs text-gray-500 dark:text-gray-400">{t('suggested_for_you').split(' ')[0]}</p>
                                     </div>
                                 </Link>
                                 {followed.includes(user.clerkId) || (user.followRequests && user.followRequests.includes(clerkUser.id)) ? (
@@ -86,7 +86,7 @@ const RightSidebar = () => {
                                 ) : (
                                     <button
                                         onClick={() => handleFollow(user.clerkId)}
-                                        className="text-xs text-primary font-bold hover:bg-indigo-50 px-2 py-1 rounded-md transition-colors flex items-center gap-1"
+                                        className="text-xs text-primary font-bold hover:bg-indigo-50 dark:hover:bg-indigo-900/20 px-2 py-1 rounded-md transition-colors flex items-center gap-1"
                                     >
                                         <UserPlus size={14} />
                                         <span>{t('profile_follow')}</span>

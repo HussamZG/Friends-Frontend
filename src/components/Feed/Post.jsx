@@ -202,14 +202,14 @@ const Post = ({ post, onDelete }) => {
         <div className="card p-5 mb-6 relative hover:shadow-md transition-shadow duration-300">
             {showShareModal && (
                 <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4 animate-in fade-in duration-200">
-                    <div className="bg-white rounded-xl w-full max-w-lg flex flex-col max-h-[90vh] shadow-2xl overflow-hidden animate-in zoom-in-95 duration-200">
-                        <div className="flex items-center justify-between p-4 border-b border-gray-100">
-                            <h3 className="text-lg font-bold text-gray-900">{t('share_post')}</h3>
+                    <div className="bg-white dark:bg-gray-800 rounded-xl w-full max-w-lg flex flex-col max-h-[90vh] shadow-2xl overflow-hidden animate-in zoom-in-95 duration-200">
+                        <div className="flex items-center justify-between p-4 border-b border-gray-100 dark:border-gray-700">
+                            <h3 className="text-lg font-bold text-gray-900 dark:text-white">{t('share_post')}</h3>
                             <button
                                 onClick={() => setShowShareModal(false)}
-                                className="p-2 hover:bg-gray-100 rounded-full transition-colors"
+                                className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-full transition-colors"
                             >
-                                <X size={20} className="text-gray-500" />
+                                <X size={20} className="text-gray-500 dark:text-gray-400" />
                             </button>
                         </div>
 
@@ -217,37 +217,37 @@ const Post = ({ post, onDelete }) => {
                             <div className="flex items-center gap-3 mb-4">
                                 <img src={user?.imageUrl} alt="" className="w-10 h-10 rounded-full object-cover" />
                                 <div>
-                                    <span className="font-semibold text-gray-900 block">{user?.firstName} {user?.lastName}</span>
-                                    <span className="text-xs text-gray-500 bg-gray-100 px-2 py-0.5 rounded-full">{t('nav_feed')}</span>
+                                    <span className="font-semibold text-gray-900 dark:text-white block">{user?.firstName} {user?.lastName}</span>
+                                    <span className="text-xs text-gray-500 dark:text-gray-400 bg-gray-100 dark:bg-gray-700 px-2 py-0.5 rounded-full">{t('nav_feed')}</span>
                                 </div>
                             </div>
 
                             <textarea
-                                className="w-full text-lg placeholder-gray-400 border-none focus:ring-0 resize-none mb-4 min-h-[80px]"
+                                className="w-full text-lg placeholder-gray-400 bg-transparent dark:text-white border-none focus:ring-0 resize-none mb-4 min-h-[80px]"
                                 placeholder={t('share_placeholder')}
                                 value={shareCaption}
                                 onChange={(e) => setShareCaption(e.target.value)}
                                 autoFocus
                             />
 
-                            <div className="rounded-xl border border-gray-200 overflow-hidden">
-                                <div className="p-3 bg-gray-50 border-b border-gray-100 flex items-center gap-2">
+                            <div className="rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden">
+                                <div className="p-3 bg-gray-50 dark:bg-gray-700/30 border-b border-gray-100 dark:border-gray-700 flex items-center gap-2">
                                     <img
                                         src={contentToShare.profilePicture || "https://placehold.co/40"}
                                         alt=""
-                                        className="w-8 h-8 rounded-full object-cover border border-white"
+                                        className="w-8 h-8 rounded-full object-cover border border-white dark:border-gray-600"
                                     />
                                     <div>
-                                        <span className="font-semibold text-sm text-gray-900 block">
+                                        <span className="font-semibold text-sm text-gray-900 dark:text-gray-200 block">
                                             {contentToShare.firstName} {contentToShare.lastName}
                                         </span>
-                                        <span className="text-xs text-gray-500">{format(contentToShare.createdAt)}</span>
+                                        <span className="text-xs text-gray-500 dark:text-gray-400">{format(contentToShare.createdAt)}</span>
                                     </div>
                                 </div>
 
                                 <div className="p-3">
                                     {contentToShare.desc && (
-                                        <p className="text-gray-800 text-sm leading-relaxed mb-3">{contentToShare.desc}</p>
+                                        <p className="text-gray-800 dark:text-gray-300 text-sm leading-relaxed mb-3">{contentToShare.desc}</p>
                                     )}
                                     {contentToShare.img && (
                                         <div className="rounded-lg overflow-hidden border border-gray-100">
@@ -258,10 +258,10 @@ const Post = ({ post, onDelete }) => {
                             </div>
                         </div>
 
-                        <div className="p-4 border-t border-gray-100 flex justify-end gap-3 bg-gray-50">
+                        <div className="p-4 border-t border-gray-100 dark:border-gray-700 flex justify-end gap-3 bg-gray-50 dark:bg-gray-700/20">
                             <button
                                 onClick={() => setShowShareModal(false)}
-                                className="px-5 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-200 rounded-full transition-colors"
+                                className="px-5 py-2.5 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-full transition-colors"
                             >
                                 {t('cancel')}
                             </button>
@@ -294,13 +294,13 @@ const Post = ({ post, onDelete }) => {
                     </Link>
                     <div>
                         <Link to={`/profile/${post.userId}`} className="hover:underline cursor-pointer">
-                            <span className="font-semibold text-gray-900 block leading-tight">
+                            <span className="font-semibold text-gray-900 dark:text-white block leading-tight">
                                 {userFetch.firstName} {userFetch.lastName}
                             </span>
                         </Link>
                         <div className="flex items-center gap-1.5">
-                            <span className="text-xs text-gray-500 font-medium">{format(post.createdAt)}</span>
-                            {post.sharedFrom && <span className="text-xs text-indigo-500 font-medium bg-indigo-50 px-2 py-0.5 rounded-full">{t('shared')}</span>}
+                            <span className="text-xs text-gray-500 dark:text-gray-400 font-medium">{format(post.createdAt)}</span>
+                            {post.sharedFrom && <span className="text-xs text-indigo-500 font-medium bg-indigo-50 dark:bg-indigo-900/20 px-2 py-0.5 rounded-full">{t('shared')}</span>}
                         </div>
                     </div>
                 </div>
@@ -313,17 +313,17 @@ const Post = ({ post, onDelete }) => {
                     </button>
 
                     {showOptions && (
-                        <div className="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-lg border border-gray-100 py-1 z-10 animate-in fade-in zoom-in-95 duration-200">
+                        <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-100 dark:border-gray-700 py-1 z-10 animate-in fade-in zoom-in-95 duration-200">
                             {user?.id === post.userId ? (
                                 <button
                                     onClick={handleDelete}
-                                    className="w-full text-left px-4 py-2.5 text-sm text-red-600 hover:bg-red-50 flex items-center gap-2 transition-colors font-medium"
+                                    className="w-full text-left px-4 py-2.5 text-sm text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 flex items-center gap-2 transition-colors font-medium"
                                 >
                                     <Trash2 size={16} />
                                     {t('delete_post')}
                                 </button>
                             ) : (
-                                <button className="w-full text-left px-4 py-2.5 text-sm text-gray-600 hover:bg-gray-50 flex items-center gap-2 transition-colors">
+                                <button className="w-full text-left px-4 py-2.5 text-sm text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 flex items-center gap-2 transition-colors">
                                     <AlertCircle size={16} />
                                     {t('report_post')}
                                 </button>
@@ -333,10 +333,10 @@ const Post = ({ post, onDelete }) => {
                 </div>
             </div>
 
-            {post.desc && <p className="mb-4 text-gray-700 leading-relaxed text-[15px]">{post.desc}</p>}
+            {post.desc && <p className="mb-4 text-gray-700 dark:text-gray-300 leading-relaxed text-[15px]">{post.desc}</p>}
 
             {post.sharedFrom ? (
-                <div className="rounded-xl border border-gray-200 bg-gray-50 p-4 mb-4">
+                <div className="rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/50 p-4 mb-4">
                     <div className="flex items-center gap-2 mb-3">
                         <Link to={`/profile/${post.sharedFrom.userId}`}>
                             <img
@@ -347,16 +347,16 @@ const Post = ({ post, onDelete }) => {
                         </Link>
                         <div>
                             <Link to={`/profile/${post.sharedFrom.userId}`} className="hover:underline cursor-pointer">
-                                <span className="font-semibold text-sm text-gray-900 block">
+                                <span className="font-semibold text-sm text-gray-900 dark:text-white block">
                                     {post.sharedFrom.firstName} {post.sharedFrom.lastName}
                                 </span>
                             </Link>
-                            <span className="text-xs text-gray-500">{t('original_post')} • {format(post.sharedFrom.createdAt)}</span>
+                            <span className="text-xs text-gray-500 dark:text-gray-400">{t('original_post')} • {format(post.sharedFrom.createdAt)}</span>
                         </div>
                     </div>
 
                     {post.sharedFrom.desc && (
-                        <p className="text-gray-800 text-[14px] leading-relaxed mb-3 pl-1">{post.sharedFrom.desc}</p>
+                        <p className="text-gray-800 dark:text-gray-300 text-[14px] leading-relaxed mb-3 pl-1">{post.sharedFrom.desc}</p>
                     )}
 
                     {post.sharedFrom.img && (
@@ -367,13 +367,13 @@ const Post = ({ post, onDelete }) => {
                 </div>
             ) : (
                 post.img && (
-                    <div className="rounded-xl overflow-hidden mb-4 border border-gray-100 shadow-sm">
+                    <div className="rounded-xl overflow-hidden mb-4 border border-gray-100 dark:border-gray-700 shadow-sm">
                         <img src={post.img} alt="" className="w-full object-cover max-h-[500px]" loading="lazy" />
                     </div>
                 )
             )}
 
-            <div className="flex items-center justify-between pt-3 border-t border-gray-100 text-gray-500">
+            <div className="flex items-center justify-between pt-3 border-t border-gray-100 dark:border-gray-700 text-gray-500 dark:text-gray-400">
                 <div className="flex gap-6">
                     <button
                         onClick={likeHandler}
@@ -398,17 +398,17 @@ const Post = ({ post, onDelete }) => {
                         <Share2 size={20} />
                     </button>
                     {showShareOptions && (
-                        <div className="absolute right-0 bottom-full mb-2 w-48 bg-white rounded-xl shadow-lg border border-gray-100 py-1 z-10 animate-in fade-in zoom-in-95 duration-200">
+                        <div className="absolute right-0 bottom-full mb-2 w-48 bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-100 dark:border-gray-700 py-1 z-10 animate-in fade-in zoom-in-95 duration-200">
                             <button
                                 onClick={handleShareLink}
-                                className="w-full text-left px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 flex items-center gap-2 transition-colors font-medium"
+                                className="w-full text-left px-4 py-2.5 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 flex items-center gap-2 transition-colors font-medium"
                             >
                                 <LinkIcon size={16} />
                                 {t('copy_link')}
                             </button>
                             <button
                                 onClick={handleShareToFeed}
-                                className="w-full text-left px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 flex items-center gap-2 transition-colors font-medium"
+                                className="w-full text-left px-4 py-2.5 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 flex items-center gap-2 transition-colors font-medium"
                             >
                                 <Share2 size={16} />
                                 {t('share_to_feed')}
@@ -419,7 +419,7 @@ const Post = ({ post, onDelete }) => {
             </div>
 
             {showComments && (
-                <div className="mt-4 pt-4 border-t border-gray-100 animate-in fade-in slide-in-from-top-1 duration-200">
+                <div className="mt-4 pt-4 border-t border-gray-100 dark:border-gray-700 animate-in fade-in slide-in-from-top-1 duration-200">
                     <div className="max-h-60 overflow-y-auto mb-4 space-y-4 pr-2 custom-scrollbar">
                         {comments.length === 0 && <p className="text-center text-sm text-gray-400 py-2">{t('no_comments')}</p>}
                         {comments.map((c, i) => (
@@ -427,21 +427,21 @@ const Post = ({ post, onDelete }) => {
                                 <Link to={`/profile/${c.userId}`}>
                                     <img src={c.profilePicture} alt="" className="w-8 h-8 rounded-full object-cover mt-1" />
                                 </Link>
-                                <div className="bg-gray-50 p-3 rounded-2xl rounded-tl-none flex-1">
+                                <div className="bg-gray-50 dark:bg-gray-800 p-3 rounded-2xl rounded-tl-none flex-1">
                                     <Link to={`/profile/${c.userId}`} className="hover:underline">
-                                        <p className="text-xs font-bold text-gray-900 mb-0.5">{c.firstName} {c.lastName}</p>
+                                        <p className="text-xs font-bold text-gray-900 dark:text-gray-100 mb-0.5">{c.firstName} {c.lastName}</p>
                                     </Link>
-                                    <p className="text-sm text-gray-700">{c.text}</p>
+                                    <p className="text-sm text-gray-700 dark:text-gray-300">{c.text}</p>
                                 </div>
                             </div>
                         ))}
                     </div>
                     <form onSubmit={handleComment} className="flex gap-3 items-center">
-                        <img src={user?.imageUrl} className="w-8 h-8 rounded-full border border-gray-200" />
+                        <img src={user?.imageUrl} className="w-8 h-8 rounded-full border border-gray-200 dark:border-gray-700" />
                         <div className="flex-1 relative">
                             <input
                                 type="text"
-                                className="w-full bg-gray-100 rounded-full px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-100 transition-all pr-10"
+                                className="w-full bg-gray-100 dark:bg-gray-800 rounded-full px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-100 dark:focus:ring-indigo-900 transition-all pr-10 text-gray-900 dark:text-white"
                                 placeholder={t('write_comment')}
                                 value={commentText}
                                 onChange={(e) => setCommentText(e.target.value)}

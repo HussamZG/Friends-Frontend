@@ -9,7 +9,7 @@ const SidebarItem = ({ icon: Icon, label, path, active }) => (
         to={path}
         className={`flex items-center gap-4 p-3 rounded-xl transition-all duration-200 mb-2 ${active
             ? 'bg-primary text-white shadow-lg shadow-indigo-500/20'
-            : 'text-gray-500 hover:bg-gray-100 hover:text-gray-900'
+            : 'text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-white'
             }`}
     >
         <Icon size={22} className={active ? 'stroke-[2.5px]' : 'stroke-[2px]'} />
@@ -42,10 +42,10 @@ const LeftSidebar = () => {
                     <SidebarItem icon={Settings} label={t('nav_settings')} path="/settings" active={location.pathname === '/settings'} />
                 </div>
 
-                <div className="border-t border-gray-100 pt-4 mt-2 px-2">
+                <div className="border-t border-gray-100 dark:border-gray-700 pt-4 mt-2 px-2">
                     <button
                         onClick={() => signOut()}
-                        className="flex w-full items-center gap-4 p-3 rounded-xl text-red-500 hover:bg-red-50 transition-all duration-200"
+                        className="flex w-full items-center gap-4 p-3 rounded-xl text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 transition-all duration-200"
                     >
                         <LogOut size={22} />
                         <span className="font-medium text-[15px]">{t('nav_signout')}</span>

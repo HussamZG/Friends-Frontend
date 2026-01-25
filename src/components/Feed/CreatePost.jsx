@@ -84,7 +84,7 @@ const CreatePost = ({ onPostCreated }) => {
                     />
                     <div className="flex-1">
                         <textarea
-                            className="w-full bg-gray-50 rounded-xl p-3 resize-none focus:outline-none focus:bg-gray-100 focus:ring-1 focus:ring-indigo-100 transition-all text-[15px]"
+                            className="w-full bg-gray-50 dark:bg-gray-800 rounded-xl p-3 resize-none focus:outline-none focus:bg-gray-100 dark:focus:bg-gray-700 focus:ring-1 focus:ring-indigo-100 dark:focus:ring-indigo-900 transition-all text-[15px] text-gray-900 dark:text-white dark:placeholder-gray-400"
                             placeholder={t('home_create_post_placeholder').replace('What\'s on your mind?', `${t('home_create_post_placeholder').split('?')[0]}, ${user.firstName}?`)}
                             rows={2}
                             value={desc}
@@ -101,9 +101,9 @@ const CreatePost = ({ onPostCreated }) => {
                                 </button>
                             </div>
                         )}
-                        <div className="flex flex-wrap justify-between items-center mt-3 pt-2 border-t border-gray-100 gap-y-3">
+                        <div className="flex flex-wrap justify-between items-center mt-3 pt-2 border-t border-gray-100 dark:border-gray-700 gap-y-3">
                             <div className="flex gap-4 relative">
-                                <label className="cursor-pointer flex items-center gap-2 text-gray-500 hover:text-indigo-600 transition p-1.5 hover:bg-indigo-50 rounded-lg">
+                                <label className="cursor-pointer flex items-center gap-2 text-gray-500 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition p-1.5 hover:bg-indigo-50 dark:hover:bg-indigo-900/20 rounded-lg">
                                     <Image size={20} />
                                     <span className="text-sm font-medium">{t('home_photo')}</span>
                                     <IKUpload
@@ -115,7 +115,7 @@ const CreatePost = ({ onPostCreated }) => {
                                 <div className="relative">
                                     <button
                                         onClick={() => setShowFeelings(!showFeelings)}
-                                        className="flex items-center gap-2 text-gray-500 hover:text-orange-500 transition p-1.5 hover:bg-orange-50 rounded-lg"
+                                        className="flex items-center gap-2 text-gray-500 dark:text-gray-400 hover:text-orange-500 transition p-1.5 hover:bg-orange-50 dark:hover:bg-orange-900/20 rounded-lg"
                                     >
                                         <Smile size={20} />
                                         <span className="text-sm font-medium">{t('home_feeling')}</span>

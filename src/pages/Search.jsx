@@ -149,8 +149,8 @@ const Search = () => {
     return (
         <div className="max-w-xl mx-auto">
             <div className="card p-6 mb-6">
-                <h1 className="text-2xl font-bold text-gray-900 mb-2">{t('explore_find')}</h1>
-                <p className="text-gray-500 text-sm mb-6">{t('search_desc')}</p>
+                <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">{t('explore_find')}</h1>
+                <p className="text-gray-500 dark:text-gray-400 text-sm mb-6">{t('search_desc')}</p>
 
                 <form onSubmit={handleSearch} className="relative mb-6">
                     <SearchIcon className="absolute left-4 top-3.5 text-gray-400" size={20} />
@@ -159,7 +159,7 @@ const Search = () => {
                         value={query}
                         onChange={(e) => setQuery(e.target.value)}
                         placeholder={t('search_friends_placeholder')}
-                        className="w-full bg-gray-50 pl-12 pr-4 py-3 rounded-xl border border-gray-100 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all shadow-sm"
+                        className="w-full bg-gray-50 dark:bg-gray-800 pl-12 pr-4 py-3 rounded-xl border border-gray-100 dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all shadow-sm text-gray-900 dark:text-white dark:placeholder-gray-400"
                     />
                     <button
                         type="submit"
@@ -176,7 +176,7 @@ const Search = () => {
                     <div className="flex border-b border-gray-100">
                         <button
                             onClick={() => setActiveTab('people')}
-                            className={`flex-1 pb-3 text-sm font-semibold flex justify-center items-center gap-2 transition-colors relative ${activeTab === 'people' ? 'text-primary' : 'text-gray-500 hover:text-gray-700'
+                            className={`flex-1 pb-3 text-sm font-semibold flex justify-center items-center gap-2 transition-colors relative ${activeTab === 'people' ? 'text-primary' : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200'
                                 }`}
                         >
                             <Users size={18} />
@@ -188,7 +188,7 @@ const Search = () => {
                         </button>
                         <button
                             onClick={() => setActiveTab('posts')}
-                            className={`flex-1 pb-3 text-sm font-semibold flex justify-center items-center gap-2 transition-colors relative ${activeTab === 'posts' ? 'text-primary' : 'text-gray-500 hover:text-gray-700'
+                            className={`flex-1 pb-3 text-sm font-semibold flex justify-center items-center gap-2 transition-colors relative ${activeTab === 'posts' ? 'text-primary' : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200'
                                 }`}
                         >
                             <FileText size={18} />
@@ -212,14 +212,14 @@ const Search = () => {
                                         <img
                                             src={u.profilePicture || "https://placehold.co/150"}
                                             alt={u.firstName}
-                                            className="w-14 h-14 rounded-full object-cover border border-gray-100 shadow-sm"
+                                            className="w-14 h-14 rounded-full object-cover border border-gray-100 dark:border-gray-700 shadow-sm"
                                         />
                                     </Link>
                                     <div>
-                                        <Link to={`/profile/${u.clerkId}`} className="font-bold text-gray-900 hover:text-primary transition">
+                                        <Link to={`/profile/${u.clerkId}`} className="font-bold text-gray-900 dark:text-white hover:text-primary transition">
                                             {u.firstName} {u.lastName}
                                         </Link>
-                                        <div className="flex items-center gap-1 text-xs text-gray-500 mt-1">
+                                        <div className="flex items-center gap-1 text-xs text-gray-500 dark:text-gray-400 mt-1">
                                             <MapPin size={12} />
                                             <span>{u.location || t('unknown_location')}</span>
                                         </div>
@@ -230,9 +230,9 @@ const Search = () => {
                                     <button
                                         onClick={() => isFollowing(u.clerkId) ? handleUnfollow(u.clerkId) : handleFollow(u.clerkId)}
                                         className={`px-5 py-2 rounded-lg text-sm font-semibold flex items-center gap-2 transition shadow-sm ${isFollowing(u.clerkId)
-                                            ? 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                                            ? 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
                                             : (u.followRequests?.includes(currentUser.id)
-                                                ? 'bg-gray-100 text-gray-400 cursor-default shadow-none border border-gray-200'
+                                                ? 'bg-gray-100 dark:bg-gray-700 text-gray-400 dark:text-gray-500 cursor-default shadow-none border border-gray-200 dark:border-gray-600'
                                                 : 'bg-primary text-white hover:bg-indigo-600 shadow-indigo-500/20')
                                             }`}
                                         disabled={u.followRequests?.includes(currentUser.id)}
@@ -260,7 +260,7 @@ const Search = () => {
                             </div>
                         ))}
                         {query && users.length === 0 && !loading && (
-                            <div className="text-center py-10 text-gray-400 bg-white rounded-xl border border-dashed border-gray-200">
+                            <div className="text-center py-10 text-gray-400 bg-white dark:bg-gray-800 rounded-xl border border-dashed border-gray-200 dark:border-gray-700">
                                 <p>{t('no_people_found')} "{query}"</p>
                             </div>
                         )}
@@ -273,7 +273,7 @@ const Search = () => {
                             <Post key={post._id} post={post} onDelete={handleDeletePost} />
                         ))}
                         {query && posts.length === 0 && !loading && (
-                            <div className="text-center py-10 text-gray-400 bg-white rounded-xl border border-dashed border-gray-200">
+                            <div className="text-center py-10 text-gray-400 bg-white dark:bg-gray-800 rounded-xl border border-dashed border-gray-200 dark:border-gray-700">
                                 <p>{t('no_posts_found')} "{query}"</p>
                             </div>
                         )}
