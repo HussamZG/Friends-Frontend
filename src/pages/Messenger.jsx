@@ -253,8 +253,8 @@ const Messenger = () => {
                                     <div className={`flex items-center gap-2 ${m.sender === user.id ? 'flex-row-reverse' : 'flex-row'}`}>
                                         <div
                                             className={`max-w-[85%] md:max-w-[60%] px-4 py-3 rounded-2xl shadow-sm text-[15px] leading-relaxed relative ${m.sender === user.id
-                                                ? 'bg-primary text-white rounded-tr-none shadow-indigo-500/10'
-                                                : 'bg-white border border-gray-100 text-gray-800 rounded-tl-none shadow-sm'
+                                                ? 'bg-primary text-white rounded-se-none shadow-indigo-500/10'
+                                                : 'bg-white/80 border border-gray-100 text-gray-800 rounded-ss-none shadow-sm backdrop-blur-sm'
                                                 }`}
                                         >
                                             <p>{m.text}</p>
