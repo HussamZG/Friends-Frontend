@@ -1,15 +1,17 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, memo } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth, useUser } from '@clerk/clerk-react';
 import { Heart, MessageCircle, Share2, MoreHorizontal, Send, Trash2, Link as LinkIcon, AlertCircle, X } from 'lucide-react';
 import { format } from 'timeago.js';
 import { useLanguage } from '../../context/LanguageContext';
+import { useNotification } from '../../context/NotificationContext';
 import { API_URL } from '../../config';
 
 const Post = ({ post, onDelete }) => {
     const { user } = useUser();
     const { getToken } = useAuth();
     const { t } = useLanguage();
+    const { sendNotification } = useNotification();
     const [like, setLike] = useState(post.likes.length);
     const [isLiked, setIsLiked] = useState(post.likes.includes(user?.id));
     const [userFetch, setUserFetch] = useState({});
@@ -62,6 +64,15 @@ const Post = ({ post, onDelete }) => {
             });
             setLike(isLiked ? like - 1 : like + 1);
             setIsLiked(!isLiked);
+
+            // Send Notification
+            if (!isLiked && post.userId !== user.id) {
+                sendNotification({
+                    receiverId: post.userId,
+                    type: 'like_post',
+                    referenceId: post._id
+                });
+            }
         } catch (err) { }
     };
 
@@ -94,6 +105,15 @@ const Post = ({ post, onDelete }) => {
                     createdAt: new Date()
                 }]);
                 setCommentText('');
+
+                // Send Notification
+                if (post.userId !== user.id) {
+                    sendNotification({
+                        receiverId: post.userId,
+                        type: 'comment_post',
+                        referenceId: post._id
+                    });
+                }
             }
         } catch (err) { }
     };
@@ -220,7 +240,7 @@ const Post = ({ post, onDelete }) => {
                                     )}
                                     {contentToShare.img && (
                                         <div className="rounded-lg overflow-hidden border border-gray-100">
-                                            <img src={contentToShare.img} alt="" className="w-full object-cover max-h-[300px]" />
+                                            <img src={contentToShare.img} alt="" className="w-full object-cover max-h-[300px]" loading="lazy" />
                                         </div>
                                     )}
                                 </div>
@@ -330,14 +350,14 @@ const Post = ({ post, onDelete }) => {
 
                     {post.sharedFrom.img && (
                         <div className="rounded-lg overflow-hidden border border-gray-200/60 shadow-sm">
-                            <img src={post.sharedFrom.img} alt="" className="w-full object-cover max-h-[400px]" />
+                            <img src={post.sharedFrom.img} alt="" className="w-full object-cover max-h-[400px]" loading="lazy" />
                         </div>
                     )}
                 </div>
             ) : (
                 post.img && (
                     <div className="rounded-xl overflow-hidden mb-4 border border-gray-100 shadow-sm">
-                        <img src={post.img} alt="" className="w-full object-cover max-h-[500px]" />
+                        <img src={post.img} alt="" className="w-full object-cover max-h-[500px]" loading="lazy" />
                     </div>
                 )
             )}
@@ -426,4 +446,4 @@ const Post = ({ post, onDelete }) => {
     );
 };
 
-export default Post;
+export default memo(Post);
