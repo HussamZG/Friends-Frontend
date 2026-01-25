@@ -223,7 +223,7 @@ const Post = ({ post, onDelete }) => {
                             </div>
 
                             <textarea
-                                className="w-full text-lg placeholder-gray-400 bg-transparent dark:text-white border-none focus:ring-0 resize-none mb-4 min-h-[80px]"
+                                className="w-full text-lg placeholder-gray-400 bg-transparent text-gray-900 dark:text-white border-none focus:ring-0 resize-none mb-4 min-h-[80px]"
                                 placeholder={t('share_placeholder')}
                                 value={shareCaption}
                                 onChange={(e) => setShareCaption(e.target.value)}
