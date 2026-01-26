@@ -138,7 +138,7 @@ const Notifications = () => {
                                             }`}>
                                             {(n.type === 'like_post' || n.type === 'like_story') && <Heart size={10} className="fill-current" />}
                                             {n.type === 'comment_post' && <MessageSquare size={10} />}
-                                            {(n.type === 'follow' || n.type === 'follow_request') && <UserPlus size={10} />}
+                                            {n.type === 'follow' && <UserPlus size={10} />}
                                         </div>
                                     </div>
 
@@ -153,7 +153,6 @@ const Notifications = () => {
                                                     {n.type === 'like_post' && t('post_liked')}
                                                     {n.type === 'like_story' && t('story_liked')}
                                                     {n.type === 'comment_post' && "commented on your post."}
-                                                    {n.type === 'follow_request' && t('follow_request_sent')}
                                                     {n.type === 'follow' && t('started_following')}
                                                 </span>
                                             </p>

@@ -180,7 +180,6 @@ const MainLayout = () => {
                                                             {n.type === 'like_post' && " liked your post."}
                                                             {n.type === 'comment_post' && " commented on your post."}
                                                             {n.type === 'like_story' && " liked your story."}
-                                                            {n.type === 'follow_request' && " sent you a follow request."}
                                                             {n.type === 'follow' && " follows you."}
                                                         </p>
                                                         <span className="text-xs text-gray-400 dark:text-gray-500 block mt-1">{format(n.createdAt)}</span>
