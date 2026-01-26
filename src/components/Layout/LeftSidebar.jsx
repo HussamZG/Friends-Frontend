@@ -4,15 +4,22 @@ import { useClerk } from '@clerk/clerk-react';
 import { useLanguage } from '../../context/LanguageContext';
 import { useNotification } from '../../context/NotificationContext';
 
-const SidebarItem = ({ icon: Icon, label, path, active }) => (
+const SidebarItem = ({ icon: Icon, label, path, active, badge }) => (
     <Link
         to={path}
         className={`flex items-center gap-4 p-3 rounded-xl transition-all duration-200 mb-2 ${active
-            ? 'bg-primary text-white shadow-lg shadow-indigo-500/20'
+            ? 'bg-primary text-white shadow-lg shadow-indigo-50/20'
             : 'text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-white'
             }`}
     >
-        <Icon size={22} className={active ? 'stroke-[2.5px]' : 'stroke-[2px]'} />
+        <div className="relative">
+            <Icon size={22} className={active ? 'stroke-[2.5px]' : 'stroke-[2px]'} />
+            {badge > 0 && (
+                <span className="absolute -top-2 -right-2 bg-red-500 text-white text-[9px] font-bold px-1 py-0.5 rounded-full min-w-[16px] text-center border-2 border-white dark:border-gray-800">
+                    {badge > 99 ? '99+' : badge}
+                </span>
+            )}
+        </div>
         <span className="font-medium text-[15px]">{label}</span>
     </Link>
 );
@@ -21,7 +28,7 @@ const LeftSidebar = () => {
     const location = useLocation();
     const { signOut } = useClerk();
     const { t } = useLanguage();
-    const { unreadCount } = useNotification();
+    const { unreadCount, unreadMessages } = useNotification();
 
     return (
         <div className="sticky top-24 w-full">
@@ -29,7 +36,7 @@ const LeftSidebar = () => {
                 <div className="mb-4 px-2">
                     <SidebarItem icon={Home} label={t('nav_feed')} path="/" active={location.pathname === '/'} />
                     <SidebarItem icon={Search} label={t('nav_explore')} path="/search" active={location.pathname === '/search'} />
-                    <SidebarItem icon={MessageSquare} label={t('nav_messages')} path="/chat" active={location.pathname === '/chat'} />
+                    <SidebarItem icon={MessageSquare} label={t('nav_messages')} path="/chat" active={location.pathname === '/chat'} badge={unreadMessages} />
                     <div className="relative">
                         <SidebarItem icon={Heart} label={t('nav_notifications')} path="/notifications" active={location.pathname === '/notifications'} />
                         {unreadCount > 0 && (

@@ -45,7 +45,10 @@ export const NotificationProvider = ({ children }) => {
 
             // Track message notifications
             newSocket.on("getMessageNotification", (data) => {
-                setUnreadMessages((prev) => prev + 1);
+                const isChatPage = window.location.pathname === "/chat";
+                if (!isChatPage) {
+                    setUnreadMessages((prev) => prev + 1);
+                }
             });
 
             return () => newSocket.close();
