@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { X, Heart, Send, ChevronLeft, ChevronRight, MessageCircle, Trash2 } from 'lucide-react';
+import { X, Heart, Send, ChevronLeft, ChevronRight, MessageCircle, Trash2, Users } from 'lucide-react';
 import { useUser, useAuth } from '@clerk/clerk-react';
 import { useLanguage } from '../../context/LanguageContext';
 import { useNotification } from '../../context/NotificationContext';
@@ -14,6 +14,8 @@ const StoryViewer = ({ stories, initialIndex, onClose, onDelete }) => {
     const [currentIndex, setCurrentIndex] = useState(initialIndex);
     const [replyText, setReplyText] = useState("");
     const [liked, setLiked] = useState(false);
+    const [showViewers, setShowViewers] = useState(false);
+    const [isSendingReply, setIsSendingReply] = useState(false);
 
     const currentStory = stories[currentIndex];
 
@@ -71,7 +73,9 @@ const StoryViewer = ({ stories, initialIndex, onClose, onDelete }) => {
 
     const handleReply = async (e) => {
         e.preventDefault();
-        if (!replyText.trim()) return;
+        if (!replyText.trim() || isSendingReply) return;
+
+        setIsSendingReply(true);
 
         try {
             const token = await getToken();
@@ -114,9 +118,11 @@ const StoryViewer = ({ stories, initialIndex, onClose, onDelete }) => {
             }
 
             setReplyText("");
-            alert(t('reply_sent') || "Reply sent!");
+            // alert(t('reply_sent') || "Reply sent!");
         } catch (err) {
             console.error(err);
+        } finally {
+            setIsSendingReply(false);
         }
     };
 
@@ -149,8 +155,8 @@ const StoryViewer = ({ stories, initialIndex, onClose, onDelete }) => {
 
     return (
         <div className="fixed inset-0 z-[60] bg-black/90 flex items-center justify-center backdrop-blur-sm">
-            {/* Close Button */}
-            <button onClick={onClose} className="absolute top-4 right-4 text-white hover:text-gray-300 z-50">
+            {/* Close Button - Moved slightly left to avoid extreme edge on mobile */}
+            <button onClick={onClose} className="absolute top-4 right-4 md:right-8 text-white hover:text-gray-300 z-50 p-2">
                 <X size={32} />
             </button>
 
@@ -158,14 +164,14 @@ const StoryViewer = ({ stories, initialIndex, onClose, onDelete }) => {
             <div className="relative w-full max-w-md h-full md:h-[90vh] bg-black md:rounded-2xl overflow-hidden flex flex-col">
 
                 {/* Header (User Info) */}
-                <div className="absolute top-0 left-0 w-full p-4 bg-gradient-to-b from-black/80 to-transparent z-10 flex items-center gap-3">
+                <div className="absolute top-0 left-0 w-full p-4 pr-16 bg-gradient-to-b from-black/80 to-transparent z-10 flex items-center gap-3">
                     <img
                         src={currentStory.profilePicture || "https://placehold.co/40"}
                         alt=""
                         className="w-10 h-10 rounded-full border-2 border-primary object-cover"
                     />
-                    <div className="flex-1">
-                        <p className="text-white font-semibold text-sm">{currentStory.firstName} {currentStory.lastName}</p>
+                    <div className="flex-1 min-w-0">
+                        <p className="text-white font-semibold text-sm truncate">{currentStory.firstName} {currentStory.lastName}</p>
                         <p className="text-gray-300 text-xs">{format(currentStory.createdAt)}</p>
                     </div>
 
@@ -197,14 +203,22 @@ const StoryViewer = ({ stories, initialIndex, onClose, onDelete }) => {
                 </div>
 
                 {/* Footer (Interactions) */}
-                <div className="absolute bottom-0 left-0 w-full p-4 bg-gradient-to-t from-black/90 via-black/50 to-transparent z-10">
+                <div className="absolute bottom-0 left-0 w-full p-4 pb-8 bg-gradient-to-t from-black/90 via-black/50 to-transparent z-10">
                     {currentStory.userId === user?.id ? (
                         /* Owner View - Show viewers/reactions count */
-                        <div className="flex items-center justify-center gap-4 text-white">
-                            <div className="flex items-center gap-2">
+                        <div className="flex flex-col items-center gap-3">
+                            <button
+                                onClick={() => setShowViewers(true)}
+                                className="flex items-center gap-2 bg-white/10 hover:bg-white/20 backdrop-blur-md px-4 py-2 rounded-full transition-all"
+                            >
                                 <Heart size={20} className="fill-red-500 text-red-500" />
-                                <span className="text-sm font-semibold">{currentStory.likes?.length || 0} {t('story_liked') || 'likes'}</span>
-                            </div>
+                                <span className="text-sm font-semibold text-white">
+                                    {currentStory.likes?.length || 0} {t('story_liked') || 'likes'}
+                                </span>
+                                <div className="w-px h-4 bg-white/20 mx-1"></div>
+                                <Users size={16} className="text-gray-300" />
+                                <span className="text-xs text-gray-300">{t('viewers') || 'Viewers'}</span>
+                            </button>
                         </div>
                     ) : (
                         /* Viewer View - Show reply and like */
@@ -213,12 +227,17 @@ const StoryViewer = ({ stories, initialIndex, onClose, onDelete }) => {
                                 <input
                                     type="text"
                                     placeholder={t('reply_placeholder') || "Reply to story..."}
-                                    className="w-full bg-transparent border border-gray-500 rounded-full px-4 py-2 text-white placeholder-gray-400 focus:outline-none focus:border-primary text-sm backdrop-blur-sm"
+                                    className="w-full bg-transparent border border-gray-500 rounded-full px-4 py-2.5 text-white placeholder-gray-400 focus:outline-none focus:border-primary text-sm backdrop-blur-sm"
                                     value={replyText}
                                     onChange={(e) => setReplyText(e.target.value)}
+                                    disabled={isSendingReply}
                                 />
-                                <button type="submit" className="absolute right-2 top-1.5 text-white hover:text-primary">
-                                    <Send size={18} />
+                                <button
+                                    type="submit"
+                                    className={`absolute right-2 top-2 text-white hover:text-primary transition-colors ${isSendingReply ? 'opacity-50' : ''}`}
+                                    disabled={isSendingReply}
+                                >
+                                    <Send size={18} className={isSendingReply ? 'animate-pulse' : ''} />
                                 </button>
                             </form>
 
@@ -231,6 +250,42 @@ const StoryViewer = ({ stories, initialIndex, onClose, onDelete }) => {
                         </div>
                     )}
                 </div>
+
+                {/* Viewers List Modal Overlap */}
+                {showViewers && (
+                    <div className="absolute inset-x-0 bottom-0 h-2/3 bg-gray-900 rounded-t-3xl z-40 p-6 flex flex-col animate-in slide-in-from-bottom duration-300">
+                        <div className="flex items-center justify-between mb-6">
+                            <h3 className="text-white font-bold text-lg flex items-center gap-2">
+                                <Users size={20} className="text-primary" />
+                                {t('viewers') || 'Viewers'} ({currentStory.likeDetails?.length || 0})
+                            </h3>
+                            <button onClick={() => setShowViewers(false)} className="text-gray-400 hover:text-white">
+                                <X size={24} />
+                            </button>
+                        </div>
+                        <div className="flex-1 overflow-y-auto custom-scrollbar space-y-4">
+                            {currentStory.likeDetails?.length > 0 ? (
+                                currentStory.likeDetails.map((viewer) => (
+                                    <div key={viewer.clerkId} className="flex items-center justify-between">
+                                        <div className="flex items-center gap-3">
+                                            <img src={viewer.profilePicture || "https://placehold.co/40"} className="w-10 h-10 rounded-full border border-gray-700 object-cover" />
+                                            <div>
+                                                <p className="text-white text-sm font-semibold">{viewer.firstName} {viewer.lastName}</p>
+                                                <p className="text-gray-500 text-[10px] uppercase font-bold tracking-wider">{t('liked_story') || 'Liked Story'}</p>
+                                            </div>
+                                        </div>
+                                        <Heart size={16} className="fill-red-500 text-red-500" />
+                                    </div>
+                                ))
+                            ) : (
+                                <div className="h-full flex flex-col items-center justify-center text-gray-500 gap-2">
+                                    <Users size={48} className="opacity-10" />
+                                    <p className="text-sm">{t('no_viewers_yet') || 'No viewers yet'}</p>
+                                </div>
+                            )}
+                        </div>
+                    </div>
+                )}
             </div>
 
             {/* Desktop Navigation Arrows */}
