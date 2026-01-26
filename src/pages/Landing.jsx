@@ -17,9 +17,7 @@ const Landing = () => {
             {/* Navbar */}
             <nav className="relative z-50 flex justify-between items-center px-6 py-6 md:px-12 max-w-7xl mx-auto">
                 <div className="text-2xl font-black tracking-tighter flex items-center gap-2">
-                    <div className="w-8 h-8 bg-gradient-to-tr from-indigo-500 to-purple-600 rounded-lg flex items-center justify-center shadow-lg shadow-indigo-500/25">
-                        <span className="text-white font-bold text-lg">F</span>
-                    </div>
+                    <img src="/logo.png" alt="" className="w-8 h-8 rounded-lg shadow-lg shadow-indigo-500/25" />
                     <span>Friends.</span>
                 </div>
                 <SignInButton mode="modal">
