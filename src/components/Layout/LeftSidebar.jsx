@@ -7,9 +7,9 @@ import { useNotification } from '../../context/NotificationContext';
 const SidebarItem = ({ icon: Icon, label, path, active, badge }) => (
     <Link
         to={path}
-        className={`flex items-center gap-4 p-3 rounded-xl transition-all duration-200 mb-2 ${active
+        className={`flex items-center gap-4 p-3 rounded-xl transition-all duration-300 mb-2 group ${active
             ? 'bg-primary text-white shadow-lg shadow-indigo-50/20'
-            : 'text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-white'
+            : 'text-gray-500 dark:text-gray-400 hover:bg-primary/10 hover:text-primary hover:translate-x-1 hover:scale-[1.02]'
             }`}
     >
         <div className="relative">
@@ -52,7 +52,7 @@ const LeftSidebar = () => {
                 <div className="border-t border-gray-100 dark:border-gray-700 pt-4 mt-2 px-2">
                     <button
                         onClick={() => signOut()}
-                        className="flex w-full items-center gap-4 p-3 rounded-xl text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 transition-all duration-200"
+                        className="flex w-full items-center gap-4 p-3 rounded-xl text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 hover:scale-[1.02] hover:translate-x-1 transition-all duration-300"
                     >
                         <LogOut size={22} />
                         <span className="font-medium text-[15px]">{t('nav_signout')}</span>
