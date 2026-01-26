@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react';
-import { X, Heart, Send, ChevronLeft, ChevronRight, MessageCircle } from 'lucide-react';
+import { X, Heart, Send, ChevronLeft, ChevronRight, MessageCircle, Trash2 } from 'lucide-react';
 import { useUser, useAuth } from '@clerk/clerk-react';
 import { useLanguage } from '../../context/LanguageContext';
 import { useNotification } from '../../context/NotificationContext';
 import { format } from 'timeago.js';
 import { API_URL } from '../../config';
 
-const StoryViewer = ({ stories, initialIndex, onClose }) => {
+const StoryViewer = ({ stories, initialIndex, onClose, onDelete }) => {
     const { user } = useUser();
     const { getToken } = useAuth();
     const { t } = useLanguage();
@@ -120,6 +120,31 @@ const StoryViewer = ({ stories, initialIndex, onClose }) => {
         }
     };
 
+    const handleDelete = async () => {
+        if (!window.confirm(t('confirm_delete') || "Are you sure you want to delete this story?")) return;
+
+        try {
+            const token = await getToken();
+            const res = await fetch(`${API_URL}/api/stories/${currentStory._id}`, {
+                method: "DELETE",
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+
+            if (res.ok) {
+                onDelete(currentStory._id);
+                if (stories.length === 1) {
+                    onClose();
+                } else {
+                    handleNext();
+                }
+            }
+        } catch (err) {
+            console.error(err);
+        }
+    };
+
     if (!currentStory) return null;
 
     return (
@@ -139,10 +164,20 @@ const StoryViewer = ({ stories, initialIndex, onClose }) => {
                         alt=""
                         className="w-10 h-10 rounded-full border-2 border-primary object-cover"
                     />
-                    <div>
+                    <div className="flex-1">
                         <p className="text-white font-semibold text-sm">{currentStory.firstName} {currentStory.lastName}</p>
                         <p className="text-gray-300 text-xs">{format(currentStory.createdAt)}</p>
                     </div>
+
+                    {currentStory.userId === user?.id && (
+                        <button
+                            onClick={handleDelete}
+                            className="text-white/70 hover:text-red-500 transition-colors p-2"
+                            title={t('delete') || 'Delete'}
+                        >
+                            <Trash2 size={20} />
+                        </button>
+                    )}
                 </div>
 
                 {/* Story Image */}

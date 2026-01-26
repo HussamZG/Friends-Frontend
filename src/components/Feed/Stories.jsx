@@ -104,6 +104,9 @@ const Stories = () => {
                     stories={stories}
                     initialIndex={selectedStoryIndex}
                     onClose={() => setSelectedStoryIndex(null)}
+                    onDelete={(id) => {
+                        setStories(prev => prev.filter(s => s._id !== id));
+                    }}
                 />
             )}
         </div>
