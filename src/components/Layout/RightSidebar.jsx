@@ -64,34 +64,39 @@ const RightSidebar = () => {
                         <p className="text-sm text-gray-400">{t('no_suggestions')}</p>
                     ) : (
                         suggestions.map((user) => (
-                            <div key={user._id} className="flex items-center justify-between">
-                                <Link to={`/profile/${user.clerkId}`} className="flex items-center gap-3 hover:opacity-80 transition">
+                            <div key={user._id} className="flex items-center justify-between group">
+                                <Link
+                                    to={`/profile/${user.clerkId}`}
+                                    className="flex items-center gap-3 flex-1 min-w-0 hover:bg-gray-50 dark:hover:bg-gray-800/50 p-1.5 rounded-xl transition-all"
+                                >
                                     <img
                                         src={user.profilePicture || "https://placehold.co/40"}
                                         alt=""
-                                        className="w-10 h-10 rounded-full object-cover bg-gray-200"
+                                        className="w-10 h-10 rounded-full object-cover bg-gray-200 border border-gray-100 dark:border-gray-800"
                                     />
-                                    <div>
-                                        <p className="text-sm font-semibold text-gray-900 dark:text-gray-100 leading-tight">
+                                    <div className="min-w-0">
+                                        <p className="text-sm font-bold text-gray-900 dark:text-white leading-tight truncate">
                                             {user.firstName} {user.lastName}
                                         </p>
-                                        <p className="text-xs text-gray-500 dark:text-gray-400">{t('suggested_for_you').split(' ')[0]}</p>
+                                        <p className="text-[11px] text-gray-500 dark:text-gray-400 font-medium">{user.location || t('suggested_for_you').split(' ')[0]}</p>
                                     </div>
                                 </Link>
-                                {followed.includes(user.clerkId) || (user.followRequests && user.followRequests.includes(clerkUser.id)) ? (
-                                    <button className="text-xs text-green-600 font-bold flex items-center gap-1 cursor-default">
-                                        <UserCheck size={14} />
-                                        <span>{t('sent')}</span>
-                                    </button>
-                                ) : (
-                                    <button
-                                        onClick={() => handleFollow(user.clerkId)}
-                                        className="text-xs text-primary font-bold hover:bg-indigo-50 dark:hover:bg-indigo-900/20 px-2 py-1 rounded-md transition-colors flex items-center gap-1"
-                                    >
-                                        <UserPlus size={14} />
-                                        <span>{t('profile_follow')}</span>
-                                    </button>
-                                )}
+                                <div className="ml-2">
+                                    {followed.includes(user.clerkId) || (user.followRequests && user.followRequests.includes(clerkUser.id)) ? (
+                                        <button className="text-xs text-green-600 font-bold flex items-center gap-1 cursor-default">
+                                            <UserCheck size={14} />
+                                            <span>{t('sent')}</span>
+                                        </button>
+                                    ) : (
+                                        <button
+                                            onClick={() => handleFollow(user.clerkId)}
+                                            className="text-xs text-primary font-bold hover:bg-indigo-50 dark:hover:bg-indigo-900/20 px-2 py-1 rounded-md transition-colors flex items-center gap-1"
+                                        >
+                                            <UserPlus size={14} />
+                                            <span>{t('profile_follow')}</span>
+                                        </button>
+                                    )}
+                                </div>
                             </div>
                         ))
                     )}

@@ -186,8 +186,8 @@ const Profile = () => {
                             />
                         </div>
 
-                        <div className="flex-1 text-center md:text-left pt-2 md:pt-16">
-                            <h1 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white">{userProfile.firstName} {userProfile.lastName}</h1>
+                        <div className="flex-1 text-center md:text-left pt-2 md:pt-16 min-w-0">
+                            <h1 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white truncate">{userProfile.firstName} {userProfile.lastName}</h1>
                             <p className="text-gray-500 dark:text-gray-400 font-medium">@{userProfile.firstName.toLowerCase()}</p>
                         </div>
 
@@ -244,24 +244,24 @@ const Profile = () => {
                             </div>
                         </div>
 
-                        <div className="flex bg-gray-50 dark:bg-gray-800 rounded-xl p-4 gap-8 mt-6 md:mt-0">
+                        <div className="grid grid-cols-3 bg-gray-50 dark:bg-gray-800 rounded-2xl p-2 md:p-4 gap-1 md:gap-8 mt-6 md:mt-0 w-full md:w-auto">
                             <button
                                 onClick={() => fetchUserList('followers')}
-                                className="text-center hover:bg-gray-100 dark:hover:bg-gray-700 p-2 rounded-lg transition-colors"
+                                className="text-center hover:bg-gray-100 dark:hover:bg-gray-700 p-2 rounded-xl transition-colors min-w-0"
                             >
-                                <span className="block text-xl font-bold text-gray-900 dark:text-white">{userProfile.followers?.length || 0}</span>
-                                <span className="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wide font-semibold">{t('profile_followers')}</span>
+                                <span className="block text-lg md:text-xl font-bold text-gray-900 dark:text-white">{userProfile.followers?.length || 0}</span>
+                                <span className="text-[10px] md:text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wide font-bold">{t('profile_followers')}</span>
                             </button>
                             <button
                                 onClick={() => fetchUserList('following')}
-                                className="text-center hover:bg-gray-100 dark:hover:bg-gray-700 p-2 rounded-lg transition-colors"
+                                className="text-center hover:bg-gray-100 dark:hover:bg-gray-700 p-2 rounded-xl transition-colors min-w-0"
                             >
-                                <span className="block text-xl font-bold text-gray-900 dark:text-white">{userProfile.following?.length || 0}</span>
-                                <span className="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wide font-semibold">{t('profile_following')}</span>
+                                <span className="block text-lg md:text-xl font-bold text-gray-900 dark:text-white">{userProfile.following?.length || 0}</span>
+                                <span className="text-[10px] md:text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wide font-bold">{t('profile_following')}</span>
                             </button>
-                            <div className="text-center p-2">
-                                <span className="block text-xl font-bold text-gray-900 dark:text-white">{posts.length}</span>
-                                <span className="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wide font-semibold">{t('profile_posts')}</span>
+                            <div className="text-center p-2 min-w-0">
+                                <span className="block text-lg md:text-xl font-bold text-gray-900 dark:text-white">{posts.length}</span>
+                                <span className="text-[10px] md:text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wide font-bold">{t('profile_posts')}</span>
                             </div>
                         </div>
                     </div>
