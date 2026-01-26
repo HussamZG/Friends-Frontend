@@ -12,6 +12,8 @@ export const NotificationProvider = ({ children }) => {
     const [notifications, setNotifications] = useState([]);
     const [socket, setSocket] = useState(null);
     const [unreadCount, setUnreadCount] = useState(0);
+    const [onlineUsers, setOnlineUsers] = useState([]);
+    const [unreadMessages, setUnreadMessages] = useState(0);
 
     const [arrivalMessage, setArrivalMessage] = useState(null);
 
@@ -34,6 +36,16 @@ export const NotificationProvider = ({ children }) => {
                     text: data.text,
                     createdAt: Date.now(),
                 });
+            });
+
+            // Track online users
+            newSocket.on("getUsers", (users) => {
+                setOnlineUsers(users.map(u => u.userId));
+            });
+
+            // Track message notifications
+            newSocket.on("getMessageNotification", (data) => {
+                setUnreadMessages((prev) => prev + 1);
             });
 
             return () => newSocket.close();
@@ -114,6 +126,10 @@ export const NotificationProvider = ({ children }) => {
         }
     };
 
+    const clearUnreadMessages = () => {
+        setUnreadMessages(0);
+    };
+
     return (
         <NotificationContext.Provider value={{
             notifications,
@@ -124,7 +140,10 @@ export const NotificationProvider = ({ children }) => {
             sendNotification: () => { }, // No-op as it's backend driven now
             socket,
             arrivalMessage,
-            setArrivalMessage
+            setArrivalMessage,
+            onlineUsers,
+            unreadMessages,
+            clearUnreadMessages
         }}>
             {children}
         </NotificationContext.Provider>
@@ -132,3 +151,4 @@ export const NotificationProvider = ({ children }) => {
 };
 
 export const useNotification = () => useContext(NotificationContext);
+

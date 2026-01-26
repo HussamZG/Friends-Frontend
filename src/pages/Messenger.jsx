@@ -25,7 +25,7 @@ const Messenger = () => {
 
     // We removed the 3rd column state as demanded by the "mobile-like" flow request
 
-    const { arrivalMessage, socket } = useNotification();
+    const { arrivalMessage, socket, onlineUsers, clearUnreadMessages } = useNotification();
     const scrollRef = useRef();
 
     useEffect(() => {
@@ -33,6 +33,11 @@ const Messenger = () => {
             setMessages((prev) => [...prev, arrivalMessage]);
         }
     }, [arrivalMessage, currentChat]);
+
+    useEffect(() => {
+        // Clear unread messages when entering chat page
+        clearUnreadMessages();
+    }, []);
 
     useEffect(() => {
         const getConversations = async () => {
@@ -190,6 +195,7 @@ const Messenger = () => {
                                 currentUser={user}
                                 active={currentChat?._id === c._id}
                                 t={t}
+                                onlineUsers={onlineUsers}
                             />
                         </div>
                     ))}
@@ -216,7 +222,7 @@ const Messenger = () => {
                                 >
                                     <ArrowLeft size={20} />
                                 </button>
-                                <ConversationHeader conversation={currentChat} currentUser={user} t={t} />
+                                <ConversationHeader conversation={currentChat} currentUser={user} t={t} onlineUsers={onlineUsers} />
                             </div>
                             <div className="relative">
                                 <button
@@ -326,11 +332,12 @@ const Messenger = () => {
     );
 };
 
-const ConversationItem = ({ conversation, currentUser, active, t }) => {
+const ConversationItem = ({ conversation, currentUser, active, t, onlineUsers = [] }) => {
     const [user, setUser] = useState(null);
+    const friendId = conversation.members.find((m) => m !== currentUser.id);
+    const isOnline = onlineUsers.includes(friendId);
 
     useEffect(() => {
-        const friendId = conversation.members.find((m) => m !== currentUser.id);
         const getUser = async () => {
             try {
                 const res = await fetch(`${API_URL}/api/users/${friendId}`);
@@ -353,7 +360,7 @@ const ConversationItem = ({ conversation, currentUser, active, t }) => {
                     alt=""
                     className="w-14 h-14 rounded-2xl object-cover border-2 border-white shadow-sm"
                 />
-                <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 rounded-full border-2 border-white"></div>
+                {isOnline && <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 rounded-full border-2 border-white"></div>}
             </div>
             <div className="flex-1 min-w-0">
                 <div className="flex justify-between items-baseline mb-1">
@@ -368,11 +375,12 @@ const ConversationItem = ({ conversation, currentUser, active, t }) => {
     );
 };
 
-const ConversationHeader = ({ conversation, currentUser, t }) => {
+const ConversationHeader = ({ conversation, currentUser, t, onlineUsers = [] }) => {
     const [user, setUser] = useState(null);
+    const friendId = conversation.members.find((m) => m !== currentUser.id);
+    const isOnline = onlineUsers.includes(friendId);
 
     useEffect(() => {
-        const friendId = conversation.members.find((m) => m !== currentUser.id);
         if (!friendId || friendId === 'undefined') return;
 
         const getUser = async () => {
@@ -398,10 +406,12 @@ const ConversationHeader = ({ conversation, currentUser, t }) => {
             />
             <div>
                 <h3 className="font-black text-gray-900 dark:text-white text-[15px] md:text-base leading-tight">{user.firstName} {user.lastName}</h3>
-                <div className="flex items-center gap-1.5 mt-0.5">
-                    <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                    <span className="text-[11px] text-gray-500 font-bold tracking-tight uppercase">{t('active_now')}</span>
-                </div>
+                {isOnline && (
+                    <div className="flex items-center gap-1.5 mt-0.5">
+                        <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                        <span className="text-[11px] text-gray-500 font-bold tracking-tight uppercase">{t('active_now')}</span>
+                    </div>
+                )}
             </div>
         </div>
     )

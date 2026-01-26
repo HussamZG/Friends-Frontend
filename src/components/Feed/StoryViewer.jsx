@@ -163,27 +163,38 @@ const StoryViewer = ({ stories, initialIndex, onClose }) => {
 
                 {/* Footer (Interactions) */}
                 <div className="absolute bottom-0 left-0 w-full p-4 bg-gradient-to-t from-black/90 via-black/50 to-transparent z-10">
-                    <div className="flex items-center gap-4">
-                        <form onSubmit={handleReply} className="flex-1 relative">
-                            <input
-                                type="text"
-                                placeholder={t('reply_placeholder') || "Reply to story..."}
-                                className="w-full bg-transparent border border-gray-500 rounded-full px-4 py-2 text-white placeholder-gray-400 focus:outline-none focus:border-primary text-sm backdrop-blur-sm"
-                                value={replyText}
-                                onChange={(e) => setReplyText(e.target.value)}
-                            />
-                            <button type="submit" className="absolute right-2 top-1.5 text-white hover:text-primary">
-                                <Send size={18} />
-                            </button>
-                        </form>
+                    {currentStory.userId === user?.id ? (
+                        /* Owner View - Show viewers/reactions count */
+                        <div className="flex items-center justify-center gap-4 text-white">
+                            <div className="flex items-center gap-2">
+                                <Heart size={20} className="fill-red-500 text-red-500" />
+                                <span className="text-sm font-semibold">{currentStory.likes?.length || 0} {t('story_liked') || 'likes'}</span>
+                            </div>
+                        </div>
+                    ) : (
+                        /* Viewer View - Show reply and like */
+                        <div className="flex items-center gap-4">
+                            <form onSubmit={handleReply} className="flex-1 relative">
+                                <input
+                                    type="text"
+                                    placeholder={t('reply_placeholder') || "Reply to story..."}
+                                    className="w-full bg-transparent border border-gray-500 rounded-full px-4 py-2 text-white placeholder-gray-400 focus:outline-none focus:border-primary text-sm backdrop-blur-sm"
+                                    value={replyText}
+                                    onChange={(e) => setReplyText(e.target.value)}
+                                />
+                                <button type="submit" className="absolute right-2 top-1.5 text-white hover:text-primary">
+                                    <Send size={18} />
+                                </button>
+                            </form>
 
-                        <button onClick={handleLike} className="flex flex-col items-center gap-1 min-w-[40px]">
-                            <Heart
-                                size={28}
-                                className={`transition-all ${liked ? 'fill-red-500 text-red-500 scale-110' : 'text-white hover:scale-110'}`}
-                            />
-                        </button>
-                    </div>
+                            <button onClick={handleLike} className="flex flex-col items-center gap-1 min-w-[40px]">
+                                <Heart
+                                    size={28}
+                                    className={`transition-all ${liked ? 'fill-red-500 text-red-500 scale-110' : 'text-white hover:scale-110'}`}
+                                />
+                            </button>
+                        </div>
+                    )}
                 </div>
             </div>
 

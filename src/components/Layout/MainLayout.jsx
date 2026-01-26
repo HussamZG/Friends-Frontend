@@ -11,11 +11,11 @@ import { format } from 'timeago.js';
 
 const MobileNav = ({ activePath }) => {
     const { t } = useLanguage();
-    const { unreadCount } = useNotification();
+    const { unreadCount, unreadMessages } = useNotification();
     const navItems = [
         { icon: Home, path: '/', label: t('nav_feed') },
         { icon: Search, path: '/search', label: t('nav_explore') },
-        { icon: MessageSquare, path: '/chat', label: t('nav_messages') },
+        { icon: MessageSquare, path: '/chat', label: t('nav_messages'), badge: unreadMessages },
         { icon: Heart, path: '/notifications', label: t('nav_notifications'), badge: unreadCount },
         { icon: User, path: '/profile', label: t('nav_profile') },
         { icon: SettingsIcon, path: '/settings', label: t('nav_settings') },
@@ -50,7 +50,7 @@ const MainLayout = () => {
     const navigate = useNavigate();
     const location = useLocation();
     const { t, language } = useLanguage();
-    const { notifications, unreadCount, markAsRead, markAllAsRead, deleteNotification } = useNotification();
+    const { notifications, unreadCount, markAsRead, markAllAsRead, deleteNotification, unreadMessages, clearUnreadMessages } = useNotification();
     const [query, setQuery] = useState('');
     const [showNotifications, setShowNotifications] = useState(false);
 
@@ -180,6 +180,7 @@ const MainLayout = () => {
                                                             {n.type === 'like_post' && " liked your post."}
                                                             {n.type === 'comment_post' && " commented on your post."}
                                                             {n.type === 'like_story' && " liked your story."}
+                                                            {n.type === 'follow_request' && " sent you a follow request."}
                                                             {n.type === 'follow' && " follows you."}
                                                         </p>
                                                         <span className="text-xs text-gray-400 dark:text-gray-500 block mt-1">{format(n.createdAt)}</span>

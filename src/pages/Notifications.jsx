@@ -111,14 +111,14 @@ const Notifications = () => {
                 ) : (
                     <div>
                         {notifications.map(n => {
-                            const isRequest = n.type === 'follow' && followRequests.some(r => r.clerkId === n.senderId);
+                            const isRequest = n.type === 'follow_request' && followRequests.some(r => r.clerkId === n.senderId);
 
                             return (
                                 <div
                                     key={n._id}
                                     className={`p-4 md:p-5 rounded-2xl flex gap-4 transition-all duration-300 border mb-3 cursor-pointer relative group ${!n.isRead
-                                            ? 'bg-white dark:bg-gray-800 border-indigo-100 dark:border-indigo-900/30 shadow-md shadow-indigo-100/50 dark:shadow-none'
-                                            : 'bg-white dark:bg-gray-800 border-gray-100 dark:border-gray-700 hover:border-gray-200 dark:hover:border-gray-600'
+                                        ? 'bg-white dark:bg-gray-800 border-indigo-100 dark:border-indigo-900/30 shadow-md shadow-indigo-100/50 dark:shadow-none'
+                                        : 'bg-white dark:bg-gray-800 border-gray-100 dark:border-gray-700 hover:border-gray-200 dark:hover:border-gray-600'
                                         }`}
                                     onMouseEnter={() => !n.isRead && markAsRead(n._id)}
                                 >
@@ -133,12 +133,12 @@ const Notifications = () => {
                                         <div className="w-12 h-12">
                                             <img src={n.senderData?.profilePicture || "https://placehold.co/50"} className="w-full h-full rounded-full object-cover border-2 border-white dark:border-gray-700 shadow-sm" />
                                         </div>
-                                        <div className={`absolute -bottom-1 -right-1 p-1 rounded-full text-white border-2 border-white dark:border-gray-800 ${n.type === 'like_post' ? 'bg-red-500' :
-                                                n.type === 'comment_post' ? 'bg-blue-500' : 'bg-primary'
+                                        <div className={`absolute -bottom-1 -right-1 p-1 rounded-full text-white border-2 border-white dark:border-gray-800 ${n.type === 'like_post' || n.type === 'like_story' ? 'bg-red-500' :
+                                            n.type === 'comment_post' ? 'bg-blue-500' : 'bg-primary'
                                             }`}>
-                                            {n.type === 'like_post' && <Heart size={10} className="fill-current" />}
+                                            {(n.type === 'like_post' || n.type === 'like_story') && <Heart size={10} className="fill-current" />}
                                             {n.type === 'comment_post' && <MessageSquare size={10} />}
-                                            {n.type === 'follow' && <UserPlus size={10} />}
+                                            {(n.type === 'follow' || n.type === 'follow_request') && <UserPlus size={10} />}
                                         </div>
                                     </div>
 
@@ -150,9 +150,11 @@ const Notifications = () => {
                                                     {n.senderData?.firstName} {n.senderData?.lastName}
                                                 </span>
                                                 <span className="text-gray-600 dark:text-gray-400">
-                                                    {n.type === 'like_post' && t('story_liked')}
+                                                    {n.type === 'like_post' && t('post_liked')}
+                                                    {n.type === 'like_story' && t('story_liked')}
                                                     {n.type === 'comment_post' && "commented on your post."}
-                                                    {n.type === 'follow' && "started following you."}
+                                                    {n.type === 'follow_request' && t('follow_request_sent')}
+                                                    {n.type === 'follow' && t('started_following')}
                                                 </span>
                                             </p>
                                             <span className="text-xs text-gray-400 dark:text-gray-500 font-medium whitespace-nowrap ml-2">{format(n.createdAt)}</span>
