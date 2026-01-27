@@ -10,6 +10,6 @@ const API_URL = import.meta.env.VITE_API_URL && !import.meta.env.VITE_API_URL.in
 
 const SOCKET_URL = API_URL;
 
-console.log(`[Config] API URL: ${API_URL} (Localhost: ${isLocalhost})`);
+
 
 export { API_URL, SOCKET_URL };

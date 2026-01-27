@@ -39,7 +39,6 @@ const EditProfileModal = ({ isOpen, onClose, user, onUpdate }) => {
     };
 
     const onUploadError = (err) => {
-        console.log("Error", err);
         setUploading(false);
     };
 

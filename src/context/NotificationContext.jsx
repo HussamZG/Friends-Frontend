@@ -26,7 +26,7 @@ export const NotificationProvider = ({ children }) => {
     const playNotificationSound = () => {
         if (soundEnabledRef.current) {
             const audio = new Audio('/sounds/notification.mp3');
-            audio.play().catch(err => console.log("Sound play error:", err));
+            audio.play().catch(err => { });
         }
     };
 
