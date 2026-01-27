@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useState, useRef } from "react";
 import { useUser, useAuth } from "@clerk/clerk-react";
 import { io } from "socket.io-client";
 
@@ -18,8 +18,13 @@ export const NotificationProvider = ({ children }) => {
         return localStorage.getItem('notificationSound') !== 'false';
     });
 
+    const soundEnabledRef = useRef(soundEnabled);
+    useEffect(() => {
+        soundEnabledRef.current = soundEnabled;
+    }, [soundEnabled]);
+
     const playNotificationSound = () => {
-        if (soundEnabled) {
+        if (soundEnabledRef.current) {
             const audio = new Audio('/sounds/notification.mp3');
             audio.play().catch(err => console.log("Sound play error:", err));
         }

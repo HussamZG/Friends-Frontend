@@ -228,7 +228,7 @@ const Messenger = () => {
                 return await response.json();
             }}
         >
-            <div className="card h-[calc(100vh-120px)] md:h-[calc(100vh-140px)] flex overflow-hidden max-w-5xl mx-auto border-0 md:border shadow-2xl relative">
+            <div className="card h-[calc(100vh-80px)] md:h-[calc(100vh-140px)] flex overflow-hidden max-w-6xl mx-auto border-0 md:border shadow-2xl relative">
                 {/* View 1: Chat Menu (Full width when active) */}
                 <div className={`${showChatList ? 'flex' : 'hidden'} w-full flex-col bg-white dark:bg-gray-900 transition-all`}>
                     <div className="p-6 border-b border-gray-50 dark:border-gray-800 bg-white/50 dark:bg-gray-900/50 backdrop-blur-md sticky top-0 z-20">
@@ -311,9 +311,9 @@ const Messenger = () => {
                                         onMouseEnter={() => setShowOptionsId(m._id)}
                                         onMouseLeave={() => setShowOptionsId(null)}
                                     >
-                                        <div className={`flex items-center gap-2 ${m.sender === user.id ? 'flex-row-reverse' : 'flex-row'}`}>
+                                        <div className={`flex items-center gap-2 ${m.sender === user.id ? 'flex-row-reverse' : 'flex-row'} w-full`}>
                                             <div
-                                                className={`max-w-[85%] md:max-w-[60%] rounded-2xl shadow-sm text-[15px] leading-relaxed relative flex flex-col overflow-hidden ${m.sender === user.id
+                                                className={`max-w-[92%] md:max-w-[75%] rounded-2xl shadow-sm text-[15px] leading-relaxed relative flex flex-col overflow-hidden ${m.sender === user.id
                                                     ? 'bg-primary text-white rounded-se-none shadow-indigo-500/10'
                                                     : 'bg-white/80 dark:bg-gray-800/80 border border-gray-100 dark:border-gray-700 text-gray-800 dark:text-gray-200 rounded-ss-none shadow-sm backdrop-blur-sm'
                                                     }`}
@@ -373,8 +373,8 @@ const Messenger = () => {
                                         <EmojiPicker onEmojiClick={onEmojiClick} theme="light" width={300} height={400} />
                                     </div>
                                 )}
-                                <form onSubmit={handleSubmit} className="flex items-center gap-3 max-w-4xl mx-auto">
-                                    <label className="hidden sm:flex text-gray-400 hover:text-primary transition bg-gray-50 dark:bg-gray-800 hover:bg-indigo-50 dark:hover:bg-indigo-900/20 p-3 rounded-2xl cursor-pointer">
+                                <form onSubmit={handleSubmit} className="flex items-center gap-2 md:gap-3 max-w-4xl mx-auto focus-within:ring-2 focus-within:ring-primary/5 rounded-3xl transition-all">
+                                    <label className="flex text-gray-400 hover:text-primary transition bg-gray-50 dark:bg-gray-800 hover:bg-indigo-50 dark:hover:bg-indigo-900/20 p-3 md:p-3.5 rounded-2xl cursor-pointer flex-shrink-0">
                                         <Image size={22} />
                                         <IKUpload
                                             className="hidden"

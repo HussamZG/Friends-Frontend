@@ -9,8 +9,8 @@ const Settings = () => {
     const { soundEnabled, setSoundEnabled } = useNotification();
 
     return (
-        <div className="max-w-xl mx-auto">
-            <div className="card p-6">
+        <div className="max-w-2xl mx-auto px-4 py-6 md:py-10">
+            <div className="card p-5 md:p-8 shadow-2xl border-0 md:border">
                 <div className="flex items-center gap-3 mb-6 border-b border-gray-100 dark:border-gray-700 pb-4">
                     <SettingsIcon className="text-primary" size={24} />
                     <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">{t('settings_title')}</h1>
@@ -52,23 +52,23 @@ const Settings = () => {
                     </div>
 
                     {/* Notification Settings */}
-                    <div>
-                        <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-2">{t('settings_notifications')}</h2>
-                        <div className="card p-4 flex items-center justify-between">
-                            <div className="flex items-center gap-4">
-                                <div className={`p-3 rounded-2xl ${soundEnabled ? 'bg-indigo-50 dark:bg-indigo-500/10 text-primary' : 'bg-gray-50 dark:bg-gray-800 text-gray-400'}`}>
-                                    <Heart size={24} className={soundEnabled ? 'fill-primary' : ''} />
+                    <div className="pt-2">
+                        <h2 className="text-lg font-black text-gray-800 dark:text-white mb-4">{t('settings_notifications')}</h2>
+                        <div className="bg-gray-50/50 dark:bg-gray-800/40 p-4 rounded-3xl flex items-center justify-between border border-gray-100 dark:border-gray-700/50 transition-all hover:bg-white dark:hover:bg-gray-800">
+                            <div className="flex items-center gap-3 md:gap-4 min-w-0">
+                                <div className={`p-3 rounded-2xl flex-shrink-0 ${soundEnabled ? 'bg-primary/10 text-primary shadow-sm shadow-primary/10' : 'bg-gray-100 dark:bg-gray-800 text-gray-400'}`}>
+                                    <Heart size={22} className={soundEnabled ? 'fill-primary' : ''} />
                                 </div>
-                                <div>
-                                    <h3 className="font-bold text-gray-900 dark:text-gray-100">{t('settings_sound_enabled')}</h3>
-                                    <p className="text-sm text-gray-500 dark:text-gray-400">{t('settings_sound_desc')}</p>
+                                <div className="min-w-0">
+                                    <h3 className="font-black text-gray-900 dark:text-white text-sm md:text-base truncate">{t('settings_sound_enabled')}</h3>
+                                    <p className="text-[12px] md:text-sm text-gray-500 dark:text-gray-400 line-clamp-1">{t('settings_sound_desc')}</p>
                                 </div>
                             </div>
                             <button
                                 onClick={() => setSoundEnabled(!soundEnabled)}
-                                className={`w-14 h-8 rounded-full transition-all relative ${soundEnabled ? 'bg-primary' : 'bg-gray-200 dark:bg-gray-700'}`}
+                                className={`w-12 h-7 md:w-14 md:h-8 rounded-full transition-all relative flex-shrink-0 ${soundEnabled ? 'bg-primary' : 'bg-gray-200 dark:bg-gray-700'}`}
                             >
-                                <div className={`absolute top-1 w-6 h-6 rounded-full bg-white shadow-sm transition-all ${soundEnabled ? (language === 'ar' ? 'right-7' : 'left-7') : (language === 'ar' ? 'right-1' : 'left-1')}`}></div>
+                                <div className={`absolute top-0.5 md:top-1 w-6 h-6 rounded-full bg-white shadow-sm transition-all ${soundEnabled ? (language === 'ar' ? 'right-5 md:right-7' : 'left-5 md:left-7') : (language === 'ar' ? 'right-0.5 md:right-1' : 'left-0.5 md:left-1')}`}></div>
                             </button>
                         </div>
                     </div>
