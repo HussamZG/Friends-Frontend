@@ -45,6 +45,7 @@ export const NotificationProvider = ({ children }) => {
                 setArrivalMessage({
                     sender: data.senderId,
                     text: data.text,
+                    img: data.img,
                     storyContext: data.storyContext,
                     createdAt: Date.now(),
                 });
