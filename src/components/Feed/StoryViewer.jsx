@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { X, Heart, Send, ChevronLeft, ChevronRight, MessageCircle, Trash2, Users } from 'lucide-react';
+import { X, Heart, Send, ChevronLeft, ChevronRight, MessageCircle, Trash2, Users, Check, Loader2 } from 'lucide-react';
 import { useUser, useAuth } from '@clerk/clerk-react';
 import { useLanguage } from '../../context/LanguageContext';
 import { useNotification } from '../../context/NotificationContext';
@@ -10,7 +10,7 @@ const StoryViewer = ({ stories, initialIndex, onClose, onDelete }) => {
     const { user } = useUser();
     const { getToken } = useAuth();
     const { t } = useLanguage();
-    const { sendNotification } = useNotification();
+    const { sendNotification, socket } = useNotification();
     const [currentIndex, setCurrentIndex] = useState(initialIndex);
     const [replyText, setReplyText] = useState("");
     const [liked, setLiked] = useState(false);
@@ -125,11 +125,6 @@ const StoryViewer = ({ stories, initialIndex, onClose, onDelete }) => {
                     text: replyText,
                     storyContext: msgData.storyContext
                 });
-                // Also trigger a message notification for the red badge
-                socket.emit("sendNotification", {
-                    receiverId: currentStory.userId,
-                    type: 'message', // Generic type to trigger unread message count
-                });
             }
 
             // 3. Send Notification for reply
@@ -191,9 +186,19 @@ const StoryViewer = ({ stories, initialIndex, onClose, onDelete }) => {
 
             {/* Success Toast */}
             {showSentToast && (
-                <div className="absolute top-20 left-1/2 transform -translate-x-1/2 bg-primary text-white px-6 py-3 rounded-full shadow-2xl z-[70] animate-in fade-in zoom-in slide-in-from-top-4 duration-300 flex items-center gap-2 border border-white/20">
+                <div className="absolute top-20 left-1/2 transform -translate-x-1/2 bg-green-500 text-white px-6 py-3 rounded-full shadow-2xl z-[70] animate-in fade-in zoom-in slide-in-from-top-4 duration-300 flex items-center gap-2 border border-white/20">
                     <Check size={20} className="stroke-[3px]" />
                     <span className="font-bold text-sm tracking-wide">{t('reply_sent') || 'Reply Sent!'}</span>
+                </div>
+            )}
+
+            {/* Loading Overlay */}
+            {isSendingReply && (
+                <div className="absolute inset-0 bg-black/40 flex items-center justify-center z-[80] backdrop-blur-[2px]">
+                    <div className="bg-white/10 p-4 rounded-2xl backdrop-blur-md border border-white/10 flex flex-col items-center gap-3 animate-pulse">
+                        <Loader2 size={32} className="text-primary animate-spin" />
+                        <span className="text-white text-xs font-bold uppercase tracking-widest">{t('sending') || 'Sending...'}</span>
+                    </div>
                 </div>
             )}
 
