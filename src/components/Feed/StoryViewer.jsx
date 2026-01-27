@@ -125,6 +125,11 @@ const StoryViewer = ({ stories, initialIndex, onClose, onDelete }) => {
                     text: replyText,
                     storyContext: msgData.storyContext
                 });
+                // Also trigger a message notification for the red badge
+                socket.emit("sendNotification", {
+                    receiverId: currentStory.userId,
+                    type: 'message', // Generic type to trigger unread message count
+                });
             }
 
             // 3. Send Notification for reply
@@ -139,6 +144,10 @@ const StoryViewer = ({ stories, initialIndex, onClose, onDelete }) => {
             setReplyText("");
             setShowSentToast(true);
             setTimeout(() => setShowSentToast(false), 3000);
+
+            // Optional: Close story viewer after a delay if desired, but clearing text is the priority
+            // setTimeout(() => onClose(), 2000); 
+
         } catch (err) {
             console.error(err);
         } finally {
