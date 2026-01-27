@@ -222,8 +222,8 @@ const Profile = () => {
                         </div>
                     </div>
 
-                    <div className="mt-6 md:flex justify-between items-start border-t border-gray-100 dark:border-gray-700 pt-6">
-                        <div className="space-y-3 max-w-lg">
+                    <div className="mt-6 flex flex-col lg:flex-row justify-between items-start border-t border-gray-100 dark:border-gray-700 pt-6 gap-6">
+                        <div className="space-y-3 flex-1 min-w-0 w-full">
                             {userProfile.bio && <p className="text-gray-700 dark:text-gray-300 text-[15px] leading-relaxed">{userProfile.bio}</p>}
 
                             <div className="flex flex-wrap gap-x-6 gap-y-2 text-sm text-gray-500 dark:text-gray-400">
@@ -244,7 +244,7 @@ const Profile = () => {
                             </div>
                         </div>
 
-                        <div className="grid grid-cols-3 bg-gray-50 dark:bg-gray-800 rounded-2xl p-2 md:p-4 gap-1 md:gap-8 mt-6 md:mt-0 w-full md:w-auto">
+                        <div className="grid grid-cols-3 bg-gray-50 dark:bg-gray-800 rounded-2xl p-4 gap-4 lg:gap-8 mt-2 lg:mt-0 w-full lg:w-auto shrink-0 shadow-sm border border-gray-100 dark:border-gray-700/50">
                             <button
                                 onClick={() => fetchUserList('followers')}
                                 className="text-center hover:bg-gray-100 dark:hover:bg-gray-700 p-2 rounded-xl transition-colors min-w-0"
