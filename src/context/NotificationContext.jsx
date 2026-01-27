@@ -34,6 +34,7 @@ export const NotificationProvider = ({ children }) => {
                 setArrivalMessage({
                     sender: data.senderId,
                     text: data.text,
+                    storyContext: data.storyContext,
                     createdAt: Date.now(),
                 });
             });

@@ -29,8 +29,30 @@ const Messenger = () => {
     const scrollRef = useRef();
 
     useEffect(() => {
-        if (arrivalMessage && currentChat?.members.includes(arrivalMessage.sender)) {
-            setMessages((prev) => [...prev, arrivalMessage]);
+        if (arrivalMessage) {
+            // 1. If message is for current open chat, add to messages
+            if (currentChat?.members.includes(arrivalMessage.sender)) {
+                setMessages((prev) => [...prev, arrivalMessage]);
+            }
+
+            // 2. Always update conversation list: move to top and update unread if not open
+            setConversations(prev => {
+                const convIndex = prev.findIndex(c => c.members.includes(arrivalMessage.sender));
+                if (convIndex > -1) {
+                    const conv = prev[convIndex];
+                    const isChattingWithSender = currentChat?.members.includes(arrivalMessage.sender);
+
+                    const updatedConv = {
+                        ...conv,
+                        updatedAt: new Date().toISOString(),
+                        unreadCount: isChattingWithSender ? 0 : (conv.unreadCount || 0) + 1
+                    };
+
+                    const filtered = prev.filter((_, i) => i !== convIndex);
+                    return [updatedConv, ...filtered];
+                }
+                return prev;
+            });
         }
     }, [arrivalMessage, currentChat]);
 
@@ -157,9 +179,22 @@ const Messenger = () => {
         scrollRef.current?.scrollIntoView({ behavior: "smooth" });
     }, [messages]);
 
-    const handleSelectChat = (chat) => {
+    const handleSelectChat = async (chat) => {
         setCurrentChat(chat);
         setShowChatList(false);
+
+        // Mark as read
+        try {
+            const token = await getToken();
+            await fetch(`${API_URL}/api/chat/messages/${chat._id}/${user.id}/read`, {
+                method: "PUT",
+                headers: { Authorization: `Bearer ${token}` }
+            });
+            // Update local state to clear unread count for this conversation
+            setConversations(prev => prev.map(c =>
+                c._id === chat._id ? { ...c, unreadCount: 0 } : c
+            ));
+        } catch (err) { }
     };
 
     // Close emoji picker when clicking outside (simple logic handling)
@@ -259,12 +294,29 @@ const Messenger = () => {
                                 >
                                     <div className={`flex items-center gap-2 ${m.sender === user.id ? 'flex-row-reverse' : 'flex-row'}`}>
                                         <div
-                                            className={`max-w-[85%] md:max-w-[60%] px-4 py-3 rounded-2xl shadow-sm text-[15px] leading-relaxed relative ${m.sender === user.id
+                                            className={`max-w-[85%] md:max-w-[60%] rounded-2xl shadow-sm text-[15px] leading-relaxed relative flex flex-col overflow-hidden ${m.sender === user.id
                                                 ? 'bg-primary text-white rounded-se-none shadow-indigo-500/10'
                                                 : 'bg-white/80 dark:bg-gray-800/80 border border-gray-100 dark:border-gray-700 text-gray-800 dark:text-gray-200 rounded-ss-none shadow-sm backdrop-blur-sm'
                                                 }`}
                                         >
-                                            <p>{m.text}</p>
+                                            {m.storyContext && (
+                                                <div className={`p-2 mb-1 flex items-center gap-2 border-b ${m.sender === user.id ? 'bg-white/10 border-white/10' : 'bg-gray-50/50 dark:bg-gray-700/50 border-gray-100 dark:border-gray-600'}`}>
+                                                    <div className="w-10 h-14 md:w-12 md:h-16 flex-shrink-0 rounded-lg overflow-hidden border border-black/10">
+                                                        <img src={m.storyContext.thumbnail} alt="" className="w-full h-full object-cover" />
+                                                    </div>
+                                                    <div className="flex flex-col min-w-0">
+                                                        <span className={`text-[10px] font-black uppercase tracking-wider ${m.sender === user.id ? 'text-white/70' : 'text-gray-400'}`}>
+                                                            {t('story_reply') || 'Story Reply'}
+                                                        </span>
+                                                        <span className="text-xs font-bold truncate opacity-90">
+                                                            {m.storyContext.firstName}'s {t('story') || 'story'}
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            )}
+                                            <div className="px-4 py-3">
+                                                <p>{m.text}</p>
+                                            </div>
                                         </div>
 
                                         {m.sender === user.id && showOptionsId === m._id && (
@@ -368,7 +420,14 @@ const ConversationItem = ({ conversation, currentUser, active, t, onlineUsers = 
                     <span className="text-[10px] text-gray-400 font-black uppercase tracking-tighter whitespace-nowrap ml-2">{format(conversation.updatedAt).split(' ')[0]}</span>
                 </div>
                 <div className="flex items-center justify-between">
-                    <p className={`text-xs truncate ${active ? 'text-primary/70 font-bold' : 'text-gray-500 font-medium'}`}>{t('click_to_chat')}</p>
+                    <p className={`text-xs truncate ${active ? 'text-primary/70 font-bold' : (conversation.unreadCount > 0 ? 'text-gray-900 dark:text-white font-black' : 'text-gray-500 font-medium')}`}>
+                        {conversation.unreadCount > 0 ? t('new_message') || 'New message' : t('click_to_chat')}
+                    </p>
+                    {conversation.unreadCount > 0 && (
+                        <div className="bg-primary text-white text-[10px] font-black w-5 h-5 flex items-center justify-center rounded-full shadow-lg shadow-primary/20 animate-bounce">
+                            {conversation.unreadCount}
+                        </div>
+                    )}
                 </div>
             </div>
         </div>

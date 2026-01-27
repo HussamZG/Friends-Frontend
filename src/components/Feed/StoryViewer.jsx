@@ -16,6 +16,7 @@ const StoryViewer = ({ stories, initialIndex, onClose, onDelete }) => {
     const [liked, setLiked] = useState(false);
     const [showViewers, setShowViewers] = useState(false);
     const [isSendingReply, setIsSendingReply] = useState(false);
+    const [showSentToast, setShowSentToast] = useState(false);
 
     const currentStory = stories[currentIndex];
 
@@ -94,19 +95,37 @@ const StoryViewer = ({ stories, initialIndex, onClose, onDelete }) => {
             });
             const conversation = await convRes.json();
 
-            // 2. Send Message with Story Context (maybe just text for MVP)
-            await fetch(`${API_URL}/api/chat/messages`, {
+            // 2. Send Message with Story Context
+            const msgData = {
+                conversationId: conversation._id,
+                sender: user.id,
+                text: replyText,
+                storyContext: {
+                    storyId: currentStory._id,
+                    thumbnail: currentStory.img,
+                    firstName: currentStory.firstName
+                }
+            };
+
+            const msgRes = await fetch(`${API_URL}/api/chat/messages`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                     Authorization: `Bearer ${token}`
                 },
-                body: JSON.stringify({
-                    conversationId: conversation._id,
-                    sender: user.id,
-                    text: `Replying to story: ${replyText}`
-                })
+                body: JSON.stringify(msgData)
             });
+            const savedMsg = await msgRes.json();
+
+            // Emit via socket
+            if (socket) {
+                socket.emit("sendMessage", {
+                    senderId: user.id,
+                    receiverId: currentStory.userId,
+                    text: replyText,
+                    storyContext: msgData.storyContext
+                });
+            }
 
             // 3. Send Notification for reply
             if (currentStory.userId !== user.id) {
@@ -118,7 +137,8 @@ const StoryViewer = ({ stories, initialIndex, onClose, onDelete }) => {
             }
 
             setReplyText("");
-            // alert(t('reply_sent') || "Reply sent!");
+            setShowSentToast(true);
+            setTimeout(() => setShowSentToast(false), 3000);
         } catch (err) {
             console.error(err);
         } finally {
@@ -159,6 +179,14 @@ const StoryViewer = ({ stories, initialIndex, onClose, onDelete }) => {
             <button onClick={onClose} className="absolute top-4 right-4 md:right-8 text-white hover:text-gray-300 z-50 p-2">
                 <X size={32} />
             </button>
+
+            {/* Success Toast */}
+            {showSentToast && (
+                <div className="absolute top-20 left-1/2 transform -translate-x-1/2 bg-primary text-white px-6 py-3 rounded-full shadow-2xl z-[70] animate-in fade-in zoom-in slide-in-from-top-4 duration-300 flex items-center gap-2 border border-white/20">
+                    <Check size={20} className="stroke-[3px]" />
+                    <span className="font-bold text-sm tracking-wide">{t('reply_sent') || 'Reply Sent!'}</span>
+                </div>
+            )}
 
             {/* Main Content */}
             <div className="relative w-full max-w-md h-full md:h-[90vh] bg-black md:rounded-2xl overflow-hidden flex flex-col">
