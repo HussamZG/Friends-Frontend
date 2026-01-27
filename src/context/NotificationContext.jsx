@@ -14,6 +14,16 @@ export const NotificationProvider = ({ children }) => {
     const [unreadCount, setUnreadCount] = useState(0);
     const [onlineUsers, setOnlineUsers] = useState([]);
     const [unreadMessages, setUnreadMessages] = useState(0);
+    const [soundEnabled, setSoundEnabled] = useState(() => {
+        return localStorage.getItem('notificationSound') !== 'false';
+    });
+
+    const playNotificationSound = () => {
+        if (soundEnabled) {
+            const audio = new Audio('/sounds/notification.mp3');
+            audio.play().catch(err => console.log("Sound play error:", err));
+        }
+    };
 
     const [arrivalMessage, setArrivalMessage] = useState(null);
 
@@ -28,6 +38,7 @@ export const NotificationProvider = ({ children }) => {
                 // Incoming data is now a full notification object from backend
                 setNotifications((prev) => [data, ...prev]);
                 setUnreadCount((prev) => prev + 1);
+                playNotificationSound();
             });
 
             newSocket.on("getMessage", (data) => {
@@ -37,6 +48,7 @@ export const NotificationProvider = ({ children }) => {
                     storyContext: data.storyContext,
                     createdAt: Date.now(),
                 });
+                playNotificationSound();
             });
 
             // Track online users
@@ -147,7 +159,12 @@ export const NotificationProvider = ({ children }) => {
             setArrivalMessage,
             onlineUsers,
             unreadMessages,
-            clearUnreadMessages
+            clearUnreadMessages,
+            soundEnabled,
+            setSoundEnabled: (val) => {
+                localStorage.setItem('notificationSound', val);
+                setSoundEnabled(val);
+            }
         }}>
             {children}
         </NotificationContext.Provider>

@@ -1,10 +1,12 @@
 import { useLanguage } from '../context/LanguageContext';
 import { useTheme } from '../context/ThemeContext';
-import { Globe, Sun, Moon, Settings as SettingsIcon } from 'lucide-react';
+import { Globe, Sun, Moon, Settings as SettingsIcon, Heart } from 'lucide-react';
+import { useNotification } from '../context/NotificationContext';
 
 const Settings = () => {
     const { language, setLanguage, t } = useLanguage();
     const { theme, toggleTheme } = useTheme();
+    const { soundEnabled, setSoundEnabled } = useNotification();
 
     return (
         <div className="max-w-xl mx-auto">
@@ -45,6 +47,28 @@ const Settings = () => {
                                     <span className={`font-semibold ${theme === 'dark' ? 'text-primary' : 'text-gray-700 dark:text-gray-300'}`}>Dark</span>
                                 </div>
                                 {theme === 'dark' && <div className="w-3 h-3 rounded-full bg-primary"></div>}
+                            </button>
+                        </div>
+                    </div>
+
+                    {/* Notification Settings */}
+                    <div>
+                        <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-2">{t('settings_notifications')}</h2>
+                        <div className="card p-4 flex items-center justify-between">
+                            <div className="flex items-center gap-4">
+                                <div className={`p-3 rounded-2xl ${soundEnabled ? 'bg-indigo-50 dark:bg-indigo-500/10 text-primary' : 'bg-gray-50 dark:bg-gray-800 text-gray-400'}`}>
+                                    <Heart size={24} className={soundEnabled ? 'fill-primary' : ''} />
+                                </div>
+                                <div>
+                                    <h3 className="font-bold text-gray-900 dark:text-gray-100">{t('settings_sound_enabled')}</h3>
+                                    <p className="text-sm text-gray-500 dark:text-gray-400">{t('settings_sound_desc')}</p>
+                                </div>
+                            </div>
+                            <button
+                                onClick={() => setSoundEnabled(!soundEnabled)}
+                                className={`w-14 h-8 rounded-full transition-all relative ${soundEnabled ? 'bg-primary' : 'bg-gray-200 dark:bg-gray-700'}`}
+                            >
+                                <div className={`absolute top-1 w-6 h-6 rounded-full bg-white shadow-sm transition-all ${soundEnabled ? (language === 'ar' ? 'right-7' : 'left-7') : (language === 'ar' ? 'right-1' : 'left-1')}`}></div>
                             </button>
                         </div>
                     </div>

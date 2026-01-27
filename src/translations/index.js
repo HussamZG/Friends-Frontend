@@ -123,6 +123,11 @@ export const translations = {
         delete_chat: "Delete Chat",
         delete_message: "Delete Message",
         confirm_delete: "Are you sure? This cannot be undone.",
+        settings_notifications: "Notifications",
+        settings_sound_enabled: "Notification Sound",
+        settings_sound_desc: "Play a sound when you receive a message or notification",
+        sound_on: "Sound On",
+        sound_off: "Sound Off",
     },
     ar: {
         // Navigation
@@ -248,5 +253,10 @@ export const translations = {
         delete_chat: "حذف الدردشة",
         delete_message: "حذف الرسالة",
         confirm_delete: "هل أنت متأكد؟ لا يمكن التراجع عن هذا الإجراء.",
+        settings_notifications: "الإشعارات",
+        settings_sound_enabled: "صوت الإشعارات",
+        settings_sound_desc: "تشغيل صوت عند تلقي رسالة أو إشعار جديد",
+        sound_on: "مشتغل",
+        sound_off: "متوقف",
     }
 };
