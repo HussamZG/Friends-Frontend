@@ -14,7 +14,6 @@ const Post = ({ post, onDelete }) => {
     const { sendNotification, socket } = useNotification();
     const [like, setLike] = useState(post.likes.length);
     const [isLiked, setIsLiked] = useState(post.likes.includes(user?.id));
-    const [userFetch, setUserFetch] = useState({});
     const [comments, setComments] = useState(post.comments);
     const [commentText, setCommentText] = useState('');
     const [showComments, setShowComments] = useState(false);
@@ -24,31 +23,17 @@ const Post = ({ post, onDelete }) => {
     const [showShareModal, setShowShareModal] = useState(false);
     const [shareCaption, setShareCaption] = useState('');
 
+    const postUser = post.user || {};
+
     const contentToShare = post.sharedFrom || {
         userId: post.userId,
-        firstName: userFetch.firstName,
-        lastName: userFetch.lastName,
-        profilePicture: userFetch.profilePicture,
+        firstName: postUser.firstName,
+        lastName: postUser.lastName,
+        profilePicture: postUser.profilePicture,
         desc: post.desc,
         img: post.img,
         createdAt: post.createdAt
     };
-
-    useEffect(() => {
-        const fetchUser = async () => {
-            if (!post.userId || post.userId === 'undefined') return;
-            try {
-                const res = await fetch(`${API_URL}/api/users/${post.userId}`);
-                if (res.ok) {
-                    const data = await res.json();
-                    setUserFetch(data);
-                }
-            } catch (err) {
-                console.error("Error fetching post user:", err);
-            }
-        };
-        fetchUser();
-    }, [post.userId]);
 
     useEffect(() => {
         if (!socket) return;
@@ -287,7 +272,7 @@ const Post = ({ post, onDelete }) => {
                 <div className="flex items-center gap-3">
                     <Link to={`/profile/${post.userId}`}>
                         <img
-                            src={userFetch.profilePicture || "https://placehold.co/50"}
+                            src={postUser.profilePicture || "https://placehold.co/50"}
                             alt=""
                             className="w-11 h-11 rounded-full object-cover border border-gray-100"
                         />
@@ -295,7 +280,7 @@ const Post = ({ post, onDelete }) => {
                     <div>
                         <Link to={`/profile/${post.userId}`} className="hover:underline cursor-pointer">
                             <span className="font-semibold text-gray-900 dark:text-white block leading-tight">
-                                {userFetch.firstName} {userFetch.lastName}
+                                {postUser.firstName} {postUser.lastName}
                             </span>
                         </Link>
                         <div className="flex items-center gap-1.5">
