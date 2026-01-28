@@ -79,7 +79,7 @@ const Landing = () => {
                 <div className="container mx-auto px-6 flex items-center justify-between max-w-7xl">
                     <div className="flex items-center gap-2 group cursor-pointer" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
                         <div className="w-10 h-10 bg-gradient-to-br from-primary to-indigo-600 rounded-xl flex items-center justify-center shadow-lg shadow-primary/25 group-hover:rotate-12 transition-all duration-300 p-2">
-                            <img src="/logo.svg" alt="" className="w-full h-full object-contain brightness-0 invert" />
+                            <img src="/logo.svg" alt="" className="w-full h-full object-contain" />
                         </div>
                         <span className="text-2xl font-black tracking-tighter text-gray-900 dark:text-white">FRIENDS.</span>
                     </div>
@@ -270,7 +270,7 @@ const Landing = () => {
                         <div className="space-y-8">
                             <div className="flex items-center gap-2">
                                 <div className="w-10 h-10 bg-primary rounded-xl flex items-center justify-center p-2">
-                                    <img src="/logo.svg" alt="" className="w-full h-full object-contain brightness-0 invert" />
+                                    <img src="/logo.svg" alt="" className="w-full h-full object-contain" />
                                 </div>
                                 <span className="text-2xl font-black text-gray-900 dark:text-white">FRIENDS.</span>
                             </div>
