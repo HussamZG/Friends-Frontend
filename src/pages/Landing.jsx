@@ -155,12 +155,12 @@ const Landing = () => {
                         <div className="flex-1 text-center lg:text-left rtl:lg:text-right space-y-8 md:space-y-10 z-10">
                             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 dark:bg-primary/20 text-primary text-[10px] md:text-xs font-black uppercase tracking-[0.2em] animate-bounce-subtle border border-primary/10">
                                 <img src="/logo.svg" alt="" className="w-3.5 h-3.5 object-contain" />
-                                <span>The New Social Standard</span>
+                                <span>{t('landing_badge')}</span>
                             </div>
 
                             <h1 className="text-4xl sm:text-6xl md:text-8xl font-black text-gray-900 dark:text-white leading-[1.05] tracking-tight">
                                 <span className="block">{t('landing_hero_title').split('.')[0]}</span>
-                                <span className="block text-transparent bg-clip-text bg-gradient-to-r from-primary to-indigo-500">Beyond Limits.</span>
+                                <span className="block text-transparent bg-clip-text bg-gradient-to-r from-primary to-indigo-500">{t('landing_hero_highlight')}</span>
                             </h1>
 
                             <p className="text-lg md:text-2xl text-gray-600 dark:text-gray-400 font-medium max-w-2xl mx-auto lg:mx-0 leading-relaxed opacity-90">
@@ -191,7 +191,7 @@ const Landing = () => {
                                     <div className="flex gap-0.5 text-yellow-400">
                                         {[1, 2, 3, 4, 5].map(i => <Zap key={i} size={14} className="fill-current" />)}
                                     </div>
-                                    <span className="text-sm font-bold text-gray-500/80 uppercase tracking-widest">Trusted by Community</span>
+                                    <span className="text-sm font-bold text-gray-500/80 uppercase tracking-widest">{t('landing_trusted')}</span>
                                 </div>
                             </div>
                         </div>
@@ -213,8 +213,8 @@ const Landing = () => {
                                             <CheckCircle2 size={24} />
                                         </div>
                                         <div className="pr-4">
-                                            <div className="text-xs font-black text-gray-400 uppercase tracking-wider">Status</div>
-                                            <div className="text-sm font-bold text-gray-900 dark:text-white leading-tight">Secure & Encrypted</div>
+                                            <div className="text-xs font-black text-gray-400 uppercase tracking-wider">{language === 'ar' ? 'الحالة' : 'Status'}</div>
+                                            <div className="text-sm font-bold text-gray-900 dark:text-white leading-tight">{t('landing_status_secure')}</div>
                                         </div>
                                     </div>
                                 </div>
@@ -225,8 +225,8 @@ const Landing = () => {
                                             <Heart size={24} className="fill-current" />
                                         </div>
                                         <div className="pr-4">
-                                            <div className="text-xs font-black text-gray-400 uppercase tracking-wider">Engagement</div>
-                                            <div className="text-sm font-bold text-gray-900 dark:text-white leading-tight">1.2M+ Reactions</div>
+                                            <div className="text-xs font-black text-gray-400 uppercase tracking-wider">{language === 'ar' ? 'تفاعل' : 'Engagement'}</div>
+                                            <div className="text-sm font-bold text-gray-900 dark:text-white leading-tight">{t('landing_reactions')}</div>
                                         </div>
                                     </div>
                                 </div>
@@ -238,8 +238,8 @@ const Landing = () => {
                     <div className="mt-48 space-y-20">
                         <div className="text-center space-y-4">
                             <div className="h-1 w-20 bg-primary mx-auto rounded-full"></div>
-                            <h2 className="text-4xl md:text-5xl font-black text-gray-900 dark:text-white tracking-tight">Experience Social Brilliance</h2>
-                            <p className="text-gray-500 dark:text-gray-400 font-medium text-lg max-w-2xl mx-auto">Everything you need in a modern social network, crafted with precision.</p>
+                            <h2 className="text-4xl md:text-5xl font-black text-gray-900 dark:text-white tracking-tight">{t('landing_features_title')}</h2>
+                            <p className="text-gray-500 dark:text-gray-400 font-medium text-lg max-w-2xl mx-auto">{t('landing_features_subtitle')}</p>
                         </div>
 
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
@@ -263,15 +263,15 @@ const Landing = () => {
                         <div className="absolute inset-0 opacity-10 mix-blend-overlay bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]"></div>
                         <div className="relative px-6 md:px-8 py-20 md:py-28 text-center space-y-8 md:space-y-12">
                             <h2 className="text-3xl sm:text-5xl md:text-7xl font-black text-white max-w-5xl mx-auto leading-[1.1] tracking-tighter">
-                                Ready for the next generation of social connection?
+                                {t('landing_cta_title')}
                             </h2>
                             <div className="flex flex-col sm:flex-row items-center justify-center gap-4 md:gap-6">
                                 <Link to="/sign-up" className="group w-full sm:w-auto px-10 md:px-14 py-4 md:py-6 bg-white text-primary rounded-2xl md:rounded-[2rem] font-black text-lg md:text-xl hover:scale-105 active:scale-95 transition-all shadow-[0_25px_50px_-10px_rgba(255,255,255,0.3)] flex items-center justify-center gap-3">
                                     {t('landing_get_started')}
-                                    <ArrowRight size={24} className="transition-transform group-hover:translate-x-1" />
+                                    <ArrowRight size={24} className={`transition-transform duration-300 group-hover:translate-x-1 ${language === 'ar' ? 'rotate-180 group-hover:-translate-x-1' : ''}`} />
                                 </Link>
                                 <button className="w-full sm:w-auto px-10 md:px-14 py-4 md:py-6 bg-white/10 backdrop-blur-md text-white border border-white/30 rounded-2xl md:rounded-[2rem] font-black text-lg md:text-xl hover:bg-white/20 transition-all">
-                                    Join Community
+                                    {t('landing_cta_join')}
                                 </button>
                             </div>
                         </div>
@@ -292,7 +292,7 @@ const Landing = () => {
                                 <span className="text-2xl font-black text-gray-900 dark:text-white">FRIENDS.</span>
                             </div>
                             <p className="text-gray-500 dark:text-gray-400 font-medium leading-relaxed">
-                                Designing the future of social connectivity. Beautifully crafted, securely built, and community focused.
+                                {t('footer_brand_desc')}
                             </p>
                             <div className="flex items-center gap-4">
                                 {[Globe, Shield, MessageSquare, Camera].map((Icon, i) => (
@@ -305,11 +305,11 @@ const Landing = () => {
 
                         {/* Product Column */}
                         <div className="space-y-6">
-                            <h4 className="text-sm font-black text-gray-900 dark:text-white uppercase tracking-[0.2em]">Product</h4>
+                            <h4 className="text-sm font-black text-gray-900 dark:text-white uppercase tracking-[0.2em]">{t('footer_product')}</h4>
                             <ul className="space-y-4">
-                                {['Features', 'Marketplace', 'Mobile App', 'Security'].map(item => (
-                                    <li key={item}>
-                                        <a href="#" className="text-gray-500 dark:text-gray-400 font-bold hover:text-primary dark:hover:text-primary transition-colors">{item}</a>
+                                {['landing_feature_friends_title', 'landing_feature_stories_title', 'nav_explore', 'landing_feature_secure_title'].map(key => (
+                                    <li key={key}>
+                                        <a href="#" className="text-gray-500 dark:text-gray-400 font-bold hover:text-primary dark:hover:text-primary transition-colors">{t(key)}</a>
                                     </li>
                                 ))}
                             </ul>
@@ -317,11 +317,11 @@ const Landing = () => {
 
                         {/* Company Column */}
                         <div className="space-y-6">
-                            <h4 className="text-sm font-black text-gray-900 dark:text-white uppercase tracking-[0.2em]">Company</h4>
+                            <h4 className="text-sm font-black text-gray-900 dark:text-white uppercase tracking-[0.2em]">{t('footer_company')}</h4>
                             <ul className="space-y-4">
                                 {['About Us', 'Careers', 'Privacy Policy', 'Terms of Service'].map(item => (
                                     <li key={item}>
-                                        <a href="#" className="text-gray-500 dark:text-gray-400 font-bold hover:text-primary dark:hover:text-primary transition-colors">{item}</a>
+                                        <a href="#" className="text-gray-500 dark:text-gray-400 font-bold hover:text-primary dark:hover:text-primary transition-colors">{language === 'ar' ? (item === 'About Us' ? 'من نحن' : item === 'Careers' ? 'وظائف' : item === 'Privacy Policy' ? 'سياسة الخصوصية' : 'شروط الخدمة') : item}</a>
                                     </li>
                                 ))}
                             </ul>
@@ -329,16 +329,16 @@ const Landing = () => {
 
                         {/* Newsletter Column */}
                         <div className="space-y-6">
-                            <h4 className="text-sm font-black text-gray-900 dark:text-white uppercase tracking-[0.2em]">Subscribe</h4>
-                            <p className="text-gray-500 dark:text-gray-400 font-semibold">Join 10,000+ creators for weekly updates.</p>
+                            <h4 className="text-sm font-black text-gray-900 dark:text-white uppercase tracking-[0.2em]">{t('footer_subscribe')}</h4>
+                            <p className="text-gray-500 dark:text-gray-400 font-semibold">{t('footer_newsletter_desc')}</p>
                             <div className="relative group">
                                 <input
                                     type="email"
-                                    placeholder="your@email.com"
+                                    placeholder={t('footer_placeholder')}
                                     className="w-full px-5 py-3.5 rounded-2xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all outline-none font-bold text-gray-900 dark:text-white"
                                 />
                                 <button className="absolute right-2 top-2 bottom-2 px-4 bg-primary text-white rounded-xl hover:bg-primary-hover transition-colors">
-                                    <ArrowRight size={18} />
+                                    <ArrowRight size={18} className={language === 'ar' ? 'rotate-180' : ''} />
                                 </button>
                             </div>
                         </div>
@@ -346,11 +346,11 @@ const Landing = () => {
 
                     <div className="pt-10 border-t border-gray-200/50 dark:border-gray-800/50 flex flex-col md:flex-row items-center justify-between gap-6">
                         <p className="text-sm font-black text-gray-400 dark:text-gray-600 uppercase tracking-widest">
-                            © {new Date().getFullYear()} Friends Inc. High-Performance Social.
+                            © {new Date().getFullYear()} {t('footer_rights')}
                         </p>
                         <div className="flex items-center gap-8">
-                            <a href="#" className="text-xs font-black text-gray-400 dark:text-gray-600 hover:text-primary transition-colors">English (US)</a>
-                            <a href="#" className="text-xs font-black text-gray-400 dark:text-gray-600 hover:text-primary transition-colors">Status: Operational</a>
+                            <a href="#" className="text-xs font-black text-gray-400 dark:text-gray-600 hover:text-primary transition-colors">{t('footer_lang')}</a>
+                            <a href="#" className="text-xs font-black text-gray-400 dark:text-gray-600 hover:text-primary transition-colors">{t('footer_status_label')}</a>
                         </div>
                     </div>
                 </div>
