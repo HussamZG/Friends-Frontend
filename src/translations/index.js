@@ -1,5 +1,19 @@
 export const translations = {
     en: {
+        // Landing Page
+        landing_hero_title: "Connect with your world.",
+        landing_hero_subtitle: "Experience a new way of social networking. Fast, secure, and beautiful.",
+        landing_get_started: "Get Started",
+        landing_learn_more: "Learn More",
+        landing_feature_friends_title: "Real-time Chat",
+        landing_feature_friends_desc: "Connect with friends instantly through our high-speed messaging system.",
+        landing_feature_stories_title: "Daily Stories",
+        landing_feature_stories_desc: "Share your daily moments with your circle through beautiful stories.",
+        landing_feature_secure_title: "Secure & Private",
+        landing_feature_secure_desc: "Your data and privacy are our top priority with enterprise-grade security.",
+        landing_feature_responsive_title: "Cross-Platform",
+        landing_feature_responsive_desc: "Access your feed from any device with a flawless mobile experience.",
+
         // Navigation
         nav_feed: "Feed",
         nav_explore: "Explore",
@@ -130,6 +144,20 @@ export const translations = {
         sound_off: "Sound Off",
     },
     ar: {
+        // Landing Page
+        landing_hero_title: "تواصل مع عالمك.",
+        landing_hero_subtitle: "اختبر طريقة جديدة للتواصل الاجتماعي. سريعة، آمنة، وجميلة.",
+        landing_get_started: "ابدأ الآن",
+        landing_learn_more: "اكتشف المزيد",
+        landing_feature_friends_title: "دردشة فورية",
+        landing_feature_friends_desc: "تواصل مع أصدقائك فوراً من خلال نظام المراسلة عالي السرعة.",
+        landing_feature_stories_title: "قصص يومية",
+        landing_feature_stories_desc: "شارك لحظاتك اليومية مع دائرتك من خلال قصص جميلة.",
+        landing_feature_secure_title: "آمن وخصوصي",
+        landing_feature_secure_desc: "بياناتك وخصوصيتك هي أولويتنا القصوى مع أمان بمستوى المؤسسات.",
+        landing_feature_responsive_title: "متعدد المنصات",
+        landing_feature_responsive_desc: "ادخل إلى صفحتك من أي جهاز مع تجربة موبايل مثالية.",
+
         // Navigation
         nav_feed: "الرئيسية",
         nav_explore: "اكتشف",
