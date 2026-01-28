@@ -78,8 +78,8 @@ const Landing = () => {
             <nav className={`fixed top-0 w-full z-50 transition-all duration-500 ${scrolled ? 'bg-white/70 dark:bg-gray-950/70 backdrop-blur-2xl border-b border-gray-200/50 dark:border-gray-800/50 py-3' : 'bg-transparent py-6'}`}>
                 <div className="container mx-auto px-6 flex items-center justify-between max-w-7xl">
                     <div className="flex items-center gap-2 group cursor-pointer" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
-                        <div className="w-10 h-10 bg-gradient-to-br from-primary to-indigo-600 rounded-xl flex items-center justify-center shadow-lg shadow-primary/25 group-hover:rotate-12 transition-all duration-300">
-                            <Zap size={24} className="text-white fill-current" />
+                        <div className="w-10 h-10 bg-gradient-to-br from-primary to-indigo-600 rounded-xl flex items-center justify-center shadow-lg shadow-primary/25 group-hover:rotate-12 transition-all duration-300 p-2">
+                            <img src="/logo.svg" alt="" className="w-full h-full object-contain brightness-0 invert" />
                         </div>
                         <span className="text-2xl font-black tracking-tighter text-gray-900 dark:text-white">FRIENDS.</span>
                     </div>
@@ -137,7 +137,7 @@ const Landing = () => {
                     <div className="flex flex-col lg:flex-row items-center gap-16 lg:gap-24">
                         <div className="flex-1 text-center lg:text-left rtl:lg:text-right space-y-10 z-10">
                             <div className="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-primary/10 dark:bg-primary/20 text-primary text-xs font-black uppercase tracking-[0.2em] animate-bounce-subtle border border-primary/10">
-                                <Zap size={14} className="fill-current" />
+                                <img src="/logo.svg" alt="" className="w-3.5 h-3.5 object-contain" />
                                 <span>The New Social Standard</span>
                             </div>
 
@@ -269,8 +269,8 @@ const Landing = () => {
                         {/* Brand Column */}
                         <div className="space-y-8">
                             <div className="flex items-center gap-2">
-                                <div className="w-10 h-10 bg-primary rounded-xl flex items-center justify-center">
-                                    <Zap size={22} className="text-white fill-current" />
+                                <div className="w-10 h-10 bg-primary rounded-xl flex items-center justify-center p-2">
+                                    <img src="/logo.svg" alt="" className="w-full h-full object-contain brightness-0 invert" />
                                 </div>
                                 <span className="text-2xl font-black text-gray-900 dark:text-white">FRIENDS.</span>
                             </div>
