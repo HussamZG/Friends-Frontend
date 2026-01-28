@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useUser, useAuth, UserButton } from '@clerk/clerk-react';
+import { useUser, useAuth } from '@clerk/clerk-react';
 import { Outlet, Link, useNavigate, useLocation } from 'react-router-dom';
 import { Home, Search, MessageSquare, Heart, User, Settings as SettingsIcon, X } from 'lucide-react';
 import LeftSidebar from './LeftSidebar';
@@ -43,6 +43,8 @@ const MobileNav = ({ activePath }) => {
 
 import { API_URL } from '../../config';
 import { fetchWithRetry } from '../../utils/apiUtils';
+
+import UserDropdown from './UserDropdown';
 
 const MainLayout = () => {
     const { user, isLoaded } = useUser();
@@ -207,22 +209,7 @@ const MainLayout = () => {
                             )}
                         </div>
 
-                        <UserButton
-                            afterSignOutUrl="/"
-                            appearance={{
-                                elements: {
-                                    userButtonAvatarBox: "w-10 h-10 border border-gray-200 shadow-sm hover:scale-105 transition-all",
-                                    userButtonPopoverCard: "rounded-2xl border border-gray-100 shadow-2xl overflow-hidden p-2",
-                                    userButtonPopoverActionButton: "hover:bg-indigo-50 transition-all rounded-xl",
-                                    userButtonPopoverActionButtonText: "text-gray-700 font-semibold text-[14px]",
-                                    userButtonPopoverActionButtonIcon: "text-indigo-600",
-                                    userButtonPopoverHeader: "border-none pt-4 px-4 pb-2",
-                                    userButtonPopoverFooter: "hidden",
-                                    userPreviewMainIdentifier: "text-gray-900 font-bold text-base",
-                                    userPreviewSecondaryIdentifier: "text-gray-500 font-medium",
-                                }
-                            }}
-                        />
+                        <UserDropdown />
                     </div>
                 </div>
             </nav>
