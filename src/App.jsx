@@ -1,6 +1,6 @@
 import { lazy, Suspense } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
-import { SignedIn, SignedOut, RedirectToSignIn, SignIn, SignUp } from '@clerk/clerk-react';
+import { SignedIn, SignedOut } from '@clerk/clerk-react';
 import MainLayout from './components/Layout/MainLayout';
 import FriendsLoading from './components/UI/FriendsLoading';
 
@@ -15,6 +15,10 @@ const Settings = lazy(() => import('./pages/Settings'));
 const PostDetails = lazy(() => import('./pages/PostDetails'));
 const NotFound = lazy(() => import('./pages/NotFound'));
 const Landing = lazy(() => import('./pages/Landing'));
+
+// Auth Pages
+import SignInPage from './pages/auth/SignInPage';
+import SignUpPage from './pages/auth/SignUpPage';
 
 import { ThemeProvider } from './context/ThemeContext';
 
@@ -46,11 +50,11 @@ function App() {
           </Route>
           <Route
             path="/sign-in/*"
-            element={<SignIn routing="path" path="/sign-in" />}
+            element={<SignInPage />}
           />
           <Route
             path="/sign-up/*"
-            element={<SignUp routing="path" path="/sign-up" />}
+            element={<SignUpPage />}
           />
           <Route path="*" element={<NotFound />} />
         </Routes>
