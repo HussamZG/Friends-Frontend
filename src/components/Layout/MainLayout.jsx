@@ -97,9 +97,11 @@ const MainLayout = () => {
             {/* Navbar */}
             <nav className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border-b border-gray-200 dark:border-gray-800 sticky top-0 z-50 h-[70px]">
                 <div className="container mx-auto px-4 h-full flex items-center justify-between max-w-7xl">
-                    <Link to="/" className="text-2xl font-black text-primary tracking-tight flex items-center gap-2">
-                        <img src="/logo.png" alt="" className="w-8 h-8 rounded-lg shadow-sm" />
-                        <span>FRIENDS.</span>
+                    <Link to="/" className="flex items-center gap-2 group">
+                        <div className="w-9 h-9 bg-gradient-to-br from-primary to-indigo-600 rounded-lg flex items-center justify-center shadow-sm group-hover:rotate-6 transition-all duration-300 p-1.5">
+                            <img src="/logo.svg" alt="" className="w-full h-full object-contain" />
+                        </div>
+                        <span className="text-xl font-black text-gray-900 dark:text-white tracking-tighter">FRIENDS.</span>
                     </Link>
 
                     <div className="hidden md:flex items-center bg-gray-100 dark:bg-gray-800 rounded-full px-4 py-2 w-96 transition-colors">

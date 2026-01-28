@@ -92,9 +92,11 @@ const SignUpPage = () => {
                 <div className="w-full max-w-md relative z-10">
                     <div className="bg-white/5 backdrop-blur-2xl border border-white/10 rounded-[2.5rem] p-8 md:p-10 shadow-2xl">
                         <div className="text-center mb-10">
-                            <div className="w-16 h-16 bg-indigo-500/20 rounded-2xl flex items-center justify-center mx-auto mb-6">
-                                <ShieldCheck size={32} className="text-indigo-400" />
-                            </div>
+                            <Link to="/" className="inline-block mb-8 group">
+                                <div className="w-16 h-16 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-2xl flex items-center justify-center shadow-2xl p-3 group-hover:rotate-6 transition-all duration-300 mx-auto">
+                                    <img src="/logo.svg" alt="Friends Logo" className="w-full h-full object-contain" />
+                                </div>
+                            </Link>
                             <h1 className="text-3xl font-black mb-2">Verify your email</h1>
                             <p className="text-gray-400 font-medium">We've sent a code to {emailAddress}</p>
                         </div>
@@ -151,6 +153,11 @@ const SignUpPage = () => {
 
                     <div className="relative z-10">
                         <div className="mb-10">
+                            <Link to="/" className="inline-block mb-8 group">
+                                <div className="w-16 h-16 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-2xl flex items-center justify-center shadow-2xl p-3 group-hover:rotate-6 transition-all duration-300">
+                                    <img src="/logo.svg" alt="Friends Logo" className="w-full h-full object-contain" />
+                                </div>
+                            </Link>
                             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/20 mb-4">
                                 <Sparkles size={14} className="text-indigo-400" />
                                 <span className="text-[10px] font-black uppercase tracking-wider text-indigo-300">Join the Community</span>
