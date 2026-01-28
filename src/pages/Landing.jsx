@@ -69,155 +69,147 @@ const Landing = () => {
         <div className={`min-h-screen bg-white dark:bg-gray-950 transition-colors duration-500 overflow-x-hidden ${language === 'ar' ? 'font-arabic' : ''}`} dir={language === 'ar' ? 'rtl' : 'ltr'}>
             {/* Background Elements */}
             <div className="fixed inset-0 pointer-events-none overflow-hidden z-0">
-                <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-primary/20 rounded-full blur-[120px] animate-pulse"></div>
-                <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-purple-500/10 rounded-full blur-[120px] animate-pulse delay-1000"></div>
+                <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-primary/10 rounded-full blur-[120px] animate-pulse"></div>
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[40%] h-[40%] bg-indigo-500/10 rounded-full blur-[120px]"></div>
+                <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-purple-500/10 rounded-full blur-[120px] animate-pulse delay-1000"></div>
             </div>
 
             {/* Header */}
-            <nav className={`fixed top-0 w-full z-50 transition-all duration-300 ${scrolled ? 'bg-white/70 dark:bg-gray-950/70 backdrop-blur-xl border-b border-gray-200/50 dark:border-gray-800/50 py-3' : 'bg-transparent py-6'}`}>
+            <nav className={`fixed top-0 w-full z-50 transition-all duration-500 ${scrolled ? 'bg-white/70 dark:bg-gray-950/70 backdrop-blur-2xl border-b border-gray-200/50 dark:border-gray-800/50 py-3' : 'bg-transparent py-6'}`}>
                 <div className="container mx-auto px-6 flex items-center justify-between max-w-7xl">
-                    <div className="flex items-center gap-2 group cursor-pointer">
-                        <div className="w-10 h-10 bg-primary rounded-xl flex items-center justify-center shadow-lg shadow-primary/25 group-hover:rotate-12 transition-transform duration-300">
+                    <div className="flex items-center gap-2 group cursor-pointer" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
+                        <div className="w-10 h-10 bg-gradient-to-br from-primary to-indigo-600 rounded-xl flex items-center justify-center shadow-lg shadow-primary/25 group-hover:rotate-12 transition-all duration-300">
                             <Zap size={24} className="text-white fill-current" />
                         </div>
-                        <span className="text-2xl font-black tracking-tight text-gray-900 dark:text-white">FRIENDS.</span>
+                        <span className="text-2xl font-black tracking-tighter text-gray-900 dark:text-white">FRIENDS.</span>
                     </div>
 
                     <div className="flex items-center gap-3">
                         {/* Theme Toggle */}
                         <button
                             onClick={toggleTheme}
-                            className="p-2.5 rounded-xl bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:scale-110 transition-all border border-transparent hover:border-gray-200 dark:hover:border-gray-700"
+                            className="p-2.5 rounded-xl bg-gray-100/80 dark:bg-gray-800/80 text-gray-600 dark:text-gray-300 hover:scale-110 transition-all border border-transparent hover:border-gray-200 dark:hover:border-gray-700 backdrop-blur-md"
                         >
                             {theme === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
                         </button>
 
                         {/* Language Selector */}
                         <div className="relative group">
-                            <button className="flex items-center gap-2 p-2.5 rounded-xl bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:scale-110 transition-all border border-transparent hover:border-gray-200 dark:hover:border-gray-700">
+                            <button className="flex items-center gap-2 p-2.5 rounded-xl bg-gray-100/80 dark:bg-gray-800/80 text-gray-600 dark:text-gray-300 hover:scale-110 transition-all border border-transparent hover:border-gray-200 dark:hover:border-gray-700 backdrop-blur-md">
                                 <Globe size={20} />
                                 <span className="text-sm font-bold uppercase">{language}</span>
                             </button>
-                            <div className="absolute top-full mt-2 right-0 hidden group-hover:block animate-in fade-in slide-in-from-top-2 duration-200">
-                                <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-2xl border border-gray-100 dark:border-gray-800 p-2 overflow-hidden ring-1 ring-black/5 min-w-[120px]">
+                            <div className={`absolute top-full mt-2 ${language === 'ar' ? 'left-0' : 'right-0'} opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 transform translate-y-2 group-hover:translate-y-0`}>
+                                <div className="bg-white/90 dark:bg-gray-900/90 backdrop-blur-xl rounded-2xl shadow-2xl border border-gray-100 dark:border-gray-800 p-2 overflow-hidden ring-1 ring-black/5 min-w-[140px]">
                                     <button
                                         onClick={() => setLanguage('en')}
-                                        className={`w-full text-left px-4 py-2.5 text-sm font-semibold rounded-xl transition-colors ${language === 'en' ? 'bg-primary text-white' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800'}`}
+                                        className={`w-full flex items-center justify-between px-4 py-2.5 text-sm font-semibold rounded-xl transition-colors ${language === 'en' ? 'bg-primary text-white' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800'}`}
                                     >
                                         English
+                                        {language === 'en' && <CheckCircle2 size={14} />}
                                     </button>
                                     <button
                                         onClick={() => setLanguage('ar')}
-                                        className={`w-full text-right px-4 py-2.5 text-sm font-semibold rounded-xl transition-colors ${language === 'ar' ? 'bg-primary text-white' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800'}`}
+                                        className={`w-full flex items-center justify-between px-4 py-2.5 text-sm font-semibold rounded-xl transition-colors ${language === 'ar' ? 'bg-primary text-white' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800'}`}
                                     >
+                                        {language === 'ar' && <CheckCircle2 size={14} />}
                                         العربية
                                     </button>
                                 </div>
                             </div>
                         </div>
 
-                        <Link to="/sign-in" className="hidden md:block px-6 py-2.5 text-sm font-bold text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-xl transition-colors">
+                        <Link to="/sign-in" className="hidden md:block px-6 py-2.5 text-sm font-bold text-gray-700 dark:text-gray-200 hover:bg-gray-100/50 dark:hover:bg-gray-800/50 rounded-xl transition-colors">
                             {t('nav_signin') || 'Sign In'}
                         </Link>
 
-                        <Link to="/sign-in" className="px-6 py-2.5 text-sm font-bold text-white bg-primary hover:bg-primary-hover rounded-xl shadow-lg shadow-primary/20 hover:shadow-primary/40 transition-all hover:-translate-y-0.5 active:translate-y-0">
-                            {t('landing_get_started')}
+                        <Link to="/sign-in" className="relative group overflow-hidden px-8 py-2.5 text-sm font-black text-white rounded-xl transition-all">
+                            <div className="absolute inset-0 bg-gradient-to-r from-primary via-indigo-600 to-primary bg-[length:200%_100%] group-hover:animate-shimmer transition-all"></div>
+                            <span className="relative z-10">{t('landing_get_started')}</span>
                         </Link>
                     </div>
                 </div>
             </nav>
 
             {/* Hero Section */}
-            <main className="relative pt-32 pb-20 px-6 overflow-hidden">
+            <main className="relative pt-32 pb-20 px-6">
                 <div className="container mx-auto max-w-7xl">
-                    <div className="flex flex-col lg:flex-row items-center gap-16">
-                        <div className="flex-1 text-center lg:text-left rtl:lg:text-right space-y-8 z-10">
-                            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary text-sm font-black uppercase tracking-widest animate-bounce-subtle">
-                                <Zap size={16} className="fill-current" />
+                    <div className="flex flex-col lg:flex-row items-center gap-16 lg:gap-24">
+                        <div className="flex-1 text-center lg:text-left rtl:lg:text-right space-y-10 z-10">
+                            <div className="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-primary/10 dark:bg-primary/20 text-primary text-xs font-black uppercase tracking-[0.2em] animate-bounce-subtle border border-primary/10">
+                                <Zap size={14} className="fill-current" />
                                 <span>The New Social Standard</span>
                             </div>
 
-                            <h1 className="text-6xl md:text-8xl font-black text-gray-900 dark:text-white leading-[1.1] tracking-tighter">
-                                {t('landing_hero_title')}
+                            <h1 className="text-6xl md:text-8xl font-black text-gray-900 dark:text-white leading-[1.05] tracking-tight">
+                                <span className="block">{t('landing_hero_title').split('.')[0]}</span>
+                                <span className="block text-transparent bg-clip-text bg-gradient-to-r from-primary to-indigo-500">Beyond Limits.</span>
                             </h1>
 
-                            <p className="text-xl md:text-2xl text-gray-600 dark:text-gray-400 font-medium max-w-2xl mx-auto lg:mx-0 leading-relaxed">
+                            <p className="text-xl md:text-2xl text-gray-600 dark:text-gray-400 font-medium max-w-2xl mx-auto lg:mx-0 leading-relaxed opacity-90">
                                 {t('landing_hero_subtitle')}
                             </p>
 
-                            <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
-                                <Link to="/sign-up" className="w-full sm:w-auto px-10 py-5 bg-primary hover:bg-primary-hover text-white rounded-2xl font-black text-lg shadow-2xl shadow-primary/30 hover:shadow-primary/50 transition-all hover:scale-105 active:scale-95 flex items-center justify-center gap-3">
-                                    {t('landing_get_started')}
-                                    <ArrowRight size={20} className={`${language === 'ar' ? 'rotate-180' : ''}`} />
+                            <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-5">
+                                <Link to="/sign-up" className="group relative w-full sm:w-auto px-12 py-5 bg-primary overflow-hidden rounded-2xl font-black text-lg transition-all hover:scale-105 active:scale-95 flex items-center justify-center gap-3 shadow-[0_20px_50px_-10px_rgba(79,70,229,0.3)]">
+                                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:animate-shimmer"></div>
+                                    <span className="relative text-white">{t('landing_get_started')}</span>
+                                    <ArrowRight size={22} className={`relative text-white transition-transform duration-300 group-hover:translate-x-1 ${language === 'ar' ? 'rotate-180 group-hover:-translate-x-1' : ''}`} />
                                 </Link>
-                                <button className="w-full sm:w-auto px-10 py-5 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 text-gray-900 dark:text-white rounded-2xl font-black text-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-all">
+                                <button className="w-full sm:w-auto px-12 py-5 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 text-gray-900 dark:text-white rounded-2xl font-black text-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-all hover:border-primary/30">
                                     {t('landing_learn_more')}
                                 </button>
                             </div>
 
-                            <div className="pt-8 flex items-center justify-center lg:justify-start gap-6">
+                            <div className="pt-4 flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-6">
                                 <div className="flex -space-x-3 rtl:space-x-reverse">
                                     {[1, 2, 3, 4].map(i => (
-                                        <img key={i} src={`https://i.pravatar.cc/100?u=${i}`} alt="" className="w-12 h-12 rounded-full border-4 border-white dark:border-gray-950 shadow-sm" />
+                                        <img key={i} src={`https://i.pravatar.cc/100?u=${i + 10}`} alt="" className="w-12 h-12 rounded-full border-4 border-white dark:border-gray-950 shadow-xl" />
                                     ))}
-                                    <div className="w-12 h-12 rounded-full bg-gray-100 dark:bg-gray-800 border-4 border-white dark:border-gray-950 flex items-center justify-center text-xs font-black text-gray-500">
+                                    <div className="w-12 h-12 rounded-full bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-800 dark:to-gray-900 border-4 border-white dark:border-gray-950 flex items-center justify-center text-xs font-black text-gray-600 dark:text-gray-400">
                                         +50k
                                     </div>
                                 </div>
                                 <div className="flex flex-col items-start rtl:items-end">
-                                    <div className="flex text-yellow-400">
+                                    <div className="flex gap-0.5 text-yellow-400">
                                         {[1, 2, 3, 4, 5].map(i => <Zap key={i} size={14} className="fill-current" />)}
                                     </div>
-                                    <span className="text-sm font-bold text-gray-500">Trusted by over 50,000 users</span>
+                                    <span className="text-sm font-bold text-gray-500/80 uppercase tracking-widest">Trusted by Community</span>
                                 </div>
                             </div>
                         </div>
 
-                        {/* Interactive UI Mockup */}
-                        <div className="flex-1 relative z-10 w-full group">
-                            <div className="absolute inset-0 bg-primary/20 blur-[100px] rounded-full group-hover:bg-primary/30 transition-colors duration-700"></div>
-                            <div className="relative bg-white/40 dark:bg-gray-900/40 backdrop-blur-2xl border border-white/20 dark:border-gray-800/40 rounded-[3rem] p-4 shadow-[0_32px_120px_-10px_rgba(0,0,0,0.1)] transition-transform duration-500 hover:rotate-2 hover:scale-[1.02]">
-                                <div className="bg-white dark:bg-gray-950 rounded-[2.5rem] overflow-hidden shadow-2xl">
-                                    <div className="p-6 space-y-6">
-                                        <div className="flex items-center justify-between">
-                                            <div className="flex items-center gap-3">
-                                                <div className="w-12 h-12 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-600">
-                                                    <Layout size={24} />
-                                                </div>
-                                                <div className="space-y-1">
-                                                    <div className="h-4 w-28 bg-gray-100 dark:bg-gray-800 rounded-full"></div>
-                                                    <div className="h-3 w-20 bg-gray-50 dark:bg-gray-900 rounded-full"></div>
-                                                </div>
-                                            </div>
-                                            <div className="h-10 w-10 rounded-full bg-gray-50 dark:bg-gray-900"></div>
+                        {/* Premium 3D Hero Illustration */}
+                        <div className="flex-1 relative z-10 w-full group perspective-1000">
+                            <div className="absolute inset-x-0 -bottom-10 h-20 bg-primary/20 blur-[100px] rounded-full"></div>
+                            <div className="relative rounded-[4rem] p-2 bg-gradient-to-br from-white/20 to-white/5 dark:from-white/10 dark:to-transparent backdrop-blur-sm border border-white/20 dark:border-gray-800/50 shadow-2xl transition-all duration-700 group-hover:rotate-1-3d">
+                                <img
+                                    src="/brain/e3ca7798-be80-4e91-a028-01c05f478393/social_hero_illustration_1769615635728.png"
+                                    alt="Premium Social Connectivity Illustration"
+                                    className="w-full h-auto rounded-[3.8rem] shadow-2xl transition-transform duration-700 group-hover:scale-105 group-hover:-translate-y-4"
+                                />
+
+                                {/* Floating Badges */}
+                                <div className="absolute -top-10 -right-10 bg-white/80 dark:bg-gray-900/80 backdrop-blur-2xl p-4 rounded-3xl shadow-2xl border border-white/50 dark:border-gray-800 hidden md:block animate-float animation-delay-500 hover:scale-110 transition-transform cursor-default">
+                                    <div className="flex items-center gap-3">
+                                        <div className="w-10 h-10 bg-green-500/20 rounded-2xl flex items-center justify-center text-green-500">
+                                            <CheckCircle2 size={24} />
                                         </div>
-                                        <div className="aspect-[4/3] rounded-3xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center p-8 overflow-hidden relative">
-                                            <div className="absolute inset-0 opacity-20 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]"></div>
-                                            <div className="relative flex flex-col items-center gap-4 text-white text-center">
-                                                <div className="w-20 h-20 bg-white/20 backdrop-blur-md rounded-full flex items-center justify-center border border-white/30">
-                                                    <Camera size={40} />
-                                                </div>
-                                                <div className="space-y-2">
-                                                    <div className="h-4 w-40 bg-white/40 rounded-full mx-auto"></div>
-                                                    <div className="h-3 w-24 bg-white/20 rounded-full mx-auto"></div>
-                                                </div>
-                                            </div>
+                                        <div className="pr-4">
+                                            <div className="text-xs font-black text-gray-400 uppercase tracking-wider">Status</div>
+                                            <div className="text-sm font-bold text-gray-900 dark:text-white leading-tight">Secure & Encrypted</div>
                                         </div>
-                                        <div className="grid grid-cols-2 gap-4">
-                                            <div className="h-32 rounded-3xl bg-gray-50 dark:bg-gray-900 p-4 space-y-3">
-                                                <div className="w-8 h-8 rounded-full bg-green-500/10 flex items-center justify-center text-green-600">
-                                                    <CheckCircle2 size={16} />
-                                                </div>
-                                                <div className="h-3 w-full bg-gray-200 dark:bg-gray-800 rounded-full"></div>
-                                                <div className="h-3 w-2/3 bg-gray-100 dark:bg-gray-800 rounded-full"></div>
-                                            </div>
-                                            <div className="h-32 rounded-3xl bg-gray-50 dark:bg-gray-900 p-4 space-y-3">
-                                                <div className="w-8 h-8 rounded-full bg-pink-500/10 flex items-center justify-center text-pink-600">
-                                                    <Heart size={16} className="fill-current" />
-                                                </div>
-                                                <div className="h-3 w-full bg-gray-200 dark:bg-gray-800 rounded-full"></div>
-                                                <div className="h-3 w-2/3 bg-gray-100 dark:bg-gray-800 rounded-full"></div>
-                                            </div>
+                                    </div>
+                                </div>
+
+                                <div className="absolute -bottom-6 -left-10 bg-white/80 dark:bg-gray-900/80 backdrop-blur-2xl p-4 rounded-3xl shadow-2xl border border-white/50 dark:border-gray-800 hidden md:block animate-float hover:scale-110 transition-transform cursor-default">
+                                    <div className="flex items-center gap-3">
+                                        <div className="w-10 h-10 bg-purple-500/20 rounded-2xl flex items-center justify-center text-purple-500">
+                                            <Heart size={24} className="fill-current" />
+                                        </div>
+                                        <div className="pr-4">
+                                            <div className="text-xs font-black text-gray-400 uppercase tracking-wider">Engagement</div>
+                                            <div className="text-sm font-bold text-gray-900 dark:text-white leading-tight">1.2M+ Reactions</div>
                                         </div>
                                     </div>
                                 </div>
@@ -225,35 +217,44 @@ const Landing = () => {
                         </div>
                     </div>
 
-                    {/* Features Grid */}
-                    <div className="mt-40 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-                        {features.map((feature, i) => (
-                            <div key={i} className="group p-8 rounded-[2.5rem] bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 hover:border-primary/30 dark:hover:border-primary/30 transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl shadow-gray-200/50 dark:shadow-black">
-                                <div className={`w-16 h-16 rounded-2xl mb-8 flex items-center justify-center transition-transform duration-500 group-hover:rotate-12 group-hover:scale-110 bg-gradient-to-br from-indigo-500 to-purple-600 shadow-lg shadow-indigo-500/20`}>
-                                    <feature.icon size={32} className="text-white" />
+                    {/* Features Section */}
+                    <div className="mt-48 space-y-20">
+                        <div className="text-center space-y-4">
+                            <div className="h-1 w-20 bg-primary mx-auto rounded-full"></div>
+                            <h2 className="text-4xl md:text-5xl font-black text-gray-900 dark:text-white tracking-tight">Experience Social Brilliance</h2>
+                            <p className="text-gray-500 dark:text-gray-400 font-medium text-lg max-w-2xl mx-auto">Everything you need in a modern social network, crafted with precision.</p>
+                        </div>
+
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                            {features.map((feature, i) => (
+                                <div key={i} className="group p-10 rounded-[3rem] bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 hover:border-primary/20 dark:hover:border-primary/20 transition-all duration-500 hover:-translate-y-3 hover:shadow-[0_30px_60px_-15px_rgba(0,0,0,0.1)] dark:hover:shadow-indigo-500/10">
+                                    <div className={`w-16 h-16 rounded-2xl mb-10 flex items-center justify-center transition-all duration-500 group-hover:rotate-12 group-hover:scale-110 bg-gradient-to-br from-primary to-indigo-600 shadow-xl shadow-primary/20`}>
+                                        <feature.icon size={30} className="text-white" />
+                                    </div>
+                                    <h3 className="text-2xl font-black text-gray-900 dark:text-white mb-4 tracking-tight">{feature.title}</h3>
+                                    <p className="text-gray-600 dark:text-gray-400 font-medium leading-[1.6]">
+                                        {feature.desc}
+                                    </p>
                                 </div>
-                                <h3 className="text-2xl font-black text-gray-900 dark:text-white mb-4">{feature.title}</h3>
-                                <p className="text-gray-600 dark:text-gray-400 font-medium leading-relaxed">
-                                    {feature.desc}
-                                </p>
-                            </div>
-                        ))}
+                            ))}
+                        </div>
                     </div>
 
                     {/* Sub-hero / CTA */}
-                    <div className="mt-40 relative rounded-[4rem] overflow-hidden">
-                        <div className="absolute inset-0 bg-gradient-to-r from-primary to-purple-600"></div>
-                        <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10"></div>
-                        <div className="relative px-8 py-24 text-center space-y-10">
-                            <h2 className="text-4xl md:text-6xl font-black text-white max-w-4xl mx-auto leading-tight">
-                                Ready to join the next generation of social interaction?
+                    <div className="mt-48 relative rounded-[4.5rem] overflow-hidden group">
+                        <div className="absolute inset-0 bg-gradient-to-r from-primary via-indigo-700 to-primary bg-[length:200%_100%] group-hover:animate-gradient transition-all duration-1000"></div>
+                        <div className="absolute inset-0 opacity-10 mix-blend-overlay bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]"></div>
+                        <div className="relative px-8 py-28 text-center space-y-12">
+                            <h2 className="text-5xl md:text-7xl font-black text-white max-w-5xl mx-auto leading-[1.1] tracking-tighter">
+                                Ready for the next generation of social connection?
                             </h2>
-                            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-                                <Link to="/sign-up" className="w-full sm:w-auto px-12 py-6 bg-white text-primary rounded-2xl font-black text-xl hover:scale-105 active:scale-95 transition-all shadow-2xl">
+                            <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
+                                <Link to="/sign-up" className="group w-full sm:w-auto px-14 py-6 bg-white text-primary rounded-[2rem] font-black text-xl hover:scale-105 active:scale-95 transition-all shadow-[0_25px_50px_-10px_rgba(255,255,255,0.3)] flex items-center justify-center gap-3">
                                     {t('landing_get_started')}
+                                    <ArrowRight size={24} className="transition-transform group-hover:translate-x-1" />
                                 </Link>
-                                <button className="w-full sm:w-auto px-12 py-6 bg-white/10 backdrop-blur-md text-white border border-white/20 rounded-2xl font-black text-xl hover:bg-white/20 transition-all">
-                                    Contact Support
+                                <button className="w-full sm:w-auto px-14 py-6 bg-white/10 backdrop-blur-md text-white border border-white/30 rounded-[2rem] font-black text-xl hover:bg-white/20 transition-all">
+                                    Join Community
                                 </button>
                             </div>
                         </div>
@@ -261,27 +262,79 @@ const Landing = () => {
                 </div>
             </main>
 
-            {/* Footer */}
-            <footer className="py-20 border-t border-gray-100 dark:border-gray-900 bg-gray-50/50 dark:bg-gray-950">
+            {/* Premium Multi-column Footer */}
+            <footer className="relative mt-20 pb-16 pt-32 overflow-hidden border-t border-gray-100 dark:border-gray-900 bg-gray-50/30 dark:bg-gray-950/30">
                 <div className="container mx-auto px-6 max-w-7xl">
-                    <div className="flex flex-col md:flex-row items-center justify-between gap-10">
-                        <div className="flex items-center gap-2">
-                            <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-                                <Zap size={18} className="text-white fill-current" />
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-24 mb-20">
+                        {/* Brand Column */}
+                        <div className="space-y-8">
+                            <div className="flex items-center gap-2">
+                                <div className="w-10 h-10 bg-primary rounded-xl flex items-center justify-center">
+                                    <Zap size={22} className="text-white fill-current" />
+                                </div>
+                                <span className="text-2xl font-black text-gray-900 dark:text-white">FRIENDS.</span>
                             </div>
-                            <span className="text-xl font-black tracking-tight text-gray-900 dark:text-white">FRIENDS.</span>
+                            <p className="text-gray-500 dark:text-gray-400 font-medium leading-relaxed">
+                                Designing the future of social connectivity. Beautifully crafted, securely built, and community focused.
+                            </p>
+                            <div className="flex items-center gap-4">
+                                {[Globe, Shield, MessageSquare, Camera].map((Icon, i) => (
+                                    <a key={i} href="#" className="w-10 h-10 rounded-xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 flex items-center justify-center text-gray-500 hover:text-primary hover:border-primary/30 transition-all hover:-translate-y-1 shadow-sm">
+                                        <Icon size={18} />
+                                    </a>
+                                ))}
+                            </div>
                         </div>
 
-                        <div className="flex flex-wrap justify-center gap-6 md:gap-12 text-sm font-bold text-gray-500 dark:text-gray-400">
-                            <a href="#" className="hover:text-primary transition-colors">About</a>
-                            <a href="#" className="hover:text-primary transition-colors">Privacy</a>
-                            <a href="#" className="hover:text-primary transition-colors">Terms</a>
-                            <a href="#" className="hover:text-primary transition-colors">Contact</a>
+                        {/* Product Column */}
+                        <div className="space-y-6">
+                            <h4 className="text-sm font-black text-gray-900 dark:text-white uppercase tracking-[0.2em]">Product</h4>
+                            <ul className="space-y-4">
+                                {['Features', 'Marketplace', 'Mobile App', 'Security'].map(item => (
+                                    <li key={item}>
+                                        <a href="#" className="text-gray-500 dark:text-gray-400 font-bold hover:text-primary dark:hover:text-primary transition-colors">{item}</a>
+                                    </li>
+                                ))}
+                            </ul>
                         </div>
 
-                        <p className="text-sm font-bold text-gray-400 dark:text-gray-600">
-                            © {new Date().getFullYear()} Friends Inc. All rights reserved.
+                        {/* Company Column */}
+                        <div className="space-y-6">
+                            <h4 className="text-sm font-black text-gray-900 dark:text-white uppercase tracking-[0.2em]">Company</h4>
+                            <ul className="space-y-4">
+                                {['About Us', 'Careers', 'Privacy Policy', 'Terms of Service'].map(item => (
+                                    <li key={item}>
+                                        <a href="#" className="text-gray-500 dark:text-gray-400 font-bold hover:text-primary dark:hover:text-primary transition-colors">{item}</a>
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+
+                        {/* Newsletter Column */}
+                        <div className="space-y-6">
+                            <h4 className="text-sm font-black text-gray-900 dark:text-white uppercase tracking-[0.2em]">Subscribe</h4>
+                            <p className="text-gray-500 dark:text-gray-400 font-semibold">Join 10,000+ creators for weekly updates.</p>
+                            <div className="relative group">
+                                <input
+                                    type="email"
+                                    placeholder="your@email.com"
+                                    className="w-full px-5 py-3.5 rounded-2xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all outline-none font-bold text-gray-900 dark:text-white"
+                                />
+                                <button className="absolute right-2 top-2 bottom-2 px-4 bg-primary text-white rounded-xl hover:bg-primary-hover transition-colors">
+                                    <ArrowRight size={18} />
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="pt-10 border-t border-gray-200/50 dark:border-gray-800/50 flex flex-col md:flex-row items-center justify-between gap-6">
+                        <p className="text-sm font-black text-gray-400 dark:text-gray-600 uppercase tracking-widest">
+                            © {new Date().getFullYear()} Friends Inc. High-Performance Social.
                         </p>
+                        <div className="flex items-center gap-8">
+                            <a href="#" className="text-xs font-black text-gray-400 dark:text-gray-600 hover:text-primary transition-colors">English (US)</a>
+                            <a href="#" className="text-xs font-black text-gray-400 dark:text-gray-600 hover:text-primary transition-colors">Status: Operational</a>
+                        </div>
                     </div>
                 </div>
             </footer>
@@ -292,16 +345,25 @@ const Landing = () => {
                     0%, 100% { transform: translateY(0); }
                     50% { transform: translateY(-4px); }
                 }
-                .animate-bounce-subtle {
-                    animation: bounce-subtle 3s ease-in-out infinite;
+                @keyframes shimmer {
+                    0% { background-position: -200% 0; }
+                    100% { background-position: 200% 0; }
                 }
-                .scrollbar-hide::-webkit-scrollbar {
-                    display: none;
+                @keyframes float {
+                    0%, 100% { transform: translateY(0); }
+                    50% { transform: translateY(-15px); }
                 }
-                .scrollbar-hide {
-                    -ms-overflow-style: none;
-                    scrollbar-width: none;
+                @keyframes gradient {
+                    0% { background-position: 0% 50%; }
+                    50% { background-position: 100% 50%; }
+                    100% { background-position: 0% 50%; }
                 }
+                .animate-bounce-subtle { animation: bounce-subtle 4s ease-in-out infinite; }
+                .animate-shimmer { animation: shimmer 3s infinite linear; }
+                .animate-float { animation: float 6s ease-in-out infinite; }
+                .animation-delay-500 { animation-delay: 0.5s; }
+                .perspective-1000 { perspective: 1000px; }
+                .group-hover\\:rotate-1-3d:hover { transform: rotateX(2deg) rotateY(-2deg) scale(1.02); }
             `}} />
         </div>
     );
