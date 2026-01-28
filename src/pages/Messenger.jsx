@@ -28,7 +28,7 @@ const Messenger = () => {
 
     // We removed the 3rd column state as demanded by the "mobile-like" flow request
 
-    const { arrivalMessage, socket, onlineUsers, clearUnreadMessages } = useNotification();
+    const { arrivalMessage, socket, onlineUsers, clearUnreadMessages, fetchUnreadMessagesCount } = useNotification();
     const scrollRef = useRef();
 
     useEffect(() => {
@@ -205,6 +205,8 @@ const Messenger = () => {
             setConversations(prev => prev.map(c =>
                 c._id === chat._id ? { ...c, unreadCount: 0 } : c
             ));
+            // Sync global unread count
+            fetchUnreadMessagesCount();
         } catch (err) { }
     };
 

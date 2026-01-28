@@ -76,25 +76,46 @@ export const NotificationProvider = ({ children }) => {
 
     // Fetch Notifications
     useEffect(() => {
-        const fetchNotifications = async () => {
+        const fetchData = async () => {
             if (user) {
                 try {
                     const token = await getToken();
-                    const res = await fetch(`${API_URL}/api/notifications/${user.id}`, {
+
+                    // Fetch social notifications
+                    const resNotif = await fetch(`${API_URL}/api/notifications/${user.id}`, {
                         headers: { Authorization: `Bearer ${token}` }
                     });
-                    const data = await res.json();
-                    if (Array.isArray(data)) {
-                        setNotifications(data);
-                        setUnreadCount(data.filter(n => !n.isRead).length);
+                    const dataNotif = await resNotif.json();
+                    if (Array.isArray(dataNotif)) {
+                        setNotifications(dataNotif);
+                        setUnreadCount(dataNotif.filter(n => !n.isRead).length);
                     }
+
+                    // Fetch unread messages count
+                    fetchUnreadMessagesCount();
                 } catch (err) {
-                    console.error("Failed to fetch notifications", err);
+                    console.error("Failed to fetch initial data", err);
                 }
             }
         };
-        fetchNotifications();
+        fetchData();
     }, [user, getToken]);
+
+    const fetchUnreadMessagesCount = async () => {
+        if (!user) return;
+        try {
+            const token = await getToken();
+            const res = await fetch(`${API_URL}/api/chat/unread-count/${user.id}`, {
+                headers: { Authorization: `Bearer ${token}` }
+            });
+            const data = await res.json();
+            if (data && typeof data.unreadCount === 'number') {
+                setUnreadMessages(data.unreadCount);
+            }
+        } catch (err) {
+            console.error("Failed to fetch unread messages count", err);
+        }
+    };
 
     const markAsRead = async (id) => {
         try {
@@ -165,6 +186,7 @@ export const NotificationProvider = ({ children }) => {
             setArrivalMessage,
             onlineUsers,
             unreadMessages,
+            fetchUnreadMessagesCount,
             clearUnreadMessages,
             soundEnabled,
             setSoundEnabled: (val) => {
