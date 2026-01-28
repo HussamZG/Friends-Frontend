@@ -184,7 +184,7 @@ const Landing = () => {
                             <div className="absolute inset-x-0 -bottom-10 h-20 bg-primary/20 blur-[100px] rounded-full"></div>
                             <div className="relative rounded-[4rem] p-2 bg-gradient-to-br from-white/20 to-white/5 dark:from-white/10 dark:to-transparent backdrop-blur-sm border border-white/20 dark:border-gray-800/50 shadow-2xl transition-all duration-700 group-hover:rotate-1-3d">
                                 <img
-                                    src="/brain/e3ca7798-be80-4e91-a028-01c05f478393/social_hero_mobile_users_1769616522042.png"
+                                    src="/hero-illustration.png"
                                     alt="Premium Social Connectivity Illustration"
                                     className="w-full h-auto rounded-[3.8rem] shadow-2xl transition-transform duration-700 group-hover:scale-105 group-hover:-translate-y-4"
                                 />
