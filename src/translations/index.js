@@ -22,6 +22,7 @@ export const translations = {
         nav_profile: "Profile",
         nav_settings: "Settings",
         nav_signout: "Sign Out",
+        nav_signin: "Sign In",
 
         // Home
         home_create_post_placeholder: "What's on your mind?",
@@ -166,6 +167,7 @@ export const translations = {
         nav_profile: "الملف الشخصي",
         nav_settings: "الإعدادات",
         nav_signout: "تسجيل الخروج",
+        nav_signin: "تسجيل الدخول",
 
         // Home
         home_create_post_placeholder: "بماذا تفكر؟",
