@@ -23,6 +23,8 @@ const Landing = () => {
     const { t, language, setLanguage } = useLanguage();
     const { theme, toggleTheme } = useTheme();
     const [scrolled, setScrolled] = useState(false);
+    const [isLangOpen, setIsLangOpen] = useState(false);
+    const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
     useEffect(() => {
         if (isSignedIn) {
@@ -36,6 +38,16 @@ const Landing = () => {
         };
         window.addEventListener('scroll', handleScroll);
         return () => window.removeEventListener('scroll', handleScroll);
+    }, []);
+
+    // Close dropdowns when clicking outside
+    useEffect(() => {
+        const handleClick = () => {
+            setIsLangOpen(false);
+            setIsMobileMenuOpen(false);
+        };
+        window.addEventListener('click', handleClick);
+        return () => window.removeEventListener('click', handleClick);
     }, []);
 
     const features = [
@@ -77,86 +89,91 @@ const Landing = () => {
             {/* Header */}
             <nav className={`fixed top-0 w-full z-50 transition-all duration-500 ${scrolled ? 'bg-white/70 dark:bg-gray-950/70 backdrop-blur-2xl border-b border-gray-200/50 dark:border-gray-800/50 py-3' : 'bg-transparent py-6'}`}>
                 <div className="container mx-auto px-6 flex items-center justify-between max-w-7xl">
-                    <div className="flex items-center gap-2 group cursor-pointer" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
+                    <div className="flex items-center gap-2 group cursor-pointer" onClick={(e) => { e.stopPropagation(); window.scrollTo({ top: 0, behavior: 'smooth' }); }}>
                         <div className="w-10 h-10 bg-gradient-to-br from-primary to-indigo-600 rounded-xl flex items-center justify-center shadow-lg shadow-primary/25 group-hover:rotate-12 transition-all duration-300 p-2">
                             <img src="/logo.svg" alt="" className="w-full h-full object-contain" />
                         </div>
-                        <span className="text-2xl font-black tracking-tighter text-gray-900 dark:text-white">FRIENDS.</span>
+                        <span className="text-xl md:text-2xl font-black tracking-tighter text-gray-900 dark:text-white">FRIENDS.</span>
                     </div>
 
-                    <div className="flex items-center gap-3">
+                    <div className="flex items-center gap-2 md:gap-3">
                         {/* Theme Toggle */}
                         <button
-                            onClick={toggleTheme}
+                            onClick={(e) => { e.stopPropagation(); toggleTheme(); }}
                             className="p-2.5 rounded-xl bg-gray-100/80 dark:bg-gray-800/80 text-gray-600 dark:text-gray-300 hover:scale-110 transition-all border border-transparent hover:border-gray-200 dark:hover:border-gray-700 backdrop-blur-md"
                         >
                             {theme === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
                         </button>
 
                         {/* Language Selector */}
-                        <div className="relative group">
-                            <button className="flex items-center gap-2 p-2.5 rounded-xl bg-gray-100/80 dark:bg-gray-800/80 text-gray-600 dark:text-gray-300 hover:scale-110 transition-all border border-transparent hover:border-gray-200 dark:hover:border-gray-700 backdrop-blur-md">
+                        <div className="relative">
+                            <button
+                                onClick={(e) => { e.stopPropagation(); setIsLangOpen(!isLangOpen); }}
+                                className="flex items-center gap-2 p-2.5 rounded-xl bg-gray-100/80 dark:bg-gray-800/80 text-gray-600 dark:text-gray-300 hover:scale-110 transition-all border border-transparent hover:border-gray-200 dark:hover:border-gray-700 backdrop-blur-md"
+                            >
                                 <Globe size={20} />
-                                <span className="text-sm font-bold uppercase">{language}</span>
+                                <span className="text-sm font-bold uppercase hidden sm:inline">{language}</span>
                             </button>
-                            <div className={`absolute top-full mt-2 ${language === 'ar' ? 'left-0' : 'right-0'} opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 transform translate-y-2 group-hover:translate-y-0`}>
-                                <div className="bg-white/90 dark:bg-gray-900/90 backdrop-blur-xl rounded-2xl shadow-2xl border border-gray-100 dark:border-gray-800 p-2 overflow-hidden ring-1 ring-black/5 min-w-[140px]">
-                                    <button
-                                        onClick={() => setLanguage('en')}
-                                        className={`w-full flex items-center justify-between px-4 py-2.5 text-sm font-semibold rounded-xl transition-colors ${language === 'en' ? 'bg-primary text-white' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800'}`}
-                                    >
-                                        English
-                                        {language === 'en' && <CheckCircle2 size={14} />}
-                                    </button>
-                                    <button
-                                        onClick={() => setLanguage('ar')}
-                                        className={`w-full flex items-center justify-between px-4 py-2.5 text-sm font-semibold rounded-xl transition-colors ${language === 'ar' ? 'bg-primary text-white' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800'}`}
-                                    >
-                                        {language === 'ar' && <CheckCircle2 size={14} />}
-                                        العربية
-                                    </button>
+                            {isLangOpen && (
+                                <div className={`absolute top-full mt-2 ${language === 'ar' ? 'left-0' : 'right-0'} transition-all duration-200`}>
+                                    <div className="bg-white/90 dark:bg-gray-900/90 backdrop-blur-xl rounded-2xl shadow-2xl border border-gray-100 dark:border-gray-800 p-2 overflow-hidden ring-1 ring-black/5 min-w-[140px]">
+                                        <button
+                                            onClick={(e) => { e.stopPropagation(); setLanguage('en'); setIsLangOpen(false); }}
+                                            className={`w-full flex items-center justify-between px-4 py-2.5 text-sm font-semibold rounded-xl transition-colors ${language === 'en' ? 'bg-primary text-white' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800'}`}
+                                        >
+                                            English
+                                            {language === 'en' && <CheckCircle2 size={14} />}
+                                        </button>
+                                        <button
+                                            onClick={(e) => { e.stopPropagation(); setLanguage('ar'); setIsLangOpen(false); }}
+                                            className={`w-full flex items-center justify-between px-4 py-2.5 text-sm font-semibold rounded-xl transition-colors ${language === 'ar' ? 'bg-primary text-white' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800'}`}
+                                        >
+                                            {language === 'ar' && <CheckCircle2 size={14} />}
+                                            العربية
+                                        </button>
+                                    </div>
                                 </div>
-                            </div>
+                            )}
                         </div>
 
-                        <Link to="/sign-in" className="hidden md:block px-6 py-2.5 text-sm font-bold text-gray-700 dark:text-gray-200 hover:bg-gray-100/50 dark:hover:bg-gray-800/50 rounded-xl transition-colors">
+                        <Link to="/sign-in" className="hidden lg:block px-6 py-2.5 text-sm font-bold text-gray-700 dark:text-gray-200 hover:bg-gray-100/50 dark:hover:bg-gray-800/50 rounded-xl transition-colors">
                             {t('nav_signin')}
                         </Link>
 
-                        <Link to="/sign-in" className="relative group overflow-hidden px-8 py-2.5 text-sm font-black text-white rounded-xl transition-all">
+                        <Link to="/sign-in" className="relative group overflow-hidden px-5 md:px-8 py-2.5 text-sm font-black text-white rounded-xl transition-all">
                             <div className="absolute inset-0 bg-gradient-to-r from-primary via-indigo-600 to-primary bg-[length:200%_100%] group-hover:animate-shimmer transition-all"></div>
-                            <span className="relative z-10">{t('landing_get_started')}</span>
+                            <span className="relative z-10 whitespace-nowrap">{t('landing_get_started')}</span>
                         </Link>
                     </div>
                 </div>
             </nav>
 
             {/* Hero Section */}
-            <main className="relative pt-32 pb-20 px-6">
+            <main className="relative pt-24 md:pt-32 pb-20 px-4 md:px-6">
                 <div className="container mx-auto max-w-7xl">
-                    <div className="flex flex-col lg:flex-row items-center gap-16 lg:gap-24">
-                        <div className="flex-1 text-center lg:text-left rtl:lg:text-right space-y-10 z-10">
-                            <div className="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-primary/10 dark:bg-primary/20 text-primary text-xs font-black uppercase tracking-[0.2em] animate-bounce-subtle border border-primary/10">
+                    <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-24">
+                        <div className="flex-1 text-center lg:text-left rtl:lg:text-right space-y-8 md:space-y-10 z-10">
+                            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 dark:bg-primary/20 text-primary text-[10px] md:text-xs font-black uppercase tracking-[0.2em] animate-bounce-subtle border border-primary/10">
                                 <img src="/logo.svg" alt="" className="w-3.5 h-3.5 object-contain" />
                                 <span>The New Social Standard</span>
                             </div>
 
-                            <h1 className="text-6xl md:text-8xl font-black text-gray-900 dark:text-white leading-[1.05] tracking-tight">
+                            <h1 className="text-4xl sm:text-6xl md:text-8xl font-black text-gray-900 dark:text-white leading-[1.05] tracking-tight">
                                 <span className="block">{t('landing_hero_title').split('.')[0]}</span>
                                 <span className="block text-transparent bg-clip-text bg-gradient-to-r from-primary to-indigo-500">Beyond Limits.</span>
                             </h1>
 
-                            <p className="text-xl md:text-2xl text-gray-600 dark:text-gray-400 font-medium max-w-2xl mx-auto lg:mx-0 leading-relaxed opacity-90">
+                            <p className="text-lg md:text-2xl text-gray-600 dark:text-gray-400 font-medium max-w-2xl mx-auto lg:mx-0 leading-relaxed opacity-90">
                                 {t('landing_hero_subtitle')}
                             </p>
 
-                            <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-5">
-                                <Link to="/sign-up" className="group relative w-full sm:w-auto px-12 py-5 bg-primary overflow-hidden rounded-2xl font-black text-lg transition-all hover:scale-105 active:scale-95 flex items-center justify-center gap-3 shadow-[0_20px_50px_-10px_rgba(79,70,229,0.3)]">
+                            <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 md:gap-5">
+                                <Link to="/sign-up" className="group relative w-full sm:w-auto px-10 md:px-12 py-4 md:py-5 bg-primary overflow-hidden rounded-2xl font-black text-base md:text-lg transition-all hover:scale-105 active:scale-95 flex items-center justify-center gap-3 shadow-[0_20px_50px_-10px_rgba(79,70,229,0.3)]">
                                     <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:animate-shimmer"></div>
                                     <span className="relative text-white">{t('landing_get_started')}</span>
                                     <ArrowRight size={22} className={`relative text-white transition-transform duration-300 group-hover:translate-x-1 ${language === 'ar' ? 'rotate-180 group-hover:-translate-x-1' : ''}`} />
                                 </Link>
-                                <button className="w-full sm:w-auto px-12 py-5 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 text-gray-900 dark:text-white rounded-2xl font-black text-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-all hover:border-primary/30">
+                                <button className="w-full sm:w-auto px-10 md:px-12 py-4 md:py-5 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 text-gray-900 dark:text-white rounded-2xl font-black text-base md:text-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-all hover:border-primary/30">
                                     {t('landing_learn_more')}
                                 </button>
                             </div>
@@ -241,19 +258,19 @@ const Landing = () => {
                     </div>
 
                     {/* Sub-hero / CTA */}
-                    <div className="mt-48 relative rounded-[4.5rem] overflow-hidden group">
+                    <div className="mt-32 md:mt-48 relative rounded-3xl md:rounded-[4.5rem] overflow-hidden group">
                         <div className="absolute inset-0 bg-gradient-to-r from-primary via-indigo-700 to-primary bg-[length:200%_100%] group-hover:animate-gradient transition-all duration-1000"></div>
                         <div className="absolute inset-0 opacity-10 mix-blend-overlay bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]"></div>
-                        <div className="relative px-8 py-28 text-center space-y-12">
-                            <h2 className="text-5xl md:text-7xl font-black text-white max-w-5xl mx-auto leading-[1.1] tracking-tighter">
+                        <div className="relative px-6 md:px-8 py-20 md:py-28 text-center space-y-8 md:space-y-12">
+                            <h2 className="text-3xl sm:text-5xl md:text-7xl font-black text-white max-w-5xl mx-auto leading-[1.1] tracking-tighter">
                                 Ready for the next generation of social connection?
                             </h2>
-                            <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
-                                <Link to="/sign-up" className="group w-full sm:w-auto px-14 py-6 bg-white text-primary rounded-[2rem] font-black text-xl hover:scale-105 active:scale-95 transition-all shadow-[0_25px_50px_-10px_rgba(255,255,255,0.3)] flex items-center justify-center gap-3">
+                            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 md:gap-6">
+                                <Link to="/sign-up" className="group w-full sm:w-auto px-10 md:px-14 py-4 md:py-6 bg-white text-primary rounded-2xl md:rounded-[2rem] font-black text-lg md:text-xl hover:scale-105 active:scale-95 transition-all shadow-[0_25px_50px_-10px_rgba(255,255,255,0.3)] flex items-center justify-center gap-3">
                                     {t('landing_get_started')}
                                     <ArrowRight size={24} className="transition-transform group-hover:translate-x-1" />
                                 </Link>
-                                <button className="w-full sm:w-auto px-14 py-6 bg-white/10 backdrop-blur-md text-white border border-white/30 rounded-[2rem] font-black text-xl hover:bg-white/20 transition-all">
+                                <button className="w-full sm:w-auto px-10 md:px-14 py-4 md:py-6 bg-white/10 backdrop-blur-md text-white border border-white/30 rounded-2xl md:rounded-[2rem] font-black text-lg md:text-xl hover:bg-white/20 transition-all">
                                     Join Community
                                 </button>
                             </div>
